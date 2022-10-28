@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 // material-ui
 import { useTheme } from "@mui/material/styles";
@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Container,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -23,7 +24,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 
 // project imports
-import useScriptRef from "hooks/useScriptRef";
+import useScriptRef from "../../hooks/useScriptRef";
 import AnimateButton from "../../components/extended/AnimateButton";
 
 // assets

@@ -1,5 +1,5 @@
 import { Button, Container, Grid } from "@mui/material";
-import AnimateButton from "components/extended/AnimateButton";
+import AnimateButton from "../../components/extended/AnimateButton";
 import { useState } from "react";
 import SignInComponent from "./SignIn";
 import SignUpComponent from "./SignUp";

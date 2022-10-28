@@ -1,3 +1,4 @@
+import React, { useCallback } from "react";
 import {
   CssBaseline,
   StyledEngineProvider,
@@ -6,36 +7,36 @@ import {
 import { useSelector } from "react-redux";
 // defaultTheme
 import themes from "./themes";
-import { BrowserRouter, Link, Redirect, Route, Switch } from "react-router-dom";
-import { AUTH_ROUTE, PRIVATE_ROUTE } from "config/route";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { AUTH_ROUTE, PRIVATE_ROUTE } from "./config/route";
+import MinimalLayout from "./layout/MinimalLayout";
 
 function App() {
   const customization = useSelector((state) => state.customization);
+  const userInfo = useSelector((state) => state.user.userInfo);
 
-  const AuthRoute = (props) => {
-    if (false) {
-      return <Redirect push to="/" />;
-    }
-    return (
-      <Route
-        exact={props.routeInfo.exact}
-        path={props.routeInfo.path}
-        component={props.routeInfo.component}
-      />
-    );
-  };
-  const PrivateRoute = (props) => {
-    if (false) {
-      return <Redirect push to="/" />;
-    }
-    return (
-      <Route
-        exact={props.routeInfo.exact}
-        path={props.routeInfo.path}
-        component={props.routeInfo.component}
-      />
-    );
-  };
+  const AuthRoute = useCallback(
+    ({ routeInfo }) => {
+      const { exact, path, component } = routeInfo;
+      if (userInfo) {
+        return null;
+      }
+      return <Route exact={exact} path={path} component={component} />;
+    },
+    [userInfo]
+  );
+
+  const PrivateRoute = useCallback(
+    ({ routeInfo }) => {
+      const { exact, path, component } = routeInfo;
+      if (!userInfo) {
+        return null;
+      }
+      return <Route exact={exact} path={path} component={component} />;
+    },
+    [userInfo]
+  );
+
   const authenticationRouter = AUTH_ROUTE.map((routeInfo) => (
     <AuthRoute key={routeInfo.path} routeInfo={routeInfo} />
   ));
@@ -49,14 +50,13 @@ function App() {
         <CssBaseline />
         <BrowserRouter>
           <div className="app">
-            <Link to="/">Home</Link>
-            <Link to="/signin">signin</Link>
-            <Link to="/signup">signup</Link>
-            <Switch>
-              <Route exact path="/" component={<>vcl</>} />
-              {privateRouter}
-              {authenticationRouter}
-            </Switch>
+            <MinimalLayout>
+              <Switch>
+                <Route exact path={"/"} component={<div>Hi</div>} />;
+                {authenticationRouter}
+                {privateRouter}
+              </Switch>
+            </MinimalLayout>
           </div>
         </BrowserRouter>
       </ThemeProvider>

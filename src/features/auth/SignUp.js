@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+
 import { Link } from "react-router-dom";
 
 // material-ui
@@ -26,9 +27,9 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 
 // project imports
-import useScriptRef from "hooks/useScriptRef";
-import AnimateButton from "components/extended/AnimateButton";
-import { strengthColor, strengthIndicator } from "utils/password-strength";
+import useScriptRef from "../../hooks/useScriptRef";
+import AnimateButton from "../../components/extended/AnimateButton";
+import { strengthColor, strengthIndicator } from "../../utils/password-strength";
 
 // assets
 import Visibility from "@mui/icons-material/Visibility";

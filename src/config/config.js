@@ -4,7 +4,8 @@ const config = {
     baseAdmin:"/admin",
     baseApp: '/app',
     fontFamily: `'Roboto', sans-serif`,
-    borderRadius: 12
+    borderRadius: 12,
+    ...process.env.HOST_API,
 };
 
 export default config;

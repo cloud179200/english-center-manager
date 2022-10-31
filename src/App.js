@@ -10,6 +10,7 @@ import themes from "./themes";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { AUTH_ROUTE, PRIVATE_ROUTE } from "./config/route";
 import MinimalLayout from "./layout/MinimalLayout";
+import MainLayout from "./layout/MainLayout";
 
 function App() {
   const customization = useSelector((state) => state.customization);
@@ -50,13 +51,15 @@ function App() {
         <CssBaseline />
         <BrowserRouter>
           <div className="app">
-            <MinimalLayout>
               <Switch>
                 <Route exact path={"/"} component={<div>Hi</div>} />;
+            
+            {privateRouter}
+
+                <MainLayout>
+                </MainLayout>
                 {authenticationRouter}
-                {privateRouter}
               </Switch>
-            </MinimalLayout>
           </div>
         </BrowserRouter>
       </ThemeProvider>

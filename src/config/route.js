@@ -1,6 +1,6 @@
 import React from "react";
-import SignInComponent from "../features/auth/SignIn";
-import SignUpComponent from "../features/auth/SignUp";
+import SignInComponent from "../features/auth/component/SignIn";
+import SignUpComponent from "../features/auth/component/SignUp";
 import MainLayout from "../layout/MainLayout";
 import MinimalLayout from "../layout/MinimalLayout";
 

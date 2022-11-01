@@ -7,7 +7,7 @@ import {
 import { useSelector } from "react-redux";
 // defaultTheme
 import themes from "./themes";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { AUTH_ROUTE, PRIVATE_ROUTE } from "./config/route";
 import MinimalLayout from "./layout/MinimalLayout";
 import MainLayout from "./layout/MainLayout";
@@ -15,14 +15,17 @@ import MainLayout from "./layout/MainLayout";
 function App() {
   const customization = useSelector((state) => state.customization);
   const userInfo = useSelector((state) => state.user.userInfo);
+  const location = useSelector((state) => state.router.location);
 
   const AuthRoute = useCallback(
     ({ routeInfo }) => {
       const { exact, path, component } = routeInfo;
-      if (userInfo) {
-        return null;
-      }
-      return <Route exact={exact} path={path} component={component} />;
+      return (
+        <Route exact={exact} path={path}>
+          {userInfo && <Redirect to={"/dashboard"} />}
+          {component}
+        </Route>
+      );
     },
     [userInfo]
   );
@@ -30,10 +33,12 @@ function App() {
   const PrivateRoute = useCallback(
     ({ routeInfo }) => {
       const { exact, path, component } = routeInfo;
-      if (!userInfo) {
-        return null;
-      }
-      return <Route exact={exact} path={path} component={component} />;
+      return (
+        <Route exact={exact} path={path}>
+          {!userInfo && <Redirect to={"/signin"} />}
+          {component}
+        </Route>
+      );
     },
     [userInfo]
   );
@@ -50,17 +55,13 @@ function App() {
       <ThemeProvider theme={themes(customization)}>
         <CssBaseline />
         <BrowserRouter>
-          <div className="app">
-              <Switch>
-                <Route exact path={"/"} component={<div>Hi</div>} />;
-            
-            {privateRouter}
-
-                <MainLayout>
-                </MainLayout>
-                {authenticationRouter}
-              </Switch>
-          </div>
+          <Switch>
+            <div className="app">
+              {!AUTH_ROUTE.some((item) => item.path === location.pathname) ? <MainLayout/> : <MinimalLayout/>}
+              {privateRouter}
+              {authenticationRouter}
+            </div>
+          </Switch>
         </BrowserRouter>
       </ThemeProvider>
     </StyledEngineProvider>

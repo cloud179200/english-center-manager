@@ -10,7 +10,7 @@ import Breadcrumbs from '../../ui-component/extended/Breadcrumbs';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Customization from '../Customization';
-import navigation from 'menu-items';
+import navigation from '../../menu-items';
 import { drawerWidth } from '../../redux/customization/constant';
 import { SET_MENU } from "../../redux/customization/actions"
 
@@ -101,7 +101,7 @@ const MainLayout = () => {
             <Sidebar drawerOpen={leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
 
             {/* main content */}
-            <Main theme={theme} open={leftDrawerOpened}>
+            <Main theme={theme} open={leftDrawerOpened} style={{ marginLeft:"1rem"}}>
                 {/* breadcrumb */}
                 <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
             </Main>

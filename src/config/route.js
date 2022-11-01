@@ -1,8 +1,7 @@
 import React from "react";
+import { Redirect } from "react-router";
 import SignInComponent from "../features/auth/component/SignIn";
 import SignUpComponent from "../features/auth/component/SignUp";
-import MainLayout from "../layout/MainLayout";
-import MinimalLayout from "../layout/MinimalLayout";
 
 export const PRIVATE_ROUTE = [
   {
@@ -12,6 +11,11 @@ export const PRIVATE_ROUTE = [
   },
 ];
 export const AUTH_ROUTE = [
+  {
+    path: "/",
+    exact: true,
+    component: <Redirect to={"/signin"}/>,
+  },
   {
     path: "/signin",
     exact: true,
@@ -28,38 +32,3 @@ export const AUTH_ROUTE = [
     component: <div>forgot</div>,
   },
 ];
-
-export const MainRoutes = {
-  path: "/",
-  element: <MainLayout />,
-  children: [
-    {
-      path: "/",
-      element: <div>chill</div>,
-    },
-    {
-      path: "dashboard",
-      element: <div>dashboard</div>,
-    },
-  ],
-};
-
-export const AuthenticationRoutes = {
-  path: "/",
-  element: <MinimalLayout />,
-  children: [
-    {
-      path: "auth",
-      children: [
-        {
-          path: "signin",
-          element: <SignInComponent />,
-        },
-        {
-          path: "signup",
-          element: <SignUpComponent />,
-        },
-      ],
-    },
-  ],
-};

@@ -24,7 +24,6 @@
     "framer-motion": "^6.3.16",
     "hooks": "^0.3.2",
     "material-ui-popup-state": "^4.0.1",
-    "menu-items": "0.0.1",
     "npm-cli": "^0.1.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",

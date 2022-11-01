@@ -22,7 +22,6 @@
     "import/named": 2,
     "import/namespace": 2,
     "import/default": 2,
-    "import/export": 2,
-    "react/display-name": [true, { "ignoreTranspilerName": true }]
+    "import/export": 2
   }
 }

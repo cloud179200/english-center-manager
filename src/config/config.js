@@ -5,7 +5,7 @@ const config = {
     baseApp: '/app',
     fontFamily: `'Roboto', sans-serif`,
     borderRadius: 12,
-    ...process.env.HOST_API,
+    ...process.env,
 };
 
 export default config;

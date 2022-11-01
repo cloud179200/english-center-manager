@@ -1,9 +1,19 @@
 {
-    "compilerOptions": {
-        "target": "esnext",
-        "module": "commonjs",
-        "baseUrl": "src"
-    },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules"]
+  "compilerOptions": {
+      "sourceMap": true,
+      "noImplicitAny": false,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "removeComments": true,
+      "module": "esnext",
+      "target": "es6",
+      "jsx": "react",
+      "lib": ["es2019", "dom", "es6"],
+      "skipLibCheck": true,
+      "esModuleInterop": true,
+      "moduleResolution": "Node",
+      "resolveJsonModule": true
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["./node_modules"],
 }

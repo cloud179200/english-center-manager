@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // material-ui
@@ -8,8 +8,8 @@ import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
 
 // project imports
-import config from 'config';
-import { gridSpacing } from 'store/constant';
+import config from '../../config/config';
+import { gridSpacing } from '../../redux/customization/constant';
 
 // assets
 import { IconTallymark1 } from '@tabler/icons';
@@ -48,7 +48,7 @@ const Breadcrumbs = ({ card, divider, icon, icons, maxItems, navigation, rightAl
                 if (collapse.type && collapse.type === 'collapse') {
                     getCollapse(collapse);
                 } else if (collapse.type && collapse.type === 'item') {
-                    if (document.location.pathname === config.basename + collapse.url) {
+                    if (document.location.pathname === config.baseApp + collapse.url) {
                         setMain(menu);
                         setItem(collapse);
                     }

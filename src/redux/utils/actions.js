@@ -1,0 +1,1 @@
+export const NEXT_PAGE_ACTION = "NEXT_PAGE_ACTION"

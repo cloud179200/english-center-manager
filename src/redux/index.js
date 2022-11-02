@@ -1,19 +1,38 @@
-import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "../features/counter/counterSlice";
-import customizationReducer from "./customization/customizationReducer";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import customizationReducer from "./customization/reducer";
 import { connectRouter, routerMiddleware } from "connected-react-router";
 import thunk from "redux-thunk";
 import { createBrowserHistory } from "history";
-import userReducer from "./user/userReducer";
+import userReducer from "./user/reducer";
+import utilsReducer from "./utils/reducer";
+
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 
 export const history = createBrowserHistory();
+
+const persistConfig = {
+  key: "root",
+  storage: storage,
+  stateReconciler: autoMergeLevel2, // Xem thêm tại mục "Quá trình merge".
+};
+
+const rootReducer = combineReducers({
+  customization: customizationReducer,
+  router: connectRouter(history),
+  user: userReducer,
+  common: utilsReducer,
+})
+
+const reducer = persistReducer(persistConfig, rootReducer);
+
+
 export const store = configureStore({
-  reducer: {
-    counter: counterReducer,
-    customization: customizationReducer,
-    router: connectRouter(history),
-    user: userReducer
-  },
+  reducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(routerMiddleware(history)).concat(thunk),
 });
+
+export const persistor = persistStore(store);

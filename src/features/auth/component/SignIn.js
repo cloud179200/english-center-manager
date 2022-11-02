@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-
-// material-ui
 import { useTheme } from "@mui/material/styles";
 import {
   Box,
@@ -18,27 +16,23 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
-// third party
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
-// project imports
-import useScriptRef from "../../../hooks/useScriptRef";
 import AnimateButton from "../../../components/extended/AnimateButton";
-
-// assets
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link } from "react-router-dom";
-
-// ============================|| FIREBASE - LOGIN ||============================ //
+import { FORM_VALIDATE_ERROR_MESSAGE } from "../../../config/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { signInAction } from "../../../redux/auth/operators";
+import { addNotificationAction } from "../../../redux/utils/operators";
 
 const SignInComponent = ({ ...others }) => {
   const theme = useTheme();
-  const scriptedRef = useScriptRef();
-  const [checked, setChecked] = useState(true);
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.common.loading);
 
+  const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -51,26 +45,24 @@ const SignInComponent = ({ ...others }) => {
     },
     validationSchema: Yup.object().shape({
       email: Yup.string()
-        .email("Must be a valid email")
+        .email(FORM_VALIDATE_ERROR_MESSAGE.INVALID)
         .max(255)
         .required("Email is required"),
-      password: Yup.string().max(255).required("Password is required"),
+      password: Yup.string().max(255).required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
     }),
-    onSubmit: async (values, { setStatus, setSubmitting }) => {
-      try {
-        if (scriptedRef.current) {
-          setStatus({ success: true });
-          setSubmitting(false);
-        }
-      } catch (err) {
-        console.error(err);
-        if (scriptedRef.current) {
-          setStatus({ success: false });
-          setSubmitting(false);
-        }
-      }
+    onSubmit: (values) => {
+      dispatch(signInAction(values.email, values.password, signInCallback));
     },
   });
+
+  const signInCallback = (res, err) => {
+    debugger;
+    if (err) {
+      dispatch(addNotificationAction(err, true));
+      return;
+    }
+    dispatch(addNotificationAction("Sign in success!", false));
+  }
   const {
     errors,
     handleBlur,
@@ -88,7 +80,7 @@ const SignInComponent = ({ ...others }) => {
 
   return (
     <>
-      <Container fixed>
+      <Container maxWidth="sm">
         <Grid
           container
           direction="column"
@@ -221,14 +213,14 @@ const SignInComponent = ({ ...others }) => {
                   component={Link}
                   to="/signup"
                 >
-                  Dont Have Account?
+                  Don't Have Account?
                 </Typography>
               </Stack>
               <Box sx={{ mt: 2 }}>
                 <AnimateButton>
                   <Button
                     disableElevation
-                    disabled={!isValid || isSubmitting}
+                    disabled={!isValid || loading || isSubmitting}
                     fullWidth
                     size="large"
                     type="submit"

@@ -1,8 +1,8 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { store, history } from "./redux/index";
+import { store, history, persistor } from "./redux/index";
 import { Provider } from "react-redux";
-
+import { PersistGate } from 'redux-persist/lib/integration/react';
 import App from "./App";
 
 import "./assets/scss/style.scss";
@@ -12,8 +12,10 @@ const root = createRoot(container);
 
 root.render(
   <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
     <ConnectedRouter history={history}>
       <App />
     </ConnectedRouter>
+    </PersistGate>
   </Provider>
 );

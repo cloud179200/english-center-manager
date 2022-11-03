@@ -24,15 +24,18 @@ const rootReducer = combineReducers({
   router: connectRouter(history),
   user: userReducer,
   common: utilsReducer,
-})
+});
 
 const reducer = persistReducer(persistConfig, rootReducer);
-
 
 export const store = configureStore({
   reducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(routerMiddleware(history)).concat(thunk),
+    getDefaultMiddleware({
+      serializableCheck: false,
+    })
+      .concat(routerMiddleware(history))
+      .concat(thunk),
 });
 
 export const persistor = persistStore(store);

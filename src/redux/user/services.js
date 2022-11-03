@@ -1,10 +1,10 @@
 import { postService } from "../../config/services";
 
-export const getUserAction = async (body) => {
+export const getUserService = async (email) => {
   try {
     return await postService(
-      `/user/`,
-      { ...body },
+      `/api/users/get-by-email?p_email=`+email,
+      {},
       "get user fail",
       true
     );

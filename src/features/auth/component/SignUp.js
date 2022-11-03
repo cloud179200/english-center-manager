@@ -100,7 +100,6 @@ const SignUpComponent = ({ ...others }) => {
   const signUpCallback = (res, err) => {
     debugger;
     if (err) {
-      dispatch(addNotificationAction(err, true));
       return;
     }
     dispatch(addNotificationAction("Sign up success!", false));
@@ -111,7 +110,6 @@ const SignUpComponent = ({ ...others }) => {
     handleBlur,
     handleChange,
     handleSubmit,
-    isSubmitting,
     isValid,
     touched,
     values,
@@ -419,7 +417,7 @@ const SignUpComponent = ({ ...others }) => {
                 <AnimateButton>
                   <Button
                     disableElevation
-                    disabled={loading || !isValid || isSubmitting}
+                    disabled={loading || !isValid}
                     onClick={handleSubmit}
                     fullWidth
                     size="large"

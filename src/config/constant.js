@@ -11,3 +11,8 @@ export const FORM_VALIDATE_ERROR_MESSAGE = {
     REQUIRED: "field is required"
 }
  
+export const API_MESSAGE = {
+    SERVER_ERROR: "Server error",
+    UPDATE_SUCCESS: "Update successfuly!",
+    UPDATE_FAIL: "Update failed!",
+}

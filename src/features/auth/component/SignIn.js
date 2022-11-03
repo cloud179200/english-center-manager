@@ -26,6 +26,7 @@ import { FORM_VALIDATE_ERROR_MESSAGE } from "../../../config/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { signInAction } from "../../../redux/auth/operators";
 import { addNotificationAction } from "../../../redux/utils/operators";
+import { setUserAction } from "../../../redux/user/operators";
 
 const SignInComponent = ({ ...others }) => {
   const theme = useTheme();
@@ -56,11 +57,11 @@ const SignInComponent = ({ ...others }) => {
   });
 
   const signInCallback = (res, err) => {
-    debugger;
+    debugger
     if (err) {
-      dispatch(addNotificationAction(err, true));
       return;
     }
+    dispatch(setUserAction({email: values.email, token: res.token}))
     dispatch(addNotificationAction("Sign in success!", false));
   }
   const {
@@ -68,7 +69,6 @@ const SignInComponent = ({ ...others }) => {
     handleBlur,
     handleChange,
     handleSubmit,
-    isSubmitting,
     isValid,
     touched,
     values,
@@ -220,7 +220,7 @@ const SignInComponent = ({ ...others }) => {
                 <AnimateButton>
                   <Button
                     disableElevation
-                    disabled={!isValid || loading || isSubmitting}
+                    disabled={!isValid || loading}
                     fullWidth
                     size="large"
                     type="submit"

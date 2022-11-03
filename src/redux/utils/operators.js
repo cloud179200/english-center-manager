@@ -1,4 +1,4 @@
-import { ADD_NOTIFICATION_ACTION, REMOVE_NOTIFICATION_ACTION, SET_LOADING_ACTION } from "./actions";
+import { ADD_NOTIFICATION_ACTION, REMOVE_NOTIFICATION_ACTION, RESET_UTILS_REDUCER_ACTION, SET_LOADING_ACTION } from "./actions";
 import uniqid from "uniqid";
 
 export const addNotificationAction = (message = "", error = false) => {
@@ -22,5 +22,11 @@ export const setLoadingAction = (state = false) => {
   return {
     type: SET_LOADING_ACTION,
     state
+  }
+}
+
+export const resetUtilsReducerAction = () => {
+  return {
+      type: RESET_UTILS_REDUCER_ACTION
   }
 }

@@ -1,4 +1,11 @@
-import { addNotificationAction, setLoadingAction } from "../utils/operators";
+import { API_MESSAGE } from "../../config/constant";
+import { resetCustomizationReducerAction } from "../customization/operators";
+import { resetUserReducerAction } from "../user/operators";
+import {
+  addNotificationAction,
+  resetUtilsReducerAction,
+  setLoadingAction,
+} from "../utils/operators";
 import { signUpService, signInService } from "./services";
 
 export const signUpAction = (
@@ -8,12 +15,11 @@ export const signUpAction = (
   password,
   address,
   phone_Number,
-  user_Type, 
+  user_Type,
   callback
 ) => {
   return async (dispatch) => {
-    debugger
-    dispatch(setLoadingAction(true))
+    dispatch(setLoadingAction(true));
     try {
       const res = await signUpService({
         first_Name,
@@ -24,45 +30,48 @@ export const signUpAction = (
         phone_Number,
         user_Type,
       });
-      debugger
-      if(res) {
-        callback(res, null)
-        return
+      if (res) {
+        callback(res, null);
+        return;
       }
-      callback(null, "Error")
+      callback(null, API_MESSAGE.SERVER_ERROR);
     } catch (error) {
-      debugger
-      dispatch(addNotificationAction(error, true));
-    } finally{
-      dispatch(setLoadingAction(false))
+      dispatch(addNotificationAction(error?.message || API_MESSAGE.SERVER_ERROR, true));
+      callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
+    } finally {
+      dispatch(setLoadingAction(false));
     }
   };
 };
 
-export const signInAction = (
-  email,
-  password,
-  callback
-) => {
+export const signInAction = (email, password, callback) => {
   return async (dispatch) => {
-    debugger
-    dispatch(setLoadingAction(true))
+    dispatch(setLoadingAction(true));
     try {
       const res = await signInService({
         email,
         password,
       });
-      debugger
-      if(res) {
-        callback(res, null)
-        return
+      if (res) {
+        callback(res, null);
+        return;
       }
-      callback(null, "Error")
+      callback(null, API_MESSAGE.SERVER_ERROR);
     } catch (error) {
-      debugger
-      dispatch(addNotificationAction(error, true));
-    } finally{
-      dispatch(setLoadingAction(false))
+      dispatch(addNotificationAction(error?.message || API_MESSAGE.SERVER_ERROR, true));
+      callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
+    } finally {
+      dispatch(setLoadingAction(false));
     }
+  };
+};
+
+export const signOutAction = (callback) => {
+  localStorage.clear();
+  return (dispatch) => {
+    dispatch(resetCustomizationReducerAction());
+    dispatch(resetUserReducerAction());
+    dispatch(resetUtilsReducerAction());
+    callback();
   };
 };

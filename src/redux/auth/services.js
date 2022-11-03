@@ -2,7 +2,7 @@ import { postService } from "../../config/services";
 
 export const signUpService = async (body) => {
   try {
-    return await postService(`/api/users/register`, { body }, "Sign up fail", true);
+    return await postService(`/api/users/register`, { ...body }, "Sign up fail", false);
   } catch (error) {
     throw error;
   }
@@ -10,7 +10,7 @@ export const signUpService = async (body) => {
 
 export const signInService = async (body) => {
   try {
-    return await postService(`/api/users/login`, { body }, "Sign in fail", true);
+    return await postService(`/api/users/login?email=${body.email}&password=${body.password}`, { }, "Sign in fail", false);
   } catch (error) {
     throw error;
   }

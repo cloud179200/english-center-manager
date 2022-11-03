@@ -4,9 +4,12 @@ import axios from "axios"
 
 const getUserInfo = async () => {
   let userInfo = null;
-  if (localStorage.getItem("userInfo")) {
-    const jsonParse = await JSON.parse(localStorage.getItem("userInfo"));
-    userInfo = jsonParse;
+  if (localStorage.getItem("persist:root")) {
+    const jsonParse = await JSON.parse(localStorage.getItem("persist:root"));
+    if(jsonParse?.user){
+      const userParse = await JSON.parse(jsonParse.user);
+      userInfo = userParse.userInfo;
+    }
   }
   return userInfo;
 };
@@ -27,7 +30,7 @@ export const postService = async (
     if (isAuthorization) {
       const userInfo = await getUserInfo();
       if (userInfo?.token) {
-        headers["Authorization"] = userInfo.token;
+        headers["Authorization"] = "Bearer "+userInfo.token;
       }
     }
     debugger
@@ -49,13 +52,13 @@ export const postService = async (
     }
   } catch (error) {
     debugger;
-    if (error.response.status === HTTP_RESPONSE_STATUS.BAD_REQUEST) {
+    if (error?.response?.status === HTTP_RESPONSE_STATUS.BAD_REQUEST) {
       return error.response;
     }
     if (
-      error.response &&
+      error?.response &&
       retries > 0 &&
-      error.response.status === HTTP_RESPONSE_STATUS.MISSING_AUTHORIZED
+      error?.response?.status === HTTP_RESPONSE_STATUS.MISSING_AUTHORIZED
     ) {
       try {
         if (
@@ -68,7 +71,7 @@ export const postService = async (
         debugger;
       }
     }
-    if (error.response) {
+    if (error?.response) {
       throw error.response.message;
     } else {
       throw error;

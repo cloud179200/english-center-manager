@@ -1,7 +1,6 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   Alert,
-  Box,
   CssBaseline,
   Stack,
   StyledEngineProvider,
@@ -14,8 +13,8 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { AUTH_ROUTE, PRIVATE_ROUTE } from "./config/route";
 import MinimalLayout from "./layout/MinimalLayout";
 import MainLayout from "./layout/MainLayout";
-import { addNotificationAction, removeNotificationAction } from "./redux/utils/operators";
-import { useEffect } from "react";
+import { removeNotificationAction, resetUtilsReducerAction } from "./redux/utils/operators";
+import { getUserAction } from "./redux/user/operators";
 
 function App() {
   const customization = useSelector((state) => state.customization);
@@ -29,7 +28,7 @@ function App() {
       const { exact, path, component } = routeInfo;
       return (
         <Route exact={exact} path={path}>
-          {userInfo ? <Redirect to={"/dashboard"} /> : component}
+          {userInfo?.token ? <Redirect to={"/dashboard"} /> : component}
         </Route>
       );
     },
@@ -41,7 +40,7 @@ function App() {
       const { exact, path, component } = routeInfo;
       return (
         <Route exact={exact} path={path}>
-          {!userInfo ? <Redirect to={"/signin"} /> : component}
+          {!userInfo?.token ? <Redirect to={"/signin"} /> : component}
         </Route>
       );
     },
@@ -58,7 +57,13 @@ function App() {
 
   // Toast
   const ToastNotificationContainer = (
-    <Stack position="absolute" direction="column-reverse" top="2%" right="5%" rowGap={2}>
+    <Stack
+      position="absolute"
+      direction="column-reverse"
+      top="2%"
+      right="5%"
+      rowGap={2}
+    >
       {notifications.map((notification) => {
         const timerRemoveNotification = setTimeout(() => {
           dispatch(removeNotificationAction(notification.id));
@@ -80,6 +85,18 @@ function App() {
       })}
     </Stack>
   );
+
+  const loadData = async () => {
+    if (userInfo?.token && userInfo?.email) {
+      dispatch(getUserAction(userInfo?.email, () => {}));
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+    dispatch(resetUtilsReducerAction())
+  }, []);
+
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={themes(customization)}>
@@ -95,6 +112,9 @@ function App() {
               )}
               {privateRouter}
               {authenticationRouter}
+              <Route path="/*">
+                <div>404</div>
+              </Route>
             </div>
           </Switch>
         </BrowserRouter>

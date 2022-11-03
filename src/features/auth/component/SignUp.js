@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   Container,
   FormControl,
   FormControlLabel,
@@ -423,6 +424,7 @@ const SignUpComponent = ({ ...others }) => {
                     size="large"
                     variant="contained"
                     color="secondary"
+                    endIcon={loading ? <CircularProgress color="secondary" /> : null}
                   >
                     Sign up
                   </Button>

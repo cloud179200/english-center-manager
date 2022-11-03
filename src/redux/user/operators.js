@@ -4,11 +4,10 @@ import { getUserService } from "./services";
 
 export const getUserAction = (email, callback) => {
   return async (dispatch) => {
-    debugger;
     dispatch(setLoadingAction(true));
     try {
       const res = await getUserService(email);
-      debugger
+      
       if (res) {
         callback(res, null);
         return;

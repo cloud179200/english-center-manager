@@ -1,13 +1,14 @@
-import React from 'react';
+import React from "react";
 // project imports
-import Customization from '../Customization/index';
+import Customization from "../Customization/index";
 
 // ==============================|| MINIMAL LAYOUT ||============================== //
 
-const MinimalLayout = () => (
-    <>
-        <Customization />
-    </>
+const MinimalLayout = (props) => (
+  <>
+    {props.children}
+    <Customization />
+  </>
 );
 
 export default MinimalLayout;

@@ -30,6 +30,7 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 const NavItem = ({ item, level }) => {
   const [itemTarget, setItemTarget] = useState("_self");
   const [listItemProps, setListItemProps] = useState({
+    // eslint-disable-next-line react/display-name
     component: forwardRef((props, ref) => (
       <Link ref={ref} {...props} to={item.url} target={itemTarget} />
     )),

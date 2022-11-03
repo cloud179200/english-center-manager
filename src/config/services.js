@@ -33,7 +33,6 @@ export const postService = async (
         headers["Authorization"] = "Bearer "+userInfo.token;
       }
     }
-    debugger
     const response = await axios.post(
       `${config.HOST_API}${url}`,
       JSON.stringify(body),
@@ -43,7 +42,7 @@ export const postService = async (
         withCredentials: true,
       }
     );
-    debugger;
+
     if (response.status === HTTP_RESPONSE_STATUS.OK) {
       return response.data;
     }
@@ -51,7 +50,6 @@ export const postService = async (
       throw Error(messErr);
     }
   } catch (error) {
-    debugger;
     if (error?.response?.status === HTTP_RESPONSE_STATUS.BAD_REQUEST) {
       return error.response;
     }

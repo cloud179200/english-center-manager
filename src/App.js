@@ -2,7 +2,8 @@ import React, { useCallback, useEffect } from "react";
 import {
   Alert,
   CssBaseline,
-  Grow,
+  Slide,
+  Snackbar,
   Stack,
   StyledEngineProvider,
   ThemeProvider,
@@ -24,7 +25,6 @@ function App() {
   const customization = useSelector((state) => state.customization);
   const notifications = useSelector((state) => state.common.notifications);
   const userInfo = useSelector((state) => state.user.userInfo);
-  const location = useSelector((state) => state.router.location);
   const dispatch = useDispatch();
 
   const AuthRoute = useCallback(
@@ -32,7 +32,11 @@ function App() {
       const { exact, path, component } = routeInfo;
       return (
         <Route exact={exact} path={path}>
-          {userInfo?.token ? <Redirect to={"/dashboard"} /> : component}
+          {userInfo?.token ? (
+            <Redirect to={"/dashboard"} />
+          ) : (
+            <MinimalLayout>{component}</MinimalLayout>
+          )}
         </Route>
       );
     },
@@ -44,7 +48,11 @@ function App() {
       const { exact, path, component } = routeInfo;
       return (
         <Route exact={exact} path={path}>
-          {!userInfo?.token ? <Redirect to={"/signin"} /> : component}
+          {!userInfo?.token ? (
+            <Redirect to={"/signin"} />
+          ) : (
+            <MainLayout>{component}</MainLayout>
+          )}
         </Route>
       );
     },
@@ -59,33 +67,51 @@ function App() {
     <PrivateRoute key={routeInfo.path} routeInfo={routeInfo} />
   ));
 
+  const router = (
+    <>
+      {privateRouter}
+      {authenticationRouter}
+      <Route path="*">
+        <></>
+      </Route>
+    </>
+  );
+
   // Toast
   const ToastNotificationContainer = (
     <Stack
       position="absolute"
       direction="column-reverse"
+      alignItems="flex-end"
       top="2%"
-      right="5%"
+      right="2%"
       rowGap={2}
+      zIndex="tooltip"
     >
       {notifications.map((notification) => {
-        const timerRemoveNotification = setTimeout(() => {
+        const handleCloseNotification = () => {
           dispatch(removeNotificationAction(notification.id));
-          clearTimeout(timerRemoveNotification);
-        }, 5000);
+        };
 
         return (
-          <Grow in key={notification.id}>
+          <Snackbar
+            key={notification.id}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            open={true}
+            autoHideDuration={5000}
+            onClose={handleCloseNotification}
+            TransitionProps={{direction: "left"}}
+            TransitionComponent={Slide}
+          >
             <Alert
+              sx={{ width: "fit-content" }}
               variant="filled"
               severity={notification.error ? "error" : "success"}
-              onClose={() => {
-                dispatch(removeNotificationAction(notification.id));
-              }}
+              onClose={handleCloseNotification}
             >
               {notification.message}
             </Alert>
-          </Grow>
+          </Snackbar>
         );
       })}
     </Stack>
@@ -98,8 +124,10 @@ function App() {
   };
 
   useEffect(() => {
-    loadData();
+    // TODO: testing
     dispatch(resetUtilsReducerAction());
+    return;
+    loadData();
   }, []);
 
   return (
@@ -110,16 +138,7 @@ function App() {
           <Switch>
             <div className="app">
               {ToastNotificationContainer}
-              {!AUTH_ROUTE.some((item) => item.path === location.pathname) ? (
-                <MainLayout />
-              ) : (
-                <MinimalLayout />
-              )}
-              {privateRouter}
-              {authenticationRouter}
-              <Route path="/*">
-                <div>404</div>
-              </Route>
+              {router}
             </div>
           </Switch>
         </BrowserRouter>

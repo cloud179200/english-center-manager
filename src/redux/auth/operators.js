@@ -36,7 +36,9 @@ export const signUpAction = (
       }
       callback(null, API_MESSAGE.SERVER_ERROR);
     } catch (error) {
-      dispatch(addNotificationAction(error?.message || API_MESSAGE.SERVER_ERROR, true));
+      dispatch(
+        addNotificationAction(error?.message || API_MESSAGE.SERVER_ERROR, true)
+      );
       callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
     } finally {
       dispatch(setLoadingAction(false));
@@ -58,7 +60,9 @@ export const signInAction = (email, password, callback) => {
       }
       callback(null, API_MESSAGE.SERVER_ERROR);
     } catch (error) {
-      dispatch(addNotificationAction(error?.message || API_MESSAGE.SERVER_ERROR, true));
+      dispatch(
+        addNotificationAction(error?.message || API_MESSAGE.SERVER_ERROR, true)
+      );
       callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
     } finally {
       dispatch(setLoadingAction(false));
@@ -67,11 +71,13 @@ export const signInAction = (email, password, callback) => {
 };
 
 export const signOutAction = (callback) => {
-  localStorage.clear();
   return (dispatch) => {
+    dispatch(setLoadingAction(true));
+    localStorage.clear();
     dispatch(resetCustomizationReducerAction());
     dispatch(resetUserReducerAction());
     dispatch(resetUtilsReducerAction());
+    dispatch(setLoadingAction(false));
     callback();
   };
 };

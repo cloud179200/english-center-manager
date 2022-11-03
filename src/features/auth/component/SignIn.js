@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   Container,
   FormControl,
   FormControlLabel,
@@ -31,7 +32,7 @@ import { setUserAction } from "../../../redux/user/operators";
 const SignInComponent = ({ ...others }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const loading = useSelector(state => state.common.loading);
+  const loading = useSelector((state) => state.common.loading);
 
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -49,7 +50,9 @@ const SignInComponent = ({ ...others }) => {
         .email(FORM_VALIDATE_ERROR_MESSAGE.INVALID)
         .max(255)
         .required("Email is required"),
-      password: Yup.string().max(255).required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
+      password: Yup.string()
+        .max(255)
+        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
     }),
     onSubmit: (values) => {
       dispatch(signInAction(values.email, values.password, signInCallback));
@@ -57,13 +60,39 @@ const SignInComponent = ({ ...others }) => {
   });
 
   const signInCallback = (res, err) => {
-    debugger
+    // TODO: testing
+    dispatch(
+      setUserAction({
+        email: values.email,
+        token: "abcdef",
+        user_Id: 3,
+        password:
+          "rmL/TSey74jM4oPER80bf88OMiEWC6you+1x6OYETbjI48xlS+iCVwS7YVzNmxxqQEhDfQgKrIHeaGvpYErn5A==",
+        email_Verified: 0,
+        first_Name: "Le",
+        last_Name: "Viet Anh",
+        phone_Number: null,
+        address: null,
+        user_Type: 2,
+        reference_Id: 1,
+        status: 0,
+        status_Text: null,
+        verification_Token: null,
+        deleted: 0,
+        created_Date: "2022-10-31T03:26:28",
+        modified_By: null,
+        modified_Date: "0001-01-01T00:00:00",
+        list_Roles: null,
+      })
+    );
+    dispatch(addNotificationAction("Sign in successssssssssssssssssssssssssssssssssssssssssssss!", false));
+    return;
     if (err) {
       return;
     }
-    dispatch(setUserAction({email: values.email, token: res.token}))
+    dispatch(setUserAction({ email: values.email, token: res.token }));
     dispatch(addNotificationAction("Sign in success!", false));
-  }
+  };
   const {
     errors,
     handleBlur,
@@ -226,6 +255,7 @@ const SignInComponent = ({ ...others }) => {
                     type="submit"
                     variant="contained"
                     color="secondary"
+                    endIcon={loading ? <CircularProgress color="secondary" /> : null}
                   >
                     Sign in
                   </Button>

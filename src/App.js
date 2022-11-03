@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import {
   Alert,
   CssBaseline,
+  Grow,
   Stack,
   StyledEngineProvider,
   ThemeProvider,
@@ -13,7 +14,10 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { AUTH_ROUTE, PRIVATE_ROUTE } from "./config/route";
 import MinimalLayout from "./layout/MinimalLayout";
 import MainLayout from "./layout/MainLayout";
-import { removeNotificationAction, resetUtilsReducerAction } from "./redux/utils/operators";
+import {
+  removeNotificationAction,
+  resetUtilsReducerAction,
+} from "./redux/utils/operators";
 import { getUserAction } from "./redux/user/operators";
 
 function App() {
@@ -71,16 +75,17 @@ function App() {
         }, 5000);
 
         return (
-          <Alert
-            variant="filled"
-            severity={notification.error ? "error" : "success"}
-            key={notification.id}
-            onClose={() => {
-              dispatch(removeNotificationAction(notification.id));
-            }}
-          >
-            {notification.message}
-          </Alert>
+          <Grow in key={notification.id}>
+            <Alert
+              variant="filled"
+              severity={notification.error ? "error" : "success"}
+              onClose={() => {
+                dispatch(removeNotificationAction(notification.id));
+              }}
+            >
+              {notification.message}
+            </Alert>
+          </Grow>
         );
       })}
     </Stack>
@@ -94,7 +99,7 @@ function App() {
 
   useEffect(() => {
     loadData();
-    dispatch(resetUtilsReducerAction())
+    dispatch(resetUtilsReducerAction());
   }, []);
 
   return (

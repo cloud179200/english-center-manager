@@ -80,6 +80,9 @@ const Customization = () => {
             case 'Poppins':
                 newFont = `'Poppins', sans-serif`;
                 break;
+            case "cursive":
+                newFont =  `cursive`;
+                break;
             case 'Roboto':
             default:
                 newFont = `'Roboto', sans-serif`;
@@ -162,6 +165,15 @@ const Customization = () => {
                                             value="Inter"
                                             control={<Radio />}
                                             label="Inter"
+                                            sx={{
+                                                '& .MuiSvgIcon-root': { fontSize: 28 },
+                                                '& .MuiFormControlLabel-label': { color: theme.palette.grey[900] }
+                                            }}
+                                        />
+                                        <FormControlLabel
+                                            value="cursive"
+                                            control={<Radio />}
+                                            label="Cursive"
                                             sx={{
                                                 '& .MuiSvgIcon-root': { fontSize: 28 },
                                                 '& .MuiFormControlLabel-label': { color: theme.palette.grey[900] }

@@ -21,9 +21,6 @@ import {
   Typography,
 } from "@mui/material";
 
-// third-party
-import PerfectScrollbar from "react-perfect-scrollbar";
-
 // project imports
 import MainCard from "../../../../ui-component/cards/MainCard";
 import Transitions from "../../../../ui-component/extended/Transitions";
@@ -185,13 +182,13 @@ const ProfileSection = () => {
                       <Typography variant="subtitle2">Project Admin</Typography>
                     </Stack>
                   </Box>
-                  <PerfectScrollbar
+                  {/* <PerfectScrollbar
                     style={{
                       height: "100%",
                       maxHeight: "calc(100vh - 250px)",
                       overflowX: "hidden",
                     }}
-                  >
+                  > */}
                     <Box sx={{ p: 2 }}>
                       {/* <Divider />
                                             <Card
@@ -295,7 +292,6 @@ const ProfileSection = () => {
                         </ListItemButton>
                       </List>
                     </Box>
-                  </PerfectScrollbar>
                 </MainCard>
               </ClickAwayListener>
             </Paper>

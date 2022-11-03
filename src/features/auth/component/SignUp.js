@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from "react";
-
-import { Link, useHistory } from "react-router-dom";
-
-// material-ui
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import {
   Box,
@@ -16,36 +13,32 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  MenuItem,
   OutlinedInput,
+  Select,
   TextField,
   Typography,
   useMediaQuery,
 } from "@mui/material";
-
-// third party
 import * as Yup from "yup";
 import { useFormik } from "formik";
-
-// project imports
-import useScriptRef from "../../../hooks/useScriptRef";
 import AnimateButton from "../../../components/extended/AnimateButton";
 import {
   strengthColor,
   strengthIndicator,
 } from "../../../utils/password-strength";
-
-// assets
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
-// ===========================|| FIREBASE - REGISTER ||=========================== //
+import { useDispatch, useSelector } from "react-redux";
+import { addNotificationAction } from "../../../redux/utils/operators";
+import { FORM_VALIDATE_ERROR_MESSAGE } from "../../../config/constant";
+import { signUpAction } from "../../../redux/auth/operators";
 
 const SignUpComponent = ({ ...others }) => {
   const theme = useTheme();
-  const scriptedRef = useScriptRef();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
-  const history = useHistory();
-
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.common.loading);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [checked, setChecked] = useState(true);
@@ -54,49 +47,69 @@ const SignUpComponent = ({ ...others }) => {
 
   const formik = useFormik({
     initialValues: {
-      first_Name: "",
-      last_Name: "",
-      email: "",
-      password: "",
-      address: "",
-      phone_Number: "",
-      user_Type: 0,
+      first_Name: "Le",
+      last_Name: "Viet Anh",
+      email: "1851060380@e.tlu.edu.vn",
+      password: "123123",
+      confirm_password: "123123",
+      address: "123123",
+      phone_Number: "+84394252608",
+      user_Type: 1,
     },
     validationSchema: Yup.object().shape({
       email: Yup.string()
-        .email("Must be a valid email")
+        .email(FORM_VALIDATE_ERROR_MESSAGE.INVALID)
         .max(255)
-        .required("Email is required"),
-      password: Yup.string().max(255).required("Password is required"),
-      confirm_password: Yup.string().max(255).required("Password is required"),
-      first_Name: Yup.string().max(255).required("Password is required"),
-      last_Name: Yup.string().max(255).required("Password is required"),
-      address: Yup.string().max(255).required("Password is required"),
-      phone_Number: Yup.string().max(255).required("Password is required"),
-      user_Type: Yup.number().default(0),
+        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
+      password: Yup.string()
+        .max(255)
+        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
+      confirm_password: Yup.string()
+        .max(255)
+        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
+      first_Name: Yup.string()
+        .max(255)
+        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
+      last_Name: Yup.string()
+        .max(255)
+        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
+      address: Yup.string()
+        .max(255)
+        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
+      phone_Number: Yup.string()
+        .max(255)
+        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
+      user_Type: Yup.number().default(1),
     }),
-    onSubmit: async (values, { setErrors, setStatus, setSubmitting }) => {
-      try {
-        if (scriptedRef.current) {
-          setStatus({ success: true });
-          setSubmitting(false);
-        }
-      } catch (err) {
-        console.error(err);
-        if (scriptedRef.current) {
-          setStatus({ success: false });
-          setErrors({ submit: err.message });
-          setSubmitting(false);
-        }
-      }
+    onSubmit: (values) => {
+      dispatch(
+        signUpAction(
+          values.first_Name,
+          values.last_Name,
+          values.email,
+          values.password,
+          values.address,
+          values.phone_Number,
+          values.user_Type,
+          signUpCallback
+        )
+      );
     },
   });
+
+  const signUpCallback = (res, err) => {
+    debugger;
+    if (err) {
+      return;
+    }
+    dispatch(addNotificationAction("Sign up success!", false));
+  };
+
   const {
     errors,
     handleBlur,
     handleChange,
     handleSubmit,
-    isSubmitting,
     isValid,
     touched,
     values,
@@ -123,11 +136,11 @@ const SignUpComponent = ({ ...others }) => {
   };
 
   useEffect(() => {
-    changePassword("123456");
-  }, []);
+    console.log("[errors]", errors);
+  }, [errors]);
   return (
     <>
-      <Container fixed>
+      <Container maxWidth="sm">
         <Grid
           container
           direction="column"
@@ -161,7 +174,7 @@ const SignUpComponent = ({ ...others }) => {
               </Grid>
             </Grid>
 
-            <form noValidate onSubmit={handleSubmit} {...others}>
+            <form noValidate {...others}>
               <Grid container spacing={matchDownSM ? 0 : 2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -251,6 +264,23 @@ const SignUpComponent = ({ ...others }) => {
                   <FormHelperText error>{errors.password}</FormHelperText>
                 )}
               </FormControl>
+              <Grid
+                container
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                {strength !== 0 && values.password && (
+                  <FormControl fullWidth>
+                    <Box
+                      style={{ backgroundColor: level?.color }}
+                      sx={{ maxWidth: 85, height: 8, borderRadius: "7px" }}
+                    />
+                    <Typography variant="subtitle1" fontSize="0.75rem">
+                      {level?.label}
+                    </Typography>
+                  </FormControl>
+                )}
+              </Grid>
               <FormControl
                 fullWidth
                 error={Boolean(
@@ -293,6 +323,23 @@ const SignUpComponent = ({ ...others }) => {
               </FormControl>
               <FormControl
                 fullWidth
+                error={Boolean(touched.phone_Number && errors.phone_Number)}
+                sx={{ ...theme.typography.customInput }}
+              >
+                <InputLabel>Phone Number</InputLabel>
+                <OutlinedInput
+                  type="phone"
+                  value={values.phone_Number}
+                  name="phone_Number"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                />
+                {touched.phone_Number && errors.phone_Number && (
+                  <FormHelperText error>{errors.phone_Number}</FormHelperText>
+                )}
+              </FormControl>
+              <FormControl
+                fullWidth
                 error={Boolean(touched.address && errors.address)}
                 sx={{ ...theme.typography.customInput }}
               >
@@ -309,23 +356,26 @@ const SignUpComponent = ({ ...others }) => {
                   <FormHelperText error>{errors.address}</FormHelperText>
                 )}
               </FormControl>
-              <Grid
-                container
-                alignItems="center"
-                justifyContent="space-between"
+              <FormControl
+                fullWidth
+                variant="outlined"
+                error={Boolean(touched.user_Type && errors.user_Type)}
+                sx={{ ...theme.typography.customInput }}
               >
-                {strength !== 0 && (
-                  <FormControl fullWidth>
-                    <Box
-                      style={{ backgroundColor: level?.color }}
-                      sx={{ maxWidth: 85, height: 8, borderRadius: "7px" }}
-                    />
-                    <Typography variant="subtitle1" fontSize="0.75rem">
-                      {level?.label}
-                    </Typography>
-                  </FormControl>
+                <Select
+                  name="user_Type"
+                  select={true}
+                  value={values.user_Type}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                >
+                  <MenuItem value={1}>Teacher</MenuItem>
+                  <MenuItem value={2}>Student</MenuItem>
+                </Select>
+                {touched.user_Type && errors.user_Type && (
+                  <FormHelperText error>{errors.user_Type}</FormHelperText>
                 )}
-              </Grid>
+              </FormControl>
               <Grid
                 container
                 alignItems="center"
@@ -357,8 +407,7 @@ const SignUpComponent = ({ ...others }) => {
                     color="secondary"
                     sx={{ textDecoration: "none", cursor: "pointer" }}
                     component={Link}
-                    to="/signup"
-                    onClick={() => history.push("/signup")}
+                    to="/signin"
                   >
                     Already Have Account?
                   </Typography>
@@ -368,14 +417,30 @@ const SignUpComponent = ({ ...others }) => {
                 <AnimateButton>
                   <Button
                     disableElevation
-                    disabled={isValid || isSubmitting}
+                    disabled={loading || !isValid}
+                    onClick={handleSubmit}
                     fullWidth
                     size="large"
-                    type="submit"
                     variant="contained"
                     color="secondary"
                   >
                     Sign up
+                  </Button>
+                </AnimateButton>
+              </Box>
+              <Box sx={{ mt: 2 }}>
+                <AnimateButton>
+                  <Button
+                    disableElevation
+                    fullWidth
+                    size="large"
+                    variant="contained"
+                    color="secondary"
+                    onClick={() =>
+                      dispatch(addNotificationAction("[Signup.js]", true))
+                    }
+                  >
+                    Show toast
                   </Button>
                 </AnimateButton>
               </Box>

@@ -216,5 +216,15 @@ export default function componentStyleOverrides(theme) {
         },
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          background: bgColor,
+        },
+        select: {
+          padding: "21px 14px",
+        }
+      },
+    },
   };
 }

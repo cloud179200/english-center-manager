@@ -8,7 +8,6 @@ import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
 
 // project imports
-import config from '../../config/config';
 import { gridSpacing } from '../../redux/customization/constant';
 
 // assets
@@ -48,7 +47,7 @@ const Breadcrumbs = ({ card, divider, icon, icons, maxItems, navigation, rightAl
                 if (collapse.type && collapse.type === 'collapse') {
                     getCollapse(collapse);
                 } else if (collapse.type && collapse.type === 'item') {
-                    if (document.location.pathname === config.baseApp + collapse.url) {
+                    if (document.location.pathname === collapse.url) {
                         setMain(menu);
                         setItem(collapse);
                     }

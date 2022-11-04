@@ -94,3 +94,26 @@ export const signOutAction = (email, callback) => {
     }
   };
 };
+
+export const forGotAction = (email, callback) => {
+  return async (dispatch) => {
+    dispatch(setLoadingAction(true));
+    try {
+      const res = await signInService({
+        email,
+      });
+      if (res?.data) {
+        callback(res.data, null);
+        return;
+      }
+      callback(null, API_MESSAGE.SERVER_ERROR);
+    } catch (error) {
+      dispatch(
+        addNotificationAction(error?.message || API_MESSAGE.SERVER_ERROR, true)
+      );
+      callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
+    } finally {
+      dispatch(setLoadingAction(false));
+    }
+  };
+};

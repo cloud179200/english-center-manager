@@ -9,9 +9,9 @@ export const getUserDetailAction = (email, callback) => {
     try {
       const res = await getUserService(email);
       
-      if (res?.data) {
-        dispatch(setUserDetailAction(res.data));
-        callback(res.data, null);
+      if (res) {
+        dispatch(setUserDetailAction(res));
+        callback(res, null);
         return;
       }
       callback(null, API_MESSAGE.SERVER_ERROR);

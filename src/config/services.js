@@ -1,7 +1,7 @@
 import config from "./config";
 import { HTTP_RESPONSE_STATUS } from "./constant";
 import axios from "axios";
-import { getLocalStorageUserinfo } from "../utils";
+// import { getLocalStorageUserinfo } from "../utils";
 
 export const postService = async (
   url = "",
@@ -12,15 +12,13 @@ export const postService = async (
   retries = 3
 ) => {
   try {
-    const userInfo = await getLocalStorageUserinfo();
+    // const userInfo = await getLocalStorageUserinfo();
     const headers = isFormData
       ? { "Content-Type": "multipart/form-data" }
       : { Accept: "application/json ", "Content-Type": "application/json" };
 
     if (isAuthorization) {
-      if (userInfo?.token) {
-        headers["Authorization"] = "Bearer " + userInfo.token;
-      }
+      headers["Authorization"] = "Bearer " + (localStorage.getItem("auth_token") || "");
     }
     const response = await axios.post(
       `${config.HOST_API}${url}`,
@@ -73,15 +71,13 @@ export const getService = async (
   retries = 3
 ) => {
   try {
-    const userInfo = await getLocalStorageUserinfo();
+    // const userInfo = await getLocalStorageUserinfo();
     const headers = isFormData
       ? { "Content-Type": "multipart/form-data" }
       : { Accept: "application/json", "Content-Type": "application/json" };
 
     if (isAuthorization) {
-      if (userInfo?.token) {
-        headers["Authorization"] = "Bearer " + userInfo.token;
-      }
+      headers["Authorization"] = "Bearer " + (localStorage.getItem("auth_token") || "");
     }
 
     const response = await axios.get(`${config.HOST_API}${url}`, {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link , useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import {
   Box,
@@ -34,7 +34,6 @@ import { addNotificationAction } from "../../../redux/utils/operators";
 import { signUpAction } from "../../../redux/auth/operators";
 import { signUpSchema } from "../schema";
 
-
 const SignUpComponent = ({ ...others }) => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
@@ -46,8 +45,6 @@ const SignUpComponent = ({ ...others }) => {
   const [checked, setChecked] = useState(true);
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
-
-  
 
   const formik = useFormik({
     initialValues: {
@@ -82,7 +79,7 @@ const SignUpComponent = ({ ...others }) => {
       return;
     }
     dispatch(addNotificationAction("Sign up success!", false));
-    history.push("/verify-email")
+    history.push("/verify-email");
   };
 
   const {
@@ -129,7 +126,7 @@ const SignUpComponent = ({ ...others }) => {
           alignItems="center"
           minHeight="100vh"
         >
-          <Grid item>
+          <Grid item md={12}>
             <Grid
               container
               direction="column"

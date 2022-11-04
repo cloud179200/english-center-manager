@@ -47,3 +47,10 @@ export const signInSchema = Yup.object().shape({
     .min(6, FORM_VALIDATE_ERROR_MESSAGE.INVALID_LENGTH)
     .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
 });
+
+export const forgotSchema = Yup.object().shape({
+  email: Yup.string()
+    .email(FORM_VALIDATE_ERROR_MESSAGE.INVALID)
+    .max(255)
+    .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
+});

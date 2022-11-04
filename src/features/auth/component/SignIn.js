@@ -76,12 +76,11 @@ const SignInComponent = ({ ...others }) => {
       <Container maxWidth="sm">
         <Grid
           container
-          direction="column"
           justifyContent="center"
           alignItems="center"
           minHeight="100vh"
         >
-          <Grid item>
+          <Grid item md={12}>
             <Grid
               container
               direction="column"
@@ -108,10 +107,6 @@ const SignInComponent = ({ ...others }) => {
             </Grid>
 
             <form noValidate onSubmit={handleSubmit} {...others}>
-              <Grid container>
-                <Grid item xs={12}></Grid>
-                <Grid item xs={12}></Grid>
-              </Grid>
               <FormControl
                 fullWidth
                 error={Boolean(touched.email && errors.email)}
@@ -128,12 +123,7 @@ const SignInComponent = ({ ...others }) => {
                   inputProps={{}}
                 />
                 {touched.email && errors.email && (
-                  <FormHelperText
-                    error
-                    id="standard-weight-helper-text-email-login"
-                  >
-                    {errors.email}
-                  </FormHelperText>
+                  <FormHelperText error>{errors.email}</FormHelperText>
                 )}
               </FormControl>
               <FormControl
@@ -165,12 +155,7 @@ const SignInComponent = ({ ...others }) => {
                   inputProps={{}}
                 />
                 {touched.password && errors.password && (
-                  <FormHelperText
-                    error
-                    id="standard-weight-helper-text-password-login"
-                  >
-                    {errors.password}
-                  </FormHelperText>
+                  <FormHelperText error>{errors.password}</FormHelperText>
                 )}
               </FormControl>
               <Stack
@@ -219,7 +204,9 @@ const SignInComponent = ({ ...others }) => {
                     type="submit"
                     variant="contained"
                     color="secondary"
-                    endIcon={loading ? <CircularProgress color="secondary" /> : null}
+                    endIcon={
+                      loading ? <CircularProgress color="secondary" /> : null
+                    }
                   >
                     Sign in
                   </Button>

@@ -15,8 +15,6 @@ const VerifyEmailComponent = () => {
             Check your email for verify account !
           </Typography>
         </Box>
-        {/* <Icon
-        <EmailIcon color="secondary" sx={{ fontSize: 40 }}/> */}
       </Grid>
     </Container>
   );

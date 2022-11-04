@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   Alert,
   CssBaseline,
@@ -114,6 +114,10 @@ function App() {
       })}
     </Stack>
   );
+
+  useEffect(() => {
+    userInfo?.token && localStorage.setItem("auth_token", userInfo.token)
+  }, [userInfo])
 
   return (
     <StyledEngineProvider injectFirst>

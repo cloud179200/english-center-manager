@@ -77,7 +77,7 @@ const ProfileSection = () => {
       return "Good Afternoon";
     } else if (currentHour >= 18 || currentHour < 3) {
       return "Good Evening";
-    } 
+    }
     return "Hello";
   }, []);
 
@@ -169,7 +169,7 @@ const ProfileSection = () => {
                   boxShadow
                   shadow={theme.shadows[16]}
                 >
-                  <Box sx={{ p: 2 }}>
+                  <Box sx={{ p: 2, pb: 0 }}>
                     <Stack>
                       <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography variant="h4">{helloContent},</Typography>
@@ -178,10 +178,12 @@ const ProfileSection = () => {
                           variant="h4"
                           sx={{ fontWeight: 400 }}
                         >
-                          {userDetail?.first_Name+" "+userDetail?.last_Name}
+                          {userDetail?.first_Name + " " + userDetail?.last_Name}
                         </Typography>
                       </Stack>
-                      <Typography variant="subtitle2">{USER_ROLE[userDetail?.user_Type || 1]}</Typography>
+                      <Typography variant="subtitle2">
+                        {USER_ROLE[userDetail?.user_Type || 1]}
+                      </Typography>
                     </Stack>
                   </Box>
                   {/* <PerfectScrollbar
@@ -191,8 +193,8 @@ const ProfileSection = () => {
                       overflowX: "hidden",
                     }}
                   > */}
-                    <Box sx={{ p: 2 }}>
-                      {/* <Divider />
+                  <Box sx={{ p: 2 }}>
+                    {/* <Divider />
                                             <Card
                                                 sx={{
                                                     bgcolor: theme.palette.primary.light,
@@ -235,65 +237,61 @@ const ProfileSection = () => {
                                                     </Grid>
                                                 </CardContent>
                                             </Card> */}
-                      <Divider />
-                      <List
-                        component="nav"
+                    <Divider />
+                    <List
+                      component="nav"
+                      sx={{
+                        width: "100%",
+                        maxWidth: 350,
+                        minWidth: 300,
+                        backgroundColor: theme.palette.background.paper,
+                        borderRadius: "10px",
+                        [theme.breakpoints.down("md")]: {
+                          minWidth: "100%",
+                        },
+                        "& .MuiListItemButton-root": {
+                          mt: 0.5,
+                        },
+                      }}
+                    >
+                      <ListItemButton
                         sx={{
-                          width: "100%",
-                          maxWidth: 350,
-                          minWidth: 300,
-                          backgroundColor: theme.palette.background.paper,
-                          borderRadius: "10px",
-                          [theme.breakpoints.down("md")]: {
-                            minWidth: "100%",
-                          },
-                          "& .MuiListItemButton-root": {
-                            mt: 0.5,
-                          },
+                          borderRadius: `${customization.borderRadius}px`,
                         }}
+                        selected={selectedIndex === 0}
+                        onClick={(event) =>
+                          handleListItemClick(event, 0, "/user/settings")
+                        }
                       >
-                        <ListItemButton
-                          sx={{
-                            borderRadius: `${customization.borderRadius}px`,
-                          }}
-                          selected={selectedIndex === 0}
-                          onClick={(event) =>
-                            handleListItemClick(
-                              event,
-                              0,
-                              "/user/settings"
-                            )
+                        <ListItemIcon>
+                          <IconSettings stroke={1.5} size="1.3rem" />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Typography variant="body2">
+                              Account Settings
+                            </Typography>
                           }
-                        >
-                          <ListItemIcon>
-                            <IconSettings stroke={1.5} size="1.3rem" />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={
-                              <Typography variant="body2">
-                                Account Settings
-                              </Typography>
-                            }
-                          />
-                        </ListItemButton>
-                        <ListItemButton
-                          sx={{
-                            borderRadius: `${customization.borderRadius}px`,
-                          }}
-                          selected={selectedIndex === 4}
-                          onClick={handleLogout}
-                        >
-                          <ListItemIcon>
-                            <IconLogout stroke={1.5} size="1.3rem" />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={
-                              <Typography variant="body2">Logout</Typography>
-                            }
-                          />
-                        </ListItemButton>
-                      </List>
-                    </Box>
+                        />
+                      </ListItemButton>
+                      <ListItemButton
+                        sx={{
+                          borderRadius: `${customization.borderRadius}px`,
+                        }}
+                        selected={selectedIndex === 4}
+                        onClick={handleLogout}
+                      >
+                        <ListItemIcon>
+                          <IconLogout stroke={1.5} size="1.3rem" />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Typography variant="body2">Logout</Typography>
+                          }
+                        />
+                      </ListItemButton>
+                    </List>
+                  </Box>
                 </MainCard>
               </ClickAwayListener>
             </Paper>

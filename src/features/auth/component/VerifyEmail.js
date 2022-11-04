@@ -1,22 +1,24 @@
 import React from "react";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import EmailSentPNG from "../../../assets/images/email-sent.png";
+
 const VerifyEmailComponent = () => {
   return (
-    <Container maxWidth="sm">
-      <Grid
-        container
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="100vh"
-      >
-        <Box sx={{ mb: 2 }}>
-          <Typography sx={{ fontWeight: "bold" }} variant="h3" color="black">
-            Check your email for verify account !
-          </Typography>
-        </Box>
-      </Grid>
-    </Container>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        height: "100vh",
+      }}
+    >
+      <img src={EmailSentPNG} width="20%" />
+      <Typography sx={{ fontWeight: "bold" }} variant="h3" color="black">
+        Check your email for verify account!
+      </Typography>
+    </Box>
   );
 };
 

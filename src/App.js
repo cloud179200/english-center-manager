@@ -23,6 +23,7 @@ function App() {
   const notifications = useSelector((state) => state.common.notifications);
   const userInfo = useSelector((state) => state.user.userInfo);
   const dispatch = useDispatch();
+  const isValidPath = AUTH_ROUTE.some((route) => route.path === window.location.pathname) || PRIVATE_ROUTE.some((route) => route.path === window.location.pathname);
 
   const AuthRoute = useCallback(
     ({ routeInfo }) => {
@@ -68,9 +69,7 @@ function App() {
     <>
       {privateRouter}
       {authenticationRouter}
-      <Route>
-        <NotFoundComponent />
-      </Route>
+      {!isValidPath && <Route component={NotFoundComponent} />}
     </>
   );
 

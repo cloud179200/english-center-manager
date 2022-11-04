@@ -85,11 +85,11 @@ export const signOutAction = (email, callback) => {
     } catch (error) {
       callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
     } finally {
-      localStorage.clear();
       dispatch(resetCustomizationReducerAction());
       dispatch(resetUserReducerAction());
       dispatch(resetUtilsReducerAction());
       dispatch(setLoadingAction(false));
+      localStorage.clear();
       callback(true, null);
     }
   };

@@ -26,6 +26,6 @@
     "no-debugger": "warn",
     "no-useless-catch": "off",
     "react/no-unescaped-entities": "off",
-    "no-unreachable": "warn",
+    "no-unreachable": "warn"
   }
 }

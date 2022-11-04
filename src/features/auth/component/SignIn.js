@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   Container,
   FormControl,
   FormControlLabel,
@@ -16,22 +17,21 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import * as Yup from "yup";
 import { useFormik } from "formik";
 import AnimateButton from "../../../components/extended/AnimateButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link } from "react-router-dom";
-import { FORM_VALIDATE_ERROR_MESSAGE } from "../../../config/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { signInAction } from "../../../redux/auth/operators";
 import { addNotificationAction } from "../../../redux/utils/operators";
 import { setUserAction } from "../../../redux/user/operators";
+import { signInSchema } from "../schema";
 
 const SignInComponent = ({ ...others }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const loading = useSelector(state => state.common.loading);
+  const loading = useSelector((state) => state.common.loading);
 
   const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -44,26 +44,19 @@ const SignInComponent = ({ ...others }) => {
       email: "",
       password: "",
     },
-    validationSchema: Yup.object().shape({
-      email: Yup.string()
-        .email(FORM_VALIDATE_ERROR_MESSAGE.INVALID)
-        .max(255)
-        .required("Email is required"),
-      password: Yup.string().max(255).required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
-    }),
+    validationSchema: signInSchema,
     onSubmit: (values) => {
       dispatch(signInAction(values.email, values.password, signInCallback));
     },
   });
 
   const signInCallback = (res, err) => {
-    debugger
     if (err) {
       return;
     }
-    dispatch(setUserAction({email: values.email, token: res.token}))
+    dispatch(setUserAction({ email: values.email, token: res.token }));
     dispatch(addNotificationAction("Sign in success!", false));
-  }
+  };
   const {
     errors,
     handleBlur,
@@ -83,12 +76,11 @@ const SignInComponent = ({ ...others }) => {
       <Container maxWidth="sm">
         <Grid
           container
-          direction="column"
           justifyContent="center"
           alignItems="center"
           minHeight="100vh"
         >
-          <Grid item>
+          <Grid item md={12}>
             <Grid
               container
               direction="column"
@@ -115,10 +107,6 @@ const SignInComponent = ({ ...others }) => {
             </Grid>
 
             <form noValidate onSubmit={handleSubmit} {...others}>
-              <Grid container>
-                <Grid item xs={12}></Grid>
-                <Grid item xs={12}></Grid>
-              </Grid>
               <FormControl
                 fullWidth
                 error={Boolean(touched.email && errors.email)}
@@ -135,12 +123,7 @@ const SignInComponent = ({ ...others }) => {
                   inputProps={{}}
                 />
                 {touched.email && errors.email && (
-                  <FormHelperText
-                    error
-                    id="standard-weight-helper-text-email-login"
-                  >
-                    {errors.email}
-                  </FormHelperText>
+                  <FormHelperText error>{errors.email}</FormHelperText>
                 )}
               </FormControl>
               <FormControl
@@ -172,12 +155,7 @@ const SignInComponent = ({ ...others }) => {
                   inputProps={{}}
                 />
                 {touched.password && errors.password && (
-                  <FormHelperText
-                    error
-                    id="standard-weight-helper-text-password-login"
-                  >
-                    {errors.password}
-                  </FormHelperText>
+                  <FormHelperText error>{errors.password}</FormHelperText>
                 )}
               </FormControl>
               <Stack
@@ -226,6 +204,9 @@ const SignInComponent = ({ ...others }) => {
                     type="submit"
                     variant="contained"
                     color="secondary"
+                    endIcon={
+                      loading ? <CircularProgress color="secondary" /> : null
+                    }
                   >
                     Sign in
                   </Button>

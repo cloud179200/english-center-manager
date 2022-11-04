@@ -23,8 +23,9 @@
     "import/namespace": 2,
     "import/default": 2,
     "import/export": 2,
-    "no-debugger": "off",
+    "no-debugger": "warn",
     "no-useless-catch": "off",
-    "react/no-unescaped-entities": "off"
+    "react/no-unescaped-entities": "off",
+    "no-unreachable": "warn",
   }
 }

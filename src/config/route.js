@@ -1,14 +1,22 @@
 import React from "react";
 import { Redirect } from "react-router";
+import ForgotComponent from "../features/auth/component/Forgot";
 import SignInComponent from "../features/auth/component/SignIn";
 import SignUpComponent from "../features/auth/component/SignUp";
+import VerifyEmailComponent from "../features/auth/component/VerifyEmail";
+import DashBoard from "../features/dashboard/component/DashBoard";
 
 export const PRIVATE_ROUTE = [
   {
     path: "/dashboard",
     exact: true,
-    component: <div>dashboard</div>,
+    component: <DashBoard />,
   },
+  {
+    path: "/user/settings",
+    exact: true,
+    component: <div>Settings</div>,
+  }
 ];
 export const AUTH_ROUTE = [
   {
@@ -27,8 +35,13 @@ export const AUTH_ROUTE = [
     component: <SignUpComponent />,
   },
   {
+    path: "/verify-email",
+    exact: true,
+    component: <VerifyEmailComponent />,
+  },
+  {
     path: "/forgot",
     exact: true,
-    component: <div>forgot</div>,
+    component: <ForgotComponent />,
   },
 ];

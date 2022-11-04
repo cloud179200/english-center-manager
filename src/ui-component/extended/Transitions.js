@@ -1,5 +1,6 @@
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
-import { forwardRef } from 'react';
+
 
 // material-ui
 import { Collapse, Fade, Box, Grow, Slide, Zoom } from '@mui/material';
@@ -90,7 +91,7 @@ const Transitions = forwardRef(({ children, position, type, direction, ...others
         </Box>
     );
 });
-
+Transitions.displayName = "Transitions"
 Transitions.propTypes = {
     children: PropTypes.node,
     type: PropTypes.oneOf(['grow', 'fade', 'collapse', 'slide', 'zoom']),

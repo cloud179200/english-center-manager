@@ -1,18 +1,7 @@
 import config from "./config";
 import { HTTP_RESPONSE_STATUS } from "./constant";
-import axios from "axios"
-
-const getUserInfo = async () => {
-  let userInfo = null;
-  if (localStorage.getItem("persist:root")) {
-    const jsonParse = await JSON.parse(localStorage.getItem("persist:root"));
-    if(jsonParse?.user){
-      const userParse = await JSON.parse(jsonParse.user);
-      userInfo = userParse.userInfo;
-    }
-  }
-  return userInfo;
-};
+import axios from "axios";
+// import { getLocalStorageUserinfo } from "../utils";
 
 export const postService = async (
   url = "",
@@ -23,27 +12,22 @@ export const postService = async (
   retries = 3
 ) => {
   try {
+    // const userInfo = await getLocalStorageUserinfo();
     const headers = isFormData
       ? { "Content-Type": "multipart/form-data" }
       : { Accept: "application/json ", "Content-Type": "application/json" };
 
     if (isAuthorization) {
-      const userInfo = await getUserInfo();
-      if (userInfo?.token) {
-        headers["Authorization"] = "Bearer "+userInfo.token;
-      }
+      headers["Authorization"] = "Bearer " + (localStorage.getItem("auth_token") || "");
     }
-    debugger
     const response = await axios.post(
       `${config.HOST_API}${url}`,
       JSON.stringify(body),
       {
-        // const response = await axios.post(`https://ev91e9mu8l.execute-api.us-east-1.amazonaws.com/dev/users`, JSON.stringify(body), {
         headers,
-        withCredentials: true,
       }
     );
-    debugger;
+
     if (response.status === HTTP_RESPONSE_STATUS.OK) {
       return response.data;
     }
@@ -51,7 +35,6 @@ export const postService = async (
       throw Error(messErr);
     }
   } catch (error) {
-    debugger;
     if (error?.response?.status === HTTP_RESPONSE_STATUS.BAD_REQUEST) {
       return error.response;
     }
@@ -68,7 +51,63 @@ export const postService = async (
           return postService(url, body, messErr, true, false, retries - 1);
         }
       } catch (error) {
-        debugger;
+        throw error;
+      }
+    }
+    if (error?.response) {
+      throw error.response.message;
+    } else {
+      throw error;
+    }
+  }
+};
+
+export const getService = async (
+  url = "",
+  body = null,
+  messErr = null,
+  isAuthorization = true,
+  isFormData = false,
+  retries = 3
+) => {
+  try {
+    // const userInfo = await getLocalStorageUserinfo();
+    const headers = isFormData
+      ? { "Content-Type": "multipart/form-data" }
+      : { Accept: "application/json", "Content-Type": "application/json" };
+
+    if (isAuthorization) {
+      headers["Authorization"] = "Bearer " + (localStorage.getItem("auth_token") || "");
+    }
+
+    const response = await axios.get(`${config.HOST_API}${url}`, {
+      headers,
+    });
+
+    if (response.status === HTTP_RESPONSE_STATUS.OK) {
+      return response.data;
+    }
+    if (messErr) {
+      throw Error(messErr);
+    }
+  } catch (error) {
+    if (error?.response?.status === HTTP_RESPONSE_STATUS.BAD_REQUEST) {
+      return error.response;
+    }
+    if (
+      error?.response &&
+      retries > 0 &&
+      error?.response?.status === HTTP_RESPONSE_STATUS.MISSING_AUTHORIZED
+    ) {
+      try {
+        if (
+          error.response &&
+          error.response?.data?.error.indexOf("Nonce is not increasing") !== -1
+        ) {
+          return postService(url, body, messErr, true, false, retries - 1);
+        }
+      } catch (error) {
+        throw error;
       }
     }
     if (error?.response) {

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import LoadingComponent from "../../../loading";
+import LoadingComponent from "../../../utils/component/Loading";
 import { getUserDetailAction } from "../../../redux/user/operators";
 
 const DashBoard = () => {

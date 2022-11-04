@@ -1,11 +1,11 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const webpack = require('webpack');
-const dotenv = require('dotenv');
-// call dotenv and it will return an Object with a parsed key 
+const webpack = require("webpack");
+const dotenv = require("dotenv");
+// call dotenv and it will return an Object with a parsed key
 const env = dotenv.config().parsed;
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 // reduce it to a nice object, the same as before
 const envKeys = Object.keys(env).reduce((prev, next) => {
   prev[`process.env.${next}`] = JSON.stringify(env[next]);
@@ -14,7 +14,7 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 
 module.exports = {
   entry: "./src/index.js",
-  devtool : 'inline-source-map',
+  devtool: "inline-source-map",
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "build"),
@@ -40,15 +40,15 @@ module.exports = {
       dependencies: true,
       dependenciesCount: 10000,
       percentBy: null,
-    }), 
-    new ESLintPlugin()
+    }),
+    new ESLintPlugin(),
   ],
   devServer: {
     static: {
       directory: path.join(__dirname, "build"),
     },
     port: 3333,
-    historyApiFallback : true
+    historyApiFallback: true,
   },
   module: {
     // exclude node_modules
@@ -78,12 +78,13 @@ module.exports = {
         test: /\.(png|jpe?g|gif)$/i,
         loader: "file-loader",
         options: {
-          name: "[path][name].[ext]"
-        }
-      }
+          name: "[path][name].[ext]",
+        },
+      },
     ],
   },
   resolve: {
-    extensions: ["*", ".js", ".jsx", ".scss"]
+    extensions: ["*", ".js", ".jsx", ".scss"],
+    modules: ["node_modules", path.resolve("./src")],
   },
 };

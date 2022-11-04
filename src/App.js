@@ -15,9 +15,8 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { AUTH_ROUTE, PRIVATE_ROUTE } from "./config/route";
 import MinimalLayout from "./layout/MinimalLayout";
 import MainLayout from "./layout/MainLayout";
-import {
-  removeNotificationAction,
-} from "./redux/utils/operators";
+import { removeNotificationAction } from "./redux/utils/operators";
+import NotFoundComponent from "./utils/component/NotFound";
 
 function App() {
   const customization = useSelector((state) => state.customization);
@@ -69,8 +68,8 @@ function App() {
     <>
       {privateRouter}
       {authenticationRouter}
-      <Route path="*">
-        <></>
+      <Route>
+        <NotFoundComponent />
       </Route>
     </>
   );
@@ -98,7 +97,7 @@ function App() {
             open={true}
             autoHideDuration={5000}
             onClose={handleCloseNotification}
-            TransitionProps={{direction: "left"}}
+            TransitionProps={{ direction: "left" }}
             TransitionComponent={Slide}
           >
             <Alert
@@ -116,8 +115,8 @@ function App() {
   );
 
   useEffect(() => {
-    userInfo?.token && localStorage.setItem("auth_token", userInfo.token)
-  }, [userInfo])
+    userInfo?.token && localStorage.setItem("auth_token", userInfo.token);
+  }, [userInfo]);
 
   return (
     <StyledEngineProvider injectFirst>

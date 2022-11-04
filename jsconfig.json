@@ -1,19 +1,19 @@
 {
   "compilerOptions": {
-      "sourceMap": true,
-      "noImplicitAny": false,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "removeComments": true,
-      "module": "commonjs",
-      "target": "es6",
-      "jsx": "react",
-      "lib": ["es2019", "dom", "es6"],
-      "skipLibCheck": true,
-      "esModuleInterop": true,
-      "moduleResolution": "Node",
-      "resolveJsonModule": true
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": true,
+    "module": "commonjs",
+    "target": "es6",
+    "jsx": "react",
+    "lib": ["es2019", "dom", "es6"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true
   },
   "include": ["./src/**/*"],
-  "exclude": ["./node_modules"],
+  "exclude": ["./node_modules"]
 }

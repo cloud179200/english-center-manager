@@ -7,7 +7,7 @@ import App from "./App";
 
 import "./assets/scss/style.scss";
 import { ConnectedRouter } from "connected-react-router";
-import LoadingComponent from "./loading";
+import LoadingComponent from "./utils/component/Loading";
 const container = document.getElementById("root-english-center-app");
 const root = createRoot(container);
 

@@ -24,7 +24,7 @@ import {
 // project imports
 import MainCard from "../../../../ui-component/cards/MainCard";
 import Transitions from "../../../../ui-component/extended/Transitions";
-import User1 from "../../../../assets/images/users/user-round.svg";
+import WangBinh from "../../../../assets/images/users/nguoiwangbinh.jpg";
 
 // assets
 import { IconLogout, IconSettings } from "@tabler/icons";
@@ -114,7 +114,7 @@ const ProfileSection = () => {
         }}
         icon={
           <Avatar
-            src={User1}
+            src={WangBinh}
             sx={{
               ...theme.typography.mediumAvatar,
               margin: "8px 0 8px 8px !important",

@@ -20,7 +20,7 @@ import {
 
 // assets
 import { IconBrandTelegram, IconBuildingStore, IconMailbox, IconPhoto } from '@tabler/icons';
-import User1 from '../../../../assets/images/users/user-round.svg';
+import WangBinh from '../../../../assets/images/users/nguoiwangbinh.jpg';
 
 // styles
 const ListItemWrapper = styled('div')(({ theme }) => ({
@@ -87,9 +87,9 @@ const NotificationList = () => {
             <ListItemWrapper>
                 <ListItem alignItems="center">
                     <ListItemAvatar>
-                        <Avatar alt="John Doe" src={User1} />
+                        <Avatar alt="nguoi wangbinh" src={WangBinh} />
                     </ListItemAvatar>
-                    <ListItemText primary="John Doe" />
+                    <ListItemText primary="nguoi wangbinh" />
                     <ListItemSecondaryAction>
                         <Grid container justifyContent="flex-end">
                             <Grid item xs={12}>
@@ -200,9 +200,9 @@ const NotificationList = () => {
             <ListItemWrapper>
                 <ListItem alignItems="center">
                     <ListItemAvatar>
-                        <Avatar alt="John Doe" src={User1} />
+                        <Avatar alt="nguoi wangbinh" src={WangBinh} />
                     </ListItemAvatar>
-                    <ListItemText primary={<Typography variant="subtitle1">John Doe</Typography>} />
+                    <ListItemText primary={<Typography variant="subtitle1">nguoi wangbinh</Typography>} />
                     <ListItemSecondaryAction>
                         <Grid container justifyContent="flex-end">
                             <Grid item xs={12}>
@@ -250,9 +250,9 @@ const NotificationList = () => {
             <ListItemWrapper>
                 <ListItem alignItems="center">
                     <ListItemAvatar>
-                        <Avatar alt="John Doe" src={User1} />
+                        <Avatar alt="nguoi wangbinh" src={WangBinh} />
                     </ListItemAvatar>
-                    <ListItemText primary={<Typography variant="subtitle1">John Doe</Typography>} />
+                    <ListItemText primary={<Typography variant="subtitle1">nguoi wangbinh</Typography>} />
                     <ListItemSecondaryAction>
                         <Grid container justifyContent="flex-end">
                             <Grid item xs={12}>

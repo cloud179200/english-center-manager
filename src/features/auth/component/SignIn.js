@@ -17,17 +17,16 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import * as Yup from "yup";
 import { useFormik } from "formik";
 import AnimateButton from "../../../components/extended/AnimateButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link } from "react-router-dom";
-import { FORM_VALIDATE_ERROR_MESSAGE } from "../../../config/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { signInAction } from "../../../redux/auth/operators";
 import { addNotificationAction } from "../../../redux/utils/operators";
 import { setUserAction } from "../../../redux/user/operators";
+import { signInSchema } from "../schema";
 
 const SignInComponent = ({ ...others }) => {
   const theme = useTheme();
@@ -45,48 +44,13 @@ const SignInComponent = ({ ...others }) => {
       email: "",
       password: "",
     },
-    validationSchema: Yup.object().shape({
-      email: Yup.string()
-        .email(FORM_VALIDATE_ERROR_MESSAGE.INVALID)
-        .max(255)
-        .required("Email is required"),
-      password: Yup.string()
-        .max(255)
-        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
-    }),
+    validationSchema: signInSchema,
     onSubmit: (values) => {
       dispatch(signInAction(values.email, values.password, signInCallback));
     },
   });
 
   const signInCallback = (res, err) => {
-    // TODO: testing
-    dispatch(
-      setUserAction({
-        email: values.email,
-        token: "abcdef",
-        user_Id: 3,
-        password:
-          "rmL/TSey74jM4oPER80bf88OMiEWC6you+1x6OYETbjI48xlS+iCVwS7YVzNmxxqQEhDfQgKrIHeaGvpYErn5A==",
-        email_Verified: 0,
-        first_Name: "Le",
-        last_Name: "Viet Anh",
-        phone_Number: null,
-        address: null,
-        user_Type: 2,
-        reference_Id: 1,
-        status: 0,
-        status_Text: null,
-        verification_Token: null,
-        deleted: 0,
-        created_Date: "2022-10-31T03:26:28",
-        modified_By: null,
-        modified_Date: "0001-01-01T00:00:00",
-        list_Roles: null,
-      })
-    );
-    dispatch(addNotificationAction("Sign in successssssssssssssssssssssssssssssssssssssssssssss!", false));
-    return;
     if (err) {
       return;
     }

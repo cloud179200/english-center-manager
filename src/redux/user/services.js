@@ -1,8 +1,8 @@
-import { postService } from "../../config/services";
+import { getService } from "../../config/services";
 
 export const getUserService = async (email) => {
   try {
-    return await postService(
+    return await getService(
       `/api/users/get-by-email?p_email=`+email,
       {},
       "get user fail",

@@ -30,6 +30,7 @@ import User1 from "../../../../assets/images/users/user-round.svg";
 import { IconLogout, IconSettings } from "@tabler/icons";
 import { signOutAction } from "../../../../redux/auth/operators";
 import moment from "moment/moment";
+import { USER_ROLE } from "../../../../config/constant";
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -39,13 +40,14 @@ const ProfileSection = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
+  const userDetail = useSelector((state) => state.user.userDetail);
 
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
 
   const handleLogout = async () => {
-    dispatch(signOutAction());
+    userInfo?.email && dispatch(signOutAction(userInfo?.email));
   };
 
   const handleClose = (event) => {
@@ -176,10 +178,10 @@ const ProfileSection = () => {
                           variant="h4"
                           sx={{ fontWeight: 400 }}
                         >
-                          {userInfo?.first_Name+" "+userInfo?.last_Name}
+                          {userDetail?.first_Name+" "+userDetail?.last_Name}
                         </Typography>
                       </Stack>
-                      <Typography variant="subtitle2">Project Admin</Typography>
+                      <Typography variant="subtitle2">{USER_ROLE[userDetail?.user_Type || 1]}</Typography>
                     </Stack>
                   </Box>
                   {/* <PerfectScrollbar

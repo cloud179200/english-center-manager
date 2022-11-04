@@ -5,7 +5,7 @@ const webpack = require('webpack');
 const dotenv = require('dotenv');
 // call dotenv and it will return an Object with a parsed key 
 const env = dotenv.config().parsed;
-
+const ESLintPlugin = require('eslint-webpack-plugin');
 // reduce it to a nice object, the same as before
 const envKeys = Object.keys(env).reduce((prev, next) => {
   prev[`process.env.${next}`] = JSON.stringify(env[next]);
@@ -40,7 +40,8 @@ module.exports = {
       dependencies: true,
       dependenciesCount: 10000,
       percentBy: null,
-    })
+    }), 
+    new ESLintPlugin()
   ],
   devServer: {
     static: {

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import {
   Alert,
   CssBaseline,
@@ -17,9 +17,7 @@ import MinimalLayout from "./layout/MinimalLayout";
 import MainLayout from "./layout/MainLayout";
 import {
   removeNotificationAction,
-  resetUtilsReducerAction,
 } from "./redux/utils/operators";
-import { getUserAction } from "./redux/user/operators";
 
 function App() {
   const customization = useSelector((state) => state.customization);
@@ -116,19 +114,6 @@ function App() {
       })}
     </Stack>
   );
-
-  const loadData = async () => {
-    if (userInfo?.token && userInfo?.email) {
-      dispatch(getUserAction(userInfo?.email, () => {}));
-    }
-  };
-
-  useEffect(() => {
-    // TODO: testing
-    dispatch(resetUtilsReducerAction());
-    return;
-    loadData();
-  }, []);
 
   return (
     <StyledEngineProvider injectFirst>

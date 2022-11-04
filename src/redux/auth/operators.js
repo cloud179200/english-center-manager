@@ -6,7 +6,7 @@ import {
   resetUtilsReducerAction,
   setLoadingAction,
 } from "../utils/operators";
-import { signUpService, signInService } from "./services";
+import { signUpService, signInService, signOutService } from "./services";
 
 export const signUpAction = (
   first_Name,
@@ -30,8 +30,8 @@ export const signUpAction = (
         phone_Number,
         user_Type,
       });
-      if (res) {
-        callback(res, null);
+      if (res?.data) {
+        callback(res.data, null);
         return;
       }
       callback(null, API_MESSAGE.SERVER_ERROR);
@@ -54,8 +54,8 @@ export const signInAction = (email, password, callback) => {
         email,
         password,
       });
-      if (res) {
-        callback(res, null);
+      if (res?.data) {
+        callback(res.data, null);
         return;
       }
       callback(null, API_MESSAGE.SERVER_ERROR);
@@ -70,14 +70,27 @@ export const signInAction = (email, password, callback) => {
   };
 };
 
-export const signOutAction = (callback) => {
-  return (dispatch) => {
+export const signOutAction = (email, callback) => {
+  return async (dispatch) => {
     dispatch(setLoadingAction(true));
-    localStorage.clear();
-    dispatch(resetCustomizationReducerAction());
-    dispatch(resetUserReducerAction());
-    dispatch(resetUtilsReducerAction());
-    dispatch(setLoadingAction(false));
-    callback();
+    try {
+      const res = await signOutService({
+        email,
+      });
+      if (res?.data) {
+        callback(res.data, null);
+        return;
+      }
+      callback(null, API_MESSAGE.SERVER_ERROR);
+    } catch (error) {
+      callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
+    } finally {
+      localStorage.clear();
+      dispatch(resetCustomizationReducerAction());
+      dispatch(resetUserReducerAction());
+      dispatch(resetUtilsReducerAction());
+      dispatch(setLoadingAction(false));
+      callback(true, null);
+    }
   };
 };

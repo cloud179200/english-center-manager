@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link , useHistory } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import {
   Box,
@@ -21,7 +21,6 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import * as Yup from "yup";
 import { useFormik } from "formik";
 import AnimateButton from "../../../components/extended/AnimateButton";
 import {
@@ -32,13 +31,15 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useDispatch, useSelector } from "react-redux";
 import { addNotificationAction } from "../../../redux/utils/operators";
-import { FORM_VALIDATE_ERROR_MESSAGE } from "../../../config/constant";
 import { signUpAction } from "../../../redux/auth/operators";
+import { signUpSchema } from "../schema";
+
 
 const SignUpComponent = ({ ...others }) => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
   const dispatch = useDispatch();
+  const history = useHistory();
   const loading = useSelector((state) => state.common.loading);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -46,42 +47,20 @@ const SignUpComponent = ({ ...others }) => {
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
 
+  
+
   const formik = useFormik({
     initialValues: {
-      first_Name: "Le",
-      last_Name: "Viet Anh",
-      email: "1851060380@e.tlu.edu.vn",
-      password: "123123",
-      confirm_password: "123123",
-      address: "123123",
-      phone_Number: "+84394252608",
+      first_Name: "",
+      last_Name: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+      address: "",
+      phone_Number: "",
       user_Type: 1,
     },
-    validationSchema: Yup.object().shape({
-      email: Yup.string()
-        .email(FORM_VALIDATE_ERROR_MESSAGE.INVALID)
-        .max(255)
-        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
-      password: Yup.string()
-        .max(255)
-        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
-      confirm_password: Yup.string()
-        .max(255)
-        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
-      first_Name: Yup.string()
-        .max(255)
-        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
-      last_Name: Yup.string()
-        .max(255)
-        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
-      address: Yup.string()
-        .max(255)
-        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
-      phone_Number: Yup.string()
-        .max(255)
-        .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
-      user_Type: Yup.number().default(1),
-    }),
+    validationSchema: signUpSchema,
     onSubmit: (values) => {
       dispatch(
         signUpAction(
@@ -99,11 +78,11 @@ const SignUpComponent = ({ ...others }) => {
   });
 
   const signUpCallback = (res, err) => {
-    debugger;
     if (err) {
       return;
     }
     dispatch(addNotificationAction("Sign up success!", false));
+    history.push("/verify-email")
   };
 
   const {
@@ -115,6 +94,7 @@ const SignUpComponent = ({ ...others }) => {
     touched,
     values,
   } = formik;
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -424,25 +404,11 @@ const SignUpComponent = ({ ...others }) => {
                     size="large"
                     variant="contained"
                     color="secondary"
-                    endIcon={loading ? <CircularProgress color="secondary" /> : null}
-                  >
-                    Sign up
-                  </Button>
-                </AnimateButton>
-              </Box>
-              <Box sx={{ mt: 2 }}>
-                <AnimateButton>
-                  <Button
-                    disableElevation
-                    fullWidth
-                    size="large"
-                    variant="contained"
-                    color="secondary"
-                    onClick={() =>
-                      dispatch(addNotificationAction("[Signup.js]", true))
+                    endIcon={
+                      loading ? <CircularProgress color="secondary" /> : null
                     }
                   >
-                    Show toast
+                    Sign up
                   </Button>
                 </AnimateButton>
               </Box>

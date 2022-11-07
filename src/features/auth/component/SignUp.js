@@ -347,8 +347,8 @@ const SignUpComponent = ({ ...others }) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 >
-                  <MenuItem value={1}>Teacher</MenuItem>
                   <MenuItem value={2}>Student</MenuItem>
+                  <MenuItem value={3}>Teacher</MenuItem>
                 </Select>
                 {touched.user_Type && errors.user_Type && (
                   <FormHelperText error>{errors.user_Type}</FormHelperText>

@@ -10,6 +10,6 @@ export const getLocalStorageUserinfo = async () => {
   return userInfo;
 };
 
-export const sleep = (ms) =>  {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+export const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};

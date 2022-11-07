@@ -4,6 +4,7 @@ import ForgotComponent from "../features/auth/component/Forgot";
 import SignInComponent from "../features/auth/component/SignIn";
 import SignUpComponent from "../features/auth/component/SignUp";
 import VerifyEmailComponent from "../features/auth/component/VerifyEmail";
+import ClassComponent from "../features/class/component/Class";
 import DashBoard from "../features/dashboard/component/DashBoard";
 
 export const PRIVATE_ROUTE = [
@@ -13,16 +14,31 @@ export const PRIVATE_ROUTE = [
     component: <DashBoard />,
   },
   {
+    path: "/class",
+    exact: true,
+    component: <ClassComponent />,
+  },
+  {
+    path: "/student",
+    exact: true,
+    component: <DashBoard />,
+  },
+  {
+    path: "/teacher",
+    exact: true,
+    component: <DashBoard />,
+  },
+  {
     path: "/user/settings",
     exact: true,
     component: <div>Settings</div>,
-  }
+  },
 ];
 export const AUTH_ROUTE = [
   {
     path: "/",
     exact: true,
-    component: <Redirect to={"/signin"}/>,
+    component: <Redirect to={"/signin"} />,
   },
   {
     path: "/signin",

@@ -1,14 +1,20 @@
 import { API_MESSAGE } from "../../config/constant";
 import { addNotificationAction, setLoadingAction } from "../utils/operators";
-import { RESET_USER_REDUCER_ACTION, SET_USER_ACTION, SET_USER_DETAIL_ACTION } from "./action";
+import {
+  GET_USER_DETIAL_ACTION,
+  RESET_USER_REDUCER_ACTION,
+  SET_USER_ACTION,
+  SET_USER_DETAIL_ACTION,
+} from "./action";
 import { getUserService } from "./services";
 
 export const getUserDetailAction = (email, callback) => {
   return async (dispatch) => {
+    dispatch({ type: GET_USER_DETIAL_ACTION });
     dispatch(setLoadingAction(true));
     try {
       const res = await getUserService(email);
-      
+
       if (res) {
         dispatch(setUserDetailAction(res));
         callback(res, null);
@@ -16,7 +22,9 @@ export const getUserDetailAction = (email, callback) => {
       }
       callback(null, API_MESSAGE.SERVER_ERROR);
     } catch (error) {
-      dispatch(addNotificationAction(error?.message || API_MESSAGE.SERVER_ERROR, true));
+      dispatch(
+        addNotificationAction(error?.message || API_MESSAGE.SERVER_ERROR, true)
+      );
     } finally {
       dispatch(setLoadingAction(false));
     }
@@ -26,19 +34,19 @@ export const getUserDetailAction = (email, callback) => {
 export const setUserAction = (data) => {
   return {
     type: SET_USER_ACTION,
-    data
-  }
-}
+    data,
+  };
+};
 
 export const setUserDetailAction = (data) => {
   return {
     type: SET_USER_DETAIL_ACTION,
-    data
-  }
-}
+    data,
+  };
+};
 
 export const resetUserReducerAction = () => {
-    return {
-        type: RESET_USER_REDUCER_ACTION
-    }
-}
+  return {
+    type: RESET_USER_REDUCER_ACTION,
+  };
+};

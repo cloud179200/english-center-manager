@@ -1,6 +1,7 @@
 export const HTTP_RESPONSE_STATUS = {
   OK: 200,
   BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
   MISSING_AUTHORIZED: 403,
   NOT_FOUND: 404,
   SERVER_ERROR: 500,
@@ -19,7 +20,7 @@ export const API_MESSAGE = {
 };
 
 export const USER_ROLE = {
-  1: "Teacher",
+  1: "Admin",
   2: "Student",
-  3: "Admin",
+  3: "Teacher",
 };

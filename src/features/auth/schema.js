@@ -34,7 +34,7 @@ export const signUpSchema = Yup.object().shape({
       }
     })
     .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
-  user_Type: Yup.number().default(1),
+  user_Type: Yup.number().oneOf([2, 3], FORM_VALIDATE_ERROR_MESSAGE.INVALID).default(2),
 });
 
 export const signInSchema = Yup.object().shape({

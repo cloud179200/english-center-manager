@@ -6,6 +6,7 @@ import {
   resetUtilsReducerAction,
   setLoadingAction,
 } from "../utils/operators";
+import { SIGN_IN_ACTION, SIGN_OUT_ACTION } from "./action";
 import { signUpService, signInService, signOutService } from "./services";
 
 export const signUpAction = (
@@ -66,31 +67,36 @@ export const signInAction = (email, password, callback) => {
       callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
     } finally {
       dispatch(setLoadingAction(false));
+      dispatch({ type: SIGN_IN_ACTION });
     }
   };
 };
 
-export const signOutAction = (email, callback) => {
+export const signOutAction = (email = null, callback = null) => {
   return async (dispatch) => {
+    dispatch({ type: SIGN_OUT_ACTION });
     dispatch(setLoadingAction(true));
     try {
-      const res = await signOutService({
-        email,
-      });
-      if (res?.data) {
-        callback(res.data, null);
-        return;
+      if (email) {
+        const res = await signOutService({
+          email,
+        });
+        if (res?.data) {
+          callback && callback(res.data, null);
+          return;
+        }
+        callback && callback(null, API_MESSAGE.SERVER_ERROR);
       }
-      callback(null, API_MESSAGE.SERVER_ERROR);
     } catch (error) {
-      callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
+      callback && callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
     } finally {
       dispatch(resetCustomizationReducerAction());
       dispatch(resetUserReducerAction());
       dispatch(resetUtilsReducerAction());
       dispatch(setLoadingAction(false));
       localStorage.clear();
-      callback(true, null);
+      sessionStorage.clear();
+      callback && callback(true, null);
     }
   };
 };

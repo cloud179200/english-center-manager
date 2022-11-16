@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export const getLocalStorageUserinfo = async () => {
   let userInfo = null;
   if (localStorage.getItem("persist:root")) {
@@ -13,3 +15,7 @@ export const getLocalStorageUserinfo = async () => {
 export const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
+
+export const uniqueKey = () => {
+  return uuidv4()
+}

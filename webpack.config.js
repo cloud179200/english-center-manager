@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 // call dotenv and it will return an Object with a parsed key
 const env = dotenv.config().parsed;
 const ESLintPlugin = require("eslint-webpack-plugin");
+// const WebpackObfuscator = require('webpack-obfuscator');
 // reduce it to a nice object, the same as before
 const envKeys = Object.keys(env).reduce((prev, next) => {
   prev[`process.env.${next}`] = JSON.stringify(env[next]);
@@ -41,14 +42,22 @@ module.exports = {
       dependenciesCount: 10000,
       percentBy: null,
     }),
-    new ESLintPlugin(),
+    new ESLintPlugin()
+    // new WebpackObfuscator({
+    //     rotateStringArray: true
+    // }, ['excluded_bundle_name.js'])
   ],
   devServer: {
     static: {
       directory: path.join(__dirname, "build"),
     },
     port: 3333,
+    open: true,
+    compress: true,
     historyApiFallback: true,
+    client: {
+      progress: true,
+    }
   },
   module: {
     // exclude node_modules

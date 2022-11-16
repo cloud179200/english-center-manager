@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import Customization from "../Customization";
+// import Customization from "../Customization";
 import { drawerWidth } from "../../redux/customization/constant";
 import { SET_MENU } from "../../redux/customization/actions";
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -111,7 +111,6 @@ const MainLayout = (props) => {
       >
         <PerfectScrollbar component="div">{props.children}</PerfectScrollbar>
       </Main>
-      <Customization />
     </Box>
   );
 };

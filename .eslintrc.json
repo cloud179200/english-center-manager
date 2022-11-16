@@ -13,9 +13,20 @@
   ],
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 2021,
+    "ecmaVersion": 2022,
     "ecmaFeatures": {
       "jsx": true
+    },
+    "settings":{
+      "react": {
+        "version": "detect"
+      },
+      "import/resolver": {
+        "node": {
+          "paths": ["src"],
+          "extensions": [".js", ".jsx", ".ts", ".tsx"]
+        }
+      }
     }
   },
   "plugins": ["react", "import"],
@@ -29,7 +40,7 @@
     "no-debugger": "off",
     "no-useless-catch": "off",
     "react/no-unescaped-entities": "off",
-    "no-unreachable": "warn",
+    "no-unreachable": "off",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error"
   }

@@ -55,6 +55,7 @@ export const signInAction = (email, password, callback) => {
         email,
         password,
       });
+      debugger
       if (res?.data) {
         callback(res.data, null);
         return;
@@ -101,7 +102,7 @@ export const signOutAction = (email = null, callback = null) => {
   };
 };
 
-export const forGotAction = (email, callback) => {
+export const forgotAction = (email, callback) => {
   return async (dispatch) => {
     dispatch(setLoadingAction(true));
     try {

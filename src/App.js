@@ -17,13 +17,16 @@ import MinimalLayout from "./layout/MinimalLayout";
 import MainLayout from "./layout/MainLayout";
 import { removeNotificationAction } from "./redux/utils/operators";
 import NotFoundComponent from "./utils/component/NotFound";
+import _ from "lodash";
 
 function App() {
   const customization = useSelector((state) => state.customization);
   const notifications = useSelector((state) => state.common.notifications);
   const userInfo = useSelector((state) => state.user.userInfo);
   const dispatch = useDispatch();
-  const isValidPath = AUTH_ROUTE.some((route) => route.path === window.location.pathname) || PRIVATE_ROUTE.some((route) => route.path === window.location.pathname);
+  const isValidPath = _.cloneDeep(AUTH_ROUTE)
+    .concat(_.cloneDeep(PRIVATE_ROUTE))
+    .some((route) => route.path === window.location.pathname);`  `
 
   const AuthRoute = useCallback(
     ({ routeInfo }) => {
@@ -69,7 +72,11 @@ function App() {
     <>
       {privateRouter}
       {authenticationRouter}
-      {!isValidPath && <Route component={NotFoundComponent} />}
+      {!isValidPath && (
+        <MinimalLayout>
+          <Route component={NotFoundComponent} />
+        </MinimalLayout>
+      )}
     </>
   );
 

@@ -1,13 +1,12 @@
 import React from "react";
 // project imports
-import Customization from "../Customization/index";
+// import Customization from "../Customization/index";
 
 // ==============================|| MINIMAL LAYOUT ||============================== //
 
 const MinimalLayout = (props) => (
   <>
     {props.children}
-    <Customization />
   </>
 );
 

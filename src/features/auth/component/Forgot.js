@@ -17,7 +17,7 @@ import { forgotSchema } from "../schema";
 import AnimateButton from "../../../ui-component/extended/AnimateButton";
 import { useDispatch, useSelector } from "react-redux";
 import { addNotificationAction } from "../../../redux/utils/operators";
-import { signInAction } from "../../../redux/auth/operators";
+import { forgotAction } from "../../../redux/auth/operators";
 import { useTheme } from "@mui/styles";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 
@@ -32,8 +32,7 @@ const ForgotComponent = ({ ...others }) => {
     },
     validationSchema: forgotSchema,
     onSubmit: (values) => {
-      signInAction;
-      dispatch(signInAction(values.email, forgotCallback));
+      dispatch(forgotAction(values.email, forgotCallback));
     },
   });
 

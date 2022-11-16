@@ -1,33 +1,73 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import * as icons from "@tabler/icons";
+import { Box, Button, Grid } from "@mui/material";
+import {IconPlus} from "@tabler/icons";
 import { useDispatch } from "react-redux";
 import { getClassAction } from "../../../redux/class/operators";
+import CustomBox from "../../../components/custom-box/CustomBox";
+import _ from "lodash";
+import CustomTable from "../../../components/custom-table/CustomTable";
+import CustomModal from "../../../components/custom-modal/CustomModal";
 
-// function createData(name, calories, fat, carbs, protein) {
-//   return { name, calories, fat, carbs, protein };
-// }
-
-// const rows = [
-//   createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-//   createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-//   createData("Eclair", 262, 16.0, 24, 6.0),
-//   createData("Cupcake", 305, 3.7, 67, 4.3),
-//   createData("Gingerbread", 356, 16.0, 49, 3.9),
-// ];
+const rows = [
+  {
+    class_Id: "LopKuaIem",
+    class_Name: "Chill",
+    total_Student: 12,
+    teacher: "Phung Xuan Nha",
+  },
+  {
+    class_Id: "LopKuaIem02",
+    class_Name: "Chill",
+    total_Student: 12,
+    teacher: "Phung Xuan Nha",
+  },
+  {
+    class_Id: "LopKuaIem03",
+    class_Name: "Chill",
+    total_Student: 12,
+    teacher: "Phung Xuan Nha",
+  },
+  {
+    class_Id: "LopKuaIem04",
+    class_Name: "Chill",
+    total_Student: 12,
+    teacher: "Phung Xuan Nha",
+  },
+  {
+    class_Id: "LopKuaIem05",
+    class_Name: "Chill",
+    total_Student: 12,
+    teacher: "Phung Xuan Nha",
+  },
+  {
+    class_Id: "LopKuaIem06",
+    class_Name: "Chill",
+    total_Student: 12,
+    teacher: "Phung Xuan Nha",
+  },
+  {
+    class_Id: "LopKuaIem07",
+    class_Name: "Chill",
+    total_Student: 12,
+    teacher: "Phung Xuan Nha",
+  },
+];
 const ClassComponent = () => {
   const dispatch = useDispatch();
   const [classList, setClassList] = useState([]);
+  const [openNewModal, setOpenNewModal] = useState(false);
+
+  const handleCloseNewModal = () => {
+    setOpenNewModal(false);
+  };
+
+  const handleOpenNewModal = () => {
+    setOpenNewModal(true);
+  };
 
   useEffect(() => {
+    setClassList(_.cloneDeep(rows));
+    return;
     dispatch(
       getClassAction((res, err) => {
         if (err) {
@@ -37,46 +77,38 @@ const ClassComponent = () => {
       })
     );
   }, []);
-  return (
-    <Grid container width="100%" rowSpacing={2}>
-      <Grid item md="12">
-        <Button variant="contained" color="secondary">
-          New {icons.IconPlus}
-        </Button>
-      </Grid>
 
-      <Grid item md="12">
-        <Table
-          sx={{
-            backgroundColor: "#ffff",
-          }}
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell align="right">Tên Lớp</TableCell>
-              <TableCell align="right">Sĩ Số</TableCell>
-              <TableCell align="right">Giảng Viên</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {classList.map((row) => (
-              <TableRow
-                key={row.class_id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+  return (
+    <>
+      <CustomModal open={openNewModal} handleClose={handleCloseNewModal}>
+        <div>Hayssdaqweqeqwsss</div>
+      </CustomModal>
+      <CustomBox>
+        <Grid container width="100%" rowSpacing={2}>
+          <Grid item md="12">
+            <Box display="flex" justifyContent="flex-end">
+              <Button
+                variant="contained"
+                color="secondary"
+                size="small"
+                endIcon={<IconPlus strokeWidth={1.5} size="1.3rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />}
+                onClick={handleOpenNewModal}
               >
-                <TableCell component="th" scope="row">
-                  {row.class_Id}
-                </TableCell>
-                <TableCell align="right">{row.total_Name}</TableCell>
-                <TableCell align="right">{row.total_Student}</TableCell>
-                <TableCell align="right">{row.teacher}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Grid>
-    </Grid>
+                New
+              </Button>
+            </Box>
+          </Grid>
+          <Grid item md="12">
+            <CustomTable
+              headers={["Id", "Tên Lớp", "Sĩ Số", "Giảng Viên"]}
+              data={classList}
+              title="Danh Sách Lớp"
+            />
+          </Grid>
+        </Grid>
+      </CustomBox>
+      <CustomBox>Chill</CustomBox>
+    </>
   );
 };
 

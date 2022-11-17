@@ -11,6 +11,7 @@ import {
   Grid,
   TableFooter,
   Pagination,
+  Zoom,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { uniqueKey } from "../../utils";
@@ -71,26 +72,27 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.slice(page * 10 - 10, page * 10).map((row) => {
+            {data.slice(page * 10 - 10, page * 10).map((row, index) => {
               return (
-                <TableRow
-                  key={uniqueKey()}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  {typeof row === "object" &&
-                    Object.keys(_.cloneDeep(row)).map((key, index) => {
-                      return (
-                        <TableCell
-                          key={uniqueKey()}
-                          component={index === 0 ? "th" : ""}
-                          scope={index === 0 ? "row" : ""}
-                          align={index === 0 ? "inherit" : "right"}
-                        >
-                          {row[key]}
-                        </TableCell>
-                      );
-                    })}
-                </TableRow>
+                <Zoom key={uniqueKey()} in={true} style={{ transitionDelay: `${index*50}ms` }}>
+                  <TableRow
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    {typeof row === "object" &&
+                      Object.keys(_.cloneDeep(row)).map((key, index) => {
+                        return (
+                          <TableCell
+                            key={uniqueKey()}
+                            component={index === 0 ? "th" : ""}
+                            scope={index === 0 ? "row" : ""}
+                            align={index === 0 ? "inherit" : "right"}
+                          >
+                            {row[key]}
+                          </TableCell>
+                        );
+                      })}
+                  </TableRow>
+                </Zoom>
               );
             })}
           </TableBody>

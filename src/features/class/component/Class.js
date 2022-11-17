@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Grid } from "@mui/material";
-import {IconPlus} from "@tabler/icons";
-import { useDispatch } from "react-redux";
+import { IconPlus } from "@tabler/icons";
+import { useDispatch, useSelector } from "react-redux";
 import { getClassAction } from "../../../redux/class/operators";
 import CustomBox from "../../../components/custom-box/CustomBox";
 import _ from "lodash";
 import CustomTable from "../../../components/custom-table/CustomTable";
-import CustomModal from "../../../components/custom-modal/CustomModal";
+import LoadingComponent from "../../../utils/component/Loading";
+import { useTimeout } from "react-use";
+import ClassAddModal from "./ClassAddModal";
+import ClassFilterComponent from "./ClassFilterComponent";
 
 const rows = [
   {
@@ -37,7 +40,7 @@ const rows = [
     class_Id: "LopKuaIem05",
     class_Name: "Chill",
     total_Student: 12,
-    teacher: "Phung Xuan Nha",
+    teacher: "Phung Xuan Biu",
   },
   {
     class_Id: "LopKuaIem06",
@@ -49,21 +52,36 @@ const rows = [
     class_Id: "LopKuaIem07",
     class_Name: "Chill",
     total_Student: 12,
-    teacher: "Phung Xuan Nha",
+    teacher: "Ly tieu long",
   },
 ];
+
+export const initClassFilter = { class_Id: "", class_Name: "", teacher: "" };
+
 const ClassComponent = () => {
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.common.loading);
+  const [ready] = useTimeout(2000);
+  const [filter, setFilter] = useState(_.cloneDeep(initClassFilter));
   const [classList, setClassList] = useState([]);
-  const [openNewModal, setOpenNewModal] = useState(false);
+  const [openAddClassModal, setOpenAddClassModal] = useState(false);
 
-  const handleCloseNewModal = () => {
-    setOpenNewModal(false);
+  const handleCloseAddClassModal = () => {
+    setOpenAddClassModal(false);
   };
 
-  const handleOpenNewModal = () => {
-    setOpenNewModal(true);
+  const handleOpenAddClassModal = () => {
+    setOpenAddClassModal(true);
   };
+
+  const getClassData = (f) => {
+    const isFilter = Object.values(f).some(item => Boolean(item))
+    if(!isFilter){
+      return _.cloneDeep(classList)
+    }
+    let filterResult = _.cloneDeep(classList).filter(item => f.class_Id ? item.class_Id.includes(f.class_Id) : true).filter(item => f.class_Name ? item.class_Name.includes(f.class_Name) : true).filter(item => f.teacher ? item.teacher.includes(f.teacher) : true)
+    return filterResult
+  }
 
   useEffect(() => {
     setClassList(_.cloneDeep(rows));
@@ -78,11 +96,19 @@ const ClassComponent = () => {
     );
   }, []);
 
+  if (loading || !ready()) {
+    return <LoadingComponent />;
+  }
+
   return (
     <>
-      <CustomModal open={openNewModal} handleClose={handleCloseNewModal}>
-        <div>Hayssdaqweqeqwsss</div>
-      </CustomModal>
+      <ClassAddModal
+        open={openAddClassModal}
+        handleClose={handleCloseAddClassModal}
+      />
+      <CustomBox>
+        <ClassFilterComponent filter={filter} setFilter={setFilter} classList={classList}/>
+      </CustomBox>
       <CustomBox>
         <Grid container width="100%" rowSpacing={2}>
           <Grid item md="12">
@@ -91,8 +117,14 @@ const ClassComponent = () => {
                 variant="contained"
                 color="secondary"
                 size="small"
-                endIcon={<IconPlus strokeWidth={1.5} size="1.3rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />}
-                onClick={handleOpenNewModal}
+                endIcon={
+                  <IconPlus
+                    strokeWidth={1.5}
+                    size="1.3rem"
+                    style={{ marginTop: "auto", marginBottom: "auto" }}
+                  />
+                }
+                onClick={handleOpenAddClassModal}
               >
                 New
               </Button>
@@ -101,7 +133,7 @@ const ClassComponent = () => {
           <Grid item md="12">
             <CustomTable
               headers={["Id", "Tên Lớp", "Sĩ Số", "Giảng Viên"]}
-              data={classList}
+              data={getClassData(filter)}
               title="Danh Sách Lớp"
             />
           </Grid>

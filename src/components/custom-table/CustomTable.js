@@ -8,12 +8,36 @@ import {
   Toolbar,
   Typography,
   Divider,
+  Grid,
+  TableFooter,
+  Pagination,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { uniqueKey } from "../../utils";
 import _ from "lodash";
 
 const CustomTable = ({ data = [], headers = [], title = "" }) => {
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = (_, p) => {
+    setPage(p);
+  };
+
+  useEffect(() => {
+    setPage(1);
+  }, [data]);
+
+  if (!data.length) {
+    return (
+      <Grid container>
+        <Grid item md="12">
+          <Typography variant="h3" align="center" mb={2} mt={2}>
+            Không có dữ liệu để hiển thị
+          </Typography>
+        </Grid>
+      </Grid>
+    );
+  }
   return (
     <>
       {title && (
@@ -33,17 +57,21 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
           <TableHead>
             <TableRow>
               {headers.map((item, index) => (
-                <TableCell key={uniqueKey()} align={index ? "right" : ""} sx={{
-                  fontWeight: "bold",
-                  fontSize: "1.1rem",
-                }}>
+                <TableCell
+                  key={uniqueKey()}
+                  align={index ? "right" : "inherit"}
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "1.1rem",
+                  }}
+                >
                   {item}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row) => {
+            {data.slice(page * 10 - 10, page * 10).map((row) => {
               return (
                 <TableRow
                   key={uniqueKey()}
@@ -56,7 +84,7 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
                           key={uniqueKey()}
                           component={index === 0 ? "th" : ""}
                           scope={index === 0 ? "row" : ""}
-                          align={index === 0 ? "" : "right"}
+                          align={index === 0 ? "inherit" : "right"}
                         >
                           {row[key]}
                         </TableCell>
@@ -66,6 +94,15 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
               );
             })}
           </TableBody>
+          <TableFooter>
+            <Pagination
+              sx={{ marginTop: "1rem" }}
+              color="secondary"
+              count={Math.round(data.length / 10)}
+              page={page}
+              onChange={handlePageChange}
+            />
+          </TableFooter>
         </Table>
       </TableContainer>
     </>

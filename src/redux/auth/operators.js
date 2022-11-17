@@ -55,7 +55,6 @@ export const signInAction = (email, password, callback) => {
         email,
         password,
       });
-      debugger
       if (res?.data) {
         callback(res.data, null);
         return;

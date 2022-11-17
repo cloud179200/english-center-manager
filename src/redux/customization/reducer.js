@@ -3,8 +3,8 @@ import * as actionTypes from "./actions";
 import _ from "lodash";
 export const initialState = {
   isOpen: [], // for active default menu
-  fontFamily: `'Roboto', sans-serif`,
-  borderRadius: 12,
+  fontFamily: `'Quicksand', sans-serif`,
+  borderRadius: 14,
   opened: true,
 };
 

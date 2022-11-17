@@ -1,5 +1,5 @@
 import React from "react";
-import { Backdrop, Modal } from "@mui/material";
+import { Backdrop, Modal, Box } from "@mui/material";
 import CustomBox from "../custom-box/CustomBox";
 
 const CustomModal = (props) => {
@@ -13,7 +13,28 @@ const CustomModal = (props) => {
         timeout: 500,
       }}
     >
-        <CustomBox sx={{ position: "absolute" }}><>{props.children}</></CustomBox>
+      <Box
+        sx={{
+          position: "absolute",
+          width: "50vw",
+          left: "25vw",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CustomBox
+          sx={{
+            width: "100%",
+            maxWidth: "1000px",
+            p: 0,
+            m: 0,
+            mt: 2,
+          }}
+        >
+          {props.children}
+        </CustomBox>
+      </Box>
     </Modal>
   );
 };

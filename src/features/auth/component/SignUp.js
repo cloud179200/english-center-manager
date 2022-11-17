@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import {
@@ -113,9 +113,6 @@ const SignUpComponent = ({ ...others }) => {
     setLevel(strengthColor(temp));
   };
 
-  useEffect(() => {
-    console.log("[errors]", errors);
-  }, [errors]);
   return (
     <>
       <Container maxWidth="sm">

@@ -7,6 +7,7 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
 
   const handleApply = () => {
     setFilter(_.cloneDeep(filterInput));
+    console.log("[filterInput]", filterInput)
   };
 
   const handleClear = () => {
@@ -15,25 +16,25 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
 
   const optionClassId = [
     ...new Set(
-      classList
+      _.cloneDeep(classList)
         .map((option) => option.class_Id)
-        .filter((item) => item.toLowerCase().includes(filter.class_Id))
+        .filter((item) => item.toLowerCase().includes(filterInput.class_Id))
     ),
   ];
 
   const optionClassName = [
     ...new Set(
-      classList
+      _.cloneDeep(classList)
         .map((option) => option.class_Name)
-        .filter((item) => item.toLowerCase().includes(filter.class_Name))
+        .filter((item) => item.toLowerCase().includes(filterInput.class_Name))
     ),
   ];
 
   const optionTeacher = [
     ...new Set(
-      classList
+      _.cloneDeep(classList)
         .map((option) => option.teacher)
-        .filter((item) => item.toLowerCase().includes(filter.teacher))
+        .filter((item) => item.toLowerCase().includes(filterInput.teacher))
     ),
   ];
 
@@ -48,6 +49,10 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
           freeSolo
           disableClearable
           options={optionClassId}
+          onChange={(event, newValue) => {
+            setFilterInput({ ...filterInput, class_Id: newValue });
+          }}
+          value={filterInput.class_Id}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -55,10 +60,12 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
               InputProps={{
                 ...params.InputProps,
                 type: "search",
+                value: filterInput.class_Id,
+                onChange: (event) => {
+                  setFilterInput({ ...filterInput, class_Id: event.target.value });
+                }
               }}
-              onChange={(event) => {
-                setFilterInput({ ...filter, class_Id: event.target.value });
-              }}
+
             />
           )}
         />
@@ -68,6 +75,10 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
           freeSolo
           disableClearable
           options={optionClassName}
+          onChange={(event, newValue) => {
+            setFilterInput({ ...filterInput, class_Name: newValue });
+          }}
+          value={filterInput.class_Name}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -75,10 +86,12 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
               InputProps={{
                 ...params.InputProps,
                 type: "search",
+                value: filterInput.class_Name,
+                onChange: (event) => {
+                  setFilterInput({ ...filterInput, class_Name: event.target.value });
+                }
               }}
-              onChange={(event) => {
-                setFilterInput({ ...filter, class_Name: event.target.value });
-              }}
+
             />
           )}
         />
@@ -88,6 +101,10 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
           freeSolo
           disableClearable
           options={optionTeacher}
+          onChange={(event, newValue) => {
+            setFilterInput({ ...filterInput, teacher: newValue });
+          }}
+          value={filterInput.teacher}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -95,10 +112,12 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
               InputProps={{
                 ...params.InputProps,
                 type: "search",
+                value: filterInput.teacher,
+                onChange: (event) => {
+                  setFilterInput({ ...filterInput, teacher: event.target.value });
+                }
               }}
-              onChange={(event) => {
-                setFilterInput({ ...filter, teacher: event.target.value });
-              }}
+
             />
           )}
         />

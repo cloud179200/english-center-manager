@@ -17,7 +17,7 @@ const persistConfig = {
   key: "root",
   storage: storage,
   stateReconciler: autoMergeLevel2,
-  blacklist: ["common"]
+  blacklist: ["common", "router"]
 };
 
 const rootReducer = combineReducers({

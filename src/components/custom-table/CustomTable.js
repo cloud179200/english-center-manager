@@ -9,9 +9,9 @@ import {
   Typography,
   Divider,
   Grid,
-  TableFooter,
   Pagination,
   Zoom,
+  Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { uniqueKey } from "../../utils";
@@ -74,7 +74,7 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
           <TableBody>
             {data.slice(page * 10 - 10, page * 10).map((row, index) => {
               return (
-                <Zoom key={uniqueKey()} in={true} style={{ transitionDelay: `${index*50}ms` }}>
+                <Zoom key={uniqueKey()} in={true} style={{ transitionDelay: `${index*40}ms` }}>
                   <TableRow
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
@@ -96,7 +96,8 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
               );
             })}
           </TableBody>
-          <TableFooter>
+        </Table>
+        <Box>
             <Pagination
               sx={{ marginTop: "1rem" }}
               color="secondary"
@@ -104,8 +105,7 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
               page={page}
               onChange={handlePageChange}
             />
-          </TableFooter>
-        </Table>
+          </Box>
       </TableContainer>
     </>
   );

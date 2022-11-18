@@ -233,6 +233,24 @@ export default function componentStyleOverrides(theme) {
           height: "2rem"
         },
       },
+    },
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          "&>.MuiAutocomplete-root>.MuiFormControl-root>label": {
+            top: 23,
+            left: 0,
+            color: theme.grey500,
+            '&[data-shrink="false"]': {
+                top: 5
+            }
+          },
+          "&>.MuiAutocomplete-root>.MuiFormControl-root>.MuiInputBase-root": {
+            paddingTop: "0",
+            paddingBottom: "0"
+          }
+        }
+      }
     }
   };
 }

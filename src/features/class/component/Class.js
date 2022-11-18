@@ -11,7 +11,7 @@ import { useTimeout } from "react-use";
 import ClassAddModal from "./ClassAddModal";
 import ClassFilterComponent from "./ClassFilterComponent";
 import classMockData from "../../../config/data/class-mock-data.json"
-const rows = classMockData
+const rows = _.cloneDeep(classMockData)
 
 export const initClassFilter = { class_Id: "", class_Name: "", teacher: "" };
 

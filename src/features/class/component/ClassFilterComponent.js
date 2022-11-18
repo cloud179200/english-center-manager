@@ -14,7 +14,7 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
     setFilter(_.cloneDeep(initClassFilter));
   };
 
-  const optionClassId = [
+  const optionsClassId = [
     ...new Set(
       _.cloneDeep(classList)
         .map((option) => option.class_Id)
@@ -24,7 +24,7 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
     ),
   ];
 
-  const optionClassName = [
+  const optionsClassName = [
     ...new Set(
       _.cloneDeep(classList)
         .map((option) => option.class_Name)
@@ -34,7 +34,7 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
     ),
   ];
 
-  const optionTeacher = [
+  const optionsTeacher = [
     ...new Set(
       _.cloneDeep(classList)
         .map((option) => option.teacher)
@@ -60,7 +60,7 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
         <Autocomplete
           freeSolo
           disableClearable
-          options={optionClassId}
+          options={optionsClassId}
           onChange={(event, newValue) => {
             setFilterInput({ ...filterInput, class_Id: newValue });
           }}
@@ -88,7 +88,7 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
         <Autocomplete
           freeSolo
           disableClearable
-          options={optionClassName}
+          options={optionsClassName}
           onChange={(event, newValue) => {
             setFilterInput({ ...filterInput, class_Name: newValue });
           }}
@@ -116,7 +116,7 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
         <Autocomplete
           freeSolo
           disableClearable
-          options={optionTeacher}
+          options={optionsTeacher}
           onChange={(event, newValue) => {
             setFilterInput({ ...filterInput, teacher: newValue });
           }}
@@ -145,9 +145,10 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
           container
           width="100%"
           columnGap={1}
+          flexWrap="nowrap"
           justifyContent={{ md: "flex-end", xs: "space-between" }}
         >
-          <Grid item xs={5}>
+          <Grid item xs={6}>
             <Button
               variant="contained"
               onClick={handleApply}
@@ -156,7 +157,7 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
               Apply
             </Button>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={6}>
             <Button
               variant="contained"
               color="secondary"

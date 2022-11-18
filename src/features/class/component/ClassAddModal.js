@@ -84,8 +84,8 @@ const ClassAddModal = ({ open, handleClose }) => {
       <Grid container p={2}>
         <Grid item xs={12}>
           <form noValidate onSubmit={handleSubmit} style={{ width: "100%" }}>
-            <Grid container justifyContent={{ xs: "space-evenly", md: "" }}>
-              <Grid item xs={12} md={5}>
+            <Grid container columnGap={0.5} flexWrap="nowrap" justifyContent={{ xs: "space-evenly", md: "" }}>
+              <Grid item xs={12} md={6}>
                 <FormControl
                   fullWidth
                   error={Boolean(touched.class_Name && errors.class_Name)}
@@ -106,7 +106,7 @@ const ClassAddModal = ({ open, handleClose }) => {
                   )}
                 </FormControl>
               </Grid>
-              <Grid item xs={12} md={5}>
+              <Grid item xs={12} md={6}>
                 <FormControl
                   fullWidth
                   error={Boolean(touched.teacher_Id && errors.teacher_Id)}

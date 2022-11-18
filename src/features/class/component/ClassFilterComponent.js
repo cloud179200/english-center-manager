@@ -7,7 +7,7 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
 
   const handleApply = () => {
     setFilter(_.cloneDeep(filterInput));
-    console.log("[filterInput]", filterInput)
+    console.log("[filterInput]", filterInput);
   };
 
   const handleClear = () => {
@@ -18,7 +18,9 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
     ...new Set(
       _.cloneDeep(classList)
         .map((option) => option.class_Id)
-        .filter((item) => item.toLowerCase().includes(filterInput.class_Id))
+        .filter((item) =>
+          item.toLowerCase().includes(filterInput.class_Id.toLowerCase())
+        )
     ),
   ];
 
@@ -26,7 +28,9 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
     ...new Set(
       _.cloneDeep(classList)
         .map((option) => option.class_Name)
-        .filter((item) => item.toLowerCase().includes(filterInput.class_Name))
+        .filter((item) =>
+          item.toLowerCase().includes(filterInput.class_Name.toLowerCase())
+        )
     ),
   ];
 
@@ -34,7 +38,9 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
     ...new Set(
       _.cloneDeep(classList)
         .map((option) => option.teacher)
-        .filter((item) => item.toLowerCase().includes(filterInput.teacher))
+        .filter((item) =>
+          item.toLowerCase().includes(filterInput.teacher.toLowerCase())
+        )
     ),
   ];
 
@@ -43,8 +49,14 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
   }, [filter]);
 
   return (
-    <Grid container width="100%" columnSpacing={2} m={0}>
-      <Grid item md="3" pt={0}>
+    <Grid
+      container
+      width="100%"
+      columnSpacing={{ xs: 0, md: 2 }}
+      rowSpacing={{ xs: 2, md: 0 }}
+      m={0}
+    >
+      <Grid item xs={12} md={3}>
         <Autocomplete
           freeSolo
           disableClearable
@@ -62,15 +74,17 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
                 type: "search",
                 value: filterInput.class_Id,
                 onChange: (event) => {
-                  setFilterInput({ ...filterInput, class_Id: event.target.value });
-                }
+                  setFilterInput({
+                    ...filterInput,
+                    class_Id: event.target.value,
+                  });
+                },
               }}
-
             />
           )}
         />
       </Grid>
-      <Grid item md="3">
+      <Grid item xs={12} md={3}>
         <Autocomplete
           freeSolo
           disableClearable
@@ -88,15 +102,17 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
                 type: "search",
                 value: filterInput.class_Name,
                 onChange: (event) => {
-                  setFilterInput({ ...filterInput, class_Name: event.target.value });
-                }
+                  setFilterInput({
+                    ...filterInput,
+                    class_Name: event.target.value,
+                  });
+                },
               }}
-
             />
           )}
         />
       </Grid>
-      <Grid item md="3">
+      <Grid item xs={12} md={3}>
         <Autocomplete
           freeSolo
           disableClearable
@@ -114,27 +130,38 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
                 type: "search",
                 value: filterInput.teacher,
                 onChange: (event) => {
-                  setFilterInput({ ...filterInput, teacher: event.target.value });
-                }
+                  setFilterInput({
+                    ...filterInput,
+                    teacher: event.target.value,
+                  });
+                },
               }}
-
             />
           )}
         />
       </Grid>
-      <Grid item md="3">
-        <Grid container columnGap={1} justifyContent="flex-end">
-          <Grid item>
-            <Button variant="contained" size="small" onClick={handleApply}>
+      <Grid item xs={12} md={3}>
+        <Grid
+          container
+          width="100%"
+          columnGap={1}
+          justifyContent={{ md: "flex-end", xs: "space-between" }}
+        >
+          <Grid item xs={5}>
+            <Button
+              variant="contained"
+              onClick={handleApply}
+              sx={{ width: "100%" }}
+            >
               Apply
             </Button>
           </Grid>
-          <Grid item>
+          <Grid item xs={5}>
             <Button
               variant="contained"
               color="secondary"
-              size="small"
               onClick={handleClear}
+              sx={{ width: "100%" }}
             >
               Clear
             </Button>

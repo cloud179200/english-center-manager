@@ -79,13 +79,13 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     {typeof row === "object" &&
-                      Object.keys(_.cloneDeep(row)).map((key, index) => {
+                      Object.keys(_.cloneDeep(row)).map((key, id) => {
                         return (
                           <TableCell
                             key={uniqueKey()}
-                            component={index === 0 ? "th" : ""}
-                            scope={index === 0 ? "row" : ""}
-                            align={index === 0 ? "inherit" : "right"}
+                            component={id === 0 ? "th" : ""}
+                            scope={id === 0 ? "row" : ""}
+                            align={id === 0 ? "inherit" : "right"}
                           >
                             {row[key]}
                           </TableCell>

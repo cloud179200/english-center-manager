@@ -5,9 +5,9 @@ export default function componentStyleOverrides(theme) {
       styleOverrides: {
         root: {
           fontWeight: 500,
-          borderRadius: "4px",
-          minWidth: "150px",
-          padding: "1rem",
+          borderRadius: `${theme?.customization?.borderRadius}px`,
+          minWidth: "120px",
+          padding: "0.8rem",
         },
       },
     },
@@ -199,17 +199,17 @@ export default function componentStyleOverrides(theme) {
             border: "3px solid #2b2b2b",
           },
           "&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus":
-            {
-              backgroundColor: "#959595",
-            },
+          {
+            backgroundColor: "#959595",
+          },
           "&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active":
-            {
-              backgroundColor: "#959595",
-            },
+          {
+            backgroundColor: "#959595",
+          },
           "&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover":
-            {
-              backgroundColor: "#959595",
-            },
+          {
+            backgroundColor: "#959595",
+          },
           "&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner": {
             backgroundColor: "#2b2b2b",
           },
@@ -226,5 +226,13 @@ export default function componentStyleOverrides(theme) {
         }
       },
     },
+    MuiCircularProgress: {
+      styleOverrides: {
+        root: {
+          width: "2rem",
+          height: "2rem"
+        },
+      },
+    }
   };
 }

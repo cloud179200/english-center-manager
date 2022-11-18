@@ -81,8 +81,9 @@ export const signOutAction = (email = null, callback = null) => {
         const res = await signOutService({
           email,
         });
-        if (res?.data) {
-          callback && callback(res.data, null);
+        if (res?.data?.message) {
+          dispatch(addNotificationAction(res?.data?.message, false))
+          callback && callback(res?.data?.message, null);
           return;
         }
         callback && callback(null, API_MESSAGE.SERVER_ERROR);

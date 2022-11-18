@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { IconPlus } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getClassAction } from "../../../redux/class/operators";
@@ -10,51 +10,8 @@ import LoadingComponent from "../../../utils/component/Loading";
 import { useTimeout } from "react-use";
 import ClassAddModal from "./ClassAddModal";
 import ClassFilterComponent from "./ClassFilterComponent";
-
-const rows = [
-  {
-    class_Id: "LopKuaIem",
-    class_Name: "Chill",
-    total_Student: 12,
-    teacher: "Phung Xuan Nha",
-  },
-  {
-    class_Id: "LopKuaIem02",
-    class_Name: "Chill",
-    total_Student: 12,
-    teacher: "Phung Xuan Nha",
-  },
-  {
-    class_Id: "LopKuaIem03",
-    class_Name: "Chill",
-    total_Student: 12,
-    teacher: "Phung Xuan Nha",
-  },
-  {
-    class_Id: "LopKuaIem04",
-    class_Name: "Chill",
-    total_Student: 12,
-    teacher: "Phung Xuan Nha",
-  },
-  {
-    class_Id: "LopKuaIem05",
-    class_Name: "Chill",
-    total_Student: 12,
-    teacher: "Phung Xuan Biu",
-  },
-  {
-    class_Id: "LopKuaIem06",
-    class_Name: "Chill",
-    total_Student: 12,
-    teacher: "Phung Xuan Nha",
-  },
-  {
-    class_Id: "LopKuaIem07",
-    class_Name: "Chill",
-    total_Student: 12,
-    teacher: "Ly tieu long",
-  },
-];
+import classMockData from "../../../config/data/class-mock-data.json"
+const rows = classMockData
 
 export const initClassFilter = { class_Id: "", class_Name: "", teacher: "" };
 
@@ -76,7 +33,7 @@ const ClassComponent = () => {
 
   const getClassData = (f) => {
     const isFilter = Object.values(f).some(item => Boolean(item))
-    if(!isFilter){
+    if (!isFilter) {
       return _.cloneDeep(classList)
     }
     let filterResult = _.cloneDeep(classList).filter(item => f.class_Id ? item.class_Id.includes(f.class_Id) : true).filter(item => f.class_Name ? item.class_Name.includes(f.class_Name) : true).filter(item => f.teacher ? item.teacher.includes(f.teacher) : true)
@@ -107,30 +64,31 @@ const ClassComponent = () => {
         handleClose={handleCloseAddClassModal}
       />
       <CustomBox>
-        <ClassFilterComponent filter={filter} setFilter={setFilter} classList={classList}/>
+        <ClassFilterComponent filter={filter} setFilter={setFilter} classList={classList} />
       </CustomBox>
       <CustomBox>
-        <Grid container width="100%" rowSpacing={2}>
-          <Grid item md="12">
-            <Box display="flex" justifyContent="flex-end">
-              <Button
-                variant="contained"
-                color="secondary"
-                size="small"
-                endIcon={
-                  <IconPlus
-                    strokeWidth={1.5}
-                    size="1.3rem"
-                    style={{ marginTop: "auto", marginBottom: "auto" }}
-                  />
-                }
-                onClick={handleOpenAddClassModal}
-              >
-                New
-              </Button>
-            </Box>
+        <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
+          <Grid item xs={12} md={2}>
+            <Button
+              variant="contained"
+              color="secondary"
+              size="small"
+              endIcon={
+                <IconPlus
+                  strokeWidth={1.5}
+                  size="1.3rem"
+                  style={{ marginTop: "auto", marginBottom: "auto" }}
+                />
+              }
+              onClick={handleOpenAddClassModal}
+              sx={{
+                width: "100%"
+              }}
+            >
+              New
+            </Button>
           </Grid>
-          <Grid item md="12">
+          <Grid item md={12}>
             <CustomTable
               headers={["Id", "Tên Lớp", "Sĩ Số", "Giảng Viên"]}
               data={getClassData(filter)}

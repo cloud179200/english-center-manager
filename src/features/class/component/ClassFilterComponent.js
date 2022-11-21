@@ -8,7 +8,6 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
 
   const handleApply = () => {
     setFilter(_.cloneDeep(filterInput));
-    console.log("[filterInput]", filterInput);
   };
 
   const handleClear = () => {

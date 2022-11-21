@@ -26,7 +26,8 @@ function App() {
   const dispatch = useDispatch();
   const isValidPath = _.cloneDeep(AUTH_ROUTE)
     .concat(_.cloneDeep(PRIVATE_ROUTE))
-    .some((route) => route.path === window.location.pathname);`  `
+    .some((route) => route.path === window.location.pathname);
+  `  `;
 
   const AuthRoute = useCallback(
     ({ routeInfo }) => {
@@ -129,12 +130,10 @@ function App() {
       <ThemeProvider theme={themes(customization)}>
         <CssBaseline />
         <BrowserRouter>
-          <Switch>
-            <div className="app">
-              {ToastNotificationContainer}
-              {router}
-            </div>
-          </Switch>
+          <div className="app">
+            <Switch>{router}</Switch>
+            {ToastNotificationContainer}
+          </div>
         </BrowserRouter>
       </ThemeProvider>
     </StyledEngineProvider>

@@ -53,6 +53,8 @@ export const NAME_TRANS_VN = {
   CLASS: "Lớp",
   CLASS_NAME: "Tên Lớp",
   CLASS_NEW: "Lớp Mới",
+  CLASS_EDIT: "Sửa Lớp",
+  CLASS_DELETE: "Xóa Lớp",
   CLASS_ADD: "Thêm Lớp",
   APPLY_FILTER: "Áp Dụng Bộ Lọc",
   CLEAR_FILTER: "Xóa Bộ Lọc"

@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { useFormik } from "formik";
-import { addClassSchema } from "../schema";
+import { editClassSchema } from "../schema";
 import { useDispatch, useSelector } from "react-redux";
 import { addClassAction } from "../../../redux/class/operators";
 import AnimateButton from "../../../components/extended/AnimateButton";
@@ -24,12 +24,11 @@ import teacherMockData from "../../../config/data/teacher-mock-data.json";
 import studentMockData from "../../../config/data/student-mock_data.json";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import { sortStudentFunc, sortTeacherFunc } from "./Class";
-// import { sleep } from "../../../utils";
 
 const teachers = _.cloneDeep(teacherMockData);
 const students = _.cloneDeep(studentMockData);
 
-const ClassAddModal = ({ open, handleClose }) => {
+const ClassEditModal = ({ open, handleClose, classObject }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.common.loading);
@@ -38,13 +37,11 @@ const ClassAddModal = ({ open, handleClose }) => {
   const [chipValues, setChipValues] = useState([]);
 
   const teacherOptions = useMemo(
-    () =>
-      _.cloneDeep(teacherList).sort(sortTeacherFunc),
+    () => _.cloneDeep(teacherList).sort(sortTeacherFunc),
     [teacherList]
   );
   const studentOptions = useMemo(
-    () =>
-      _.cloneDeep(studentList).sort(sortStudentFunc),
+    () => _.cloneDeep(studentList).sort(sortStudentFunc),
     [studentList]
   );
 
@@ -56,7 +53,7 @@ const ClassAddModal = ({ open, handleClose }) => {
       teacherInput: "",
       studentInput: "",
     },
-    validationSchema: addClassSchema,
+    validationSchema: editClassSchema,
     onSubmit: (values) => {
       dispatch(
         addClassAction(
@@ -84,6 +81,7 @@ const ClassAddModal = ({ open, handleClose }) => {
     values,
     setFieldValue,
     resetForm,
+    setValues,
   } = formik;
 
   const initData = async () => {
@@ -99,7 +97,12 @@ const ClassAddModal = ({ open, handleClose }) => {
   }, [chipValues]);
 
   useEffect(() => {
-    !open && resetForm() && setChipValues([]);
+    if (!open) {
+      resetForm();
+      setChipValues([]);
+      return;
+    }
+    open && classObject && setValues({ ...classObject });
   }, [open]);
 
   useEffect(() => {
@@ -107,7 +110,7 @@ const ClassAddModal = ({ open, handleClose }) => {
   }, []);
 
   return (
-    <CustomModal open={open} handleClose={handleClose} title={NAME_TRANS_VN.CLASS_NEW}>
+    <CustomModal open={open} handleClose={handleClose} title={NAME_TRANS_VN.CLASS_EDIT}>
       <Grid container p={2}>
         <Grid item xs={12}>
           <form noValidate onSubmit={handleSubmit} style={{ width: "100%" }}>
@@ -187,8 +190,10 @@ const ClassAddModal = ({ open, handleClose }) => {
               <MuiChipsInput
                 onDeleteChip={(chipValue) => {
                   setChipValues((prevChips) =>
-                    prevChips.filter((item) => !chipValue.includes(item.student_Id))
-                  )
+                    prevChips.filter(
+                      (item) => !chipValue.includes(item.student_Id)
+                    )
+                  );
                 }}
                 onDeleteAllChips={() => setChipValues([])}
                 value={chipValues.map(
@@ -265,4 +270,4 @@ const ClassAddModal = ({ open, handleClose }) => {
   );
 };
 
-export default ClassAddModal;
+export default ClassEditModal;

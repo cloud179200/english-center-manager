@@ -10,12 +10,11 @@ import {
   Divider,
   Grid,
   Pagination,
-  Zoom,
   Box,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { uniqueKey } from "../../utils";
-import _ from "lodash";
+import CustomRow from "./CustomRow";
 
 const CustomTable = ({ data = [], headers = [], title = "" }) => {
   const [page, setPage] = useState(1);
@@ -72,43 +71,23 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.slice(page * 10 - 10, page * 10).map((row, index) => {
-              return (
-                <Zoom key={uniqueKey()} in={true} style={{ transitionDelay: `${index*40}ms` }}>
-                  <TableRow
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    {typeof row === "object" &&
-                      Object.keys(_.cloneDeep(row)).map((key, id) => {
-                        return (
-                          <TableCell
-                            key={uniqueKey()}
-                            component={id === 0 ? "th" : ""}
-                            scope={id === 0 ? "row" : ""}
-                            align={id === 0 ? "inherit" : "right"}
-                          >
-                            {row[key]}
-                          </TableCell>
-                        );
-                      })}
-                  </TableRow>
-                </Zoom>
-              );
-            })}
+            {data.slice(page * 10 - 10, page * 10).map((row, id) => (
+              <CustomRow key={uniqueKey()} rowData={row} index={id} />
+            ))}
           </TableBody>
         </Table>
         <Box>
-            <Pagination
-              sx={{ marginTop: "1rem" }}
-              color="secondary"
-              count={Math.round(data.length / 10)}
-              page={page}
-              onChange={handlePageChange}
-            />
-          </Box>
+          <Pagination
+            sx={{ marginTop: "1rem" }}
+            color="secondary"
+            count={Math.round(data.length / 10)}
+            page={page}
+            onChange={handlePageChange}
+          />
+        </Box>
       </TableContainer>
     </>
   );
 };
 
-export default CustomTable;
+export default memo(CustomTable);

@@ -50,8 +50,8 @@ const CustomModal = (props) => {
             <Typography variant="h4">{props.title}</Typography>
             <IconButton onClick={props.handleClose}>
               <IconX
-                strokeWidth={1.5}
-                size="1rem"
+                stroke={1.5}
+                size="2rem"
                 style={{ marginTop: "auto", marginBottom: "auto" }}
               />
             </IconButton>

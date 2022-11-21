@@ -138,7 +138,7 @@ const ForgotComponent = ({ ...others }) => {
                   variant="contained"
                   color="secondary"
                   endIcon={
-                    loading ? <CircularProgress color="secondary" /> : null
+                    loading ? <CircularProgress color="grey" size={20} /> : null
                   }
                 >
                   {NAME_TRANS_VN.SEND_EMAIL}

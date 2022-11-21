@@ -193,7 +193,7 @@ const SignInComponent = ({ ...others }) => {
                     variant="contained"
                     color="secondary"
                     endIcon={
-                      loading ? <CircularProgress color="secondary" /> : null
+                      loading ? <CircularProgress color="secondary" size={20} /> : null
                     }
                   >
                     {NAME_TRANS_VN.SIGN_IN}

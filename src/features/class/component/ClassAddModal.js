@@ -99,7 +99,11 @@ const ClassAddModal = ({ open, handleClose }) => {
   }, [chipValues]);
 
   useEffect(() => {
-    !open && resetForm() && setChipValues([]);
+    if (!open) {
+      resetForm();
+      setChipValues([]);
+      return;
+    }
   }, [open]);
 
   useEffect(() => {

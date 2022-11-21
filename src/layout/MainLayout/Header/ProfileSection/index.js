@@ -30,7 +30,7 @@ import WangBinh from "../../../../assets/images/users/nguoiwangbinh.jpg";
 import { IconLogout, IconSettings } from "@tabler/icons";
 import { signOutAction } from "../../../../redux/auth/operators";
 import moment from "moment/moment";
-import { USER_ROLE } from "../../../../config/constant";
+import { USER_ROLE, NAME_TRANS_VN } from "../../../../config/constant";
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -182,7 +182,7 @@ const ProfileSection = () => {
                         </Typography>
                       </Stack>
                       <Typography variant="subtitle2">
-                        {USER_ROLE[userDetail?.user_Type || 1]}
+                        {NAME_TRANS_VN[USER_ROLE[userDetail?.user_Type || 1].toUpperCase()]}
                       </Typography>
                     </Stack>
                   </Box>
@@ -269,7 +269,7 @@ const ProfileSection = () => {
                         <ListItemText
                           primary={
                             <Typography variant="body2">
-                              Account Settings
+                              {NAME_TRANS_VN.SETTINGS}
                             </Typography>
                           }
                         />
@@ -286,7 +286,7 @@ const ProfileSection = () => {
                         </ListItemIcon>
                         <ListItemText
                           primary={
-                            <Typography variant="body2">Logout</Typography>
+                            <Typography variant="body2">{NAME_TRANS_VN.SIGN_OUT}</Typography>
                           }
                         />
                       </ListItemButton>

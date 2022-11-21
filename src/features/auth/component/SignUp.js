@@ -4,11 +4,9 @@ import { useTheme } from "@mui/material/styles";
 import {
   Box,
   Button,
-  Checkbox,
   CircularProgress,
   Container,
   FormControl,
-  FormControlLabel,
   FormHelperText,
   Grid,
   IconButton,
@@ -33,6 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNotificationAction } from "../../../redux/utils/operators";
 import { signUpAction } from "../../../redux/auth/operators";
 import { signUpSchema } from "../schema";
+import { NAME_TRANS_VN } from "../../../config/constant";
 
 const SignUpComponent = ({ ...others }) => {
   const theme = useTheme();
@@ -42,7 +41,6 @@ const SignUpComponent = ({ ...others }) => {
   const loading = useSelector((state) => state.common.loading);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [checked, setChecked] = useState(true);
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
 
@@ -55,7 +53,7 @@ const SignUpComponent = ({ ...others }) => {
       confirm_password: "",
       address: "",
       phone_Number: "",
-      user_Type: 1,
+      user_Type: 2,
     },
     validationSchema: signUpSchema,
     onSubmit: (values) => {
@@ -143,7 +141,7 @@ const SignUpComponent = ({ ...others }) => {
                     variant="h3"
                     color="black"
                   >
-                    Sign up with Email address
+                    {NAME_TRANS_VN.SIGN_UP_TITLE}
                   </Typography>
                 </Box>
               </Grid>
@@ -154,7 +152,7 @@ const SignUpComponent = ({ ...others }) => {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
-                    label="First Name"
+                    label={NAME_TRANS_VN.FIRST_NAME}
                     margin="normal"
                     name="first_Name"
                     type="text"
@@ -171,7 +169,7 @@ const SignUpComponent = ({ ...others }) => {
                 <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
-                    label="Last Name"
+                    label={NAME_TRANS_VN.LAST_NAME}
                     margin="normal"
                     name="last_Name"
                     type="text"
@@ -191,7 +189,7 @@ const SignUpComponent = ({ ...others }) => {
                 error={Boolean(touched.email && errors.email)}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel>Email</InputLabel>
+                <InputLabel>{NAME_TRANS_VN.EMAIL}</InputLabel>
                 <OutlinedInput
                   type="email"
                   value={values.email}
@@ -209,12 +207,12 @@ const SignUpComponent = ({ ...others }) => {
                 error={Boolean(touched.password && errors.password)}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel>Password</InputLabel>
+                <InputLabel>{NAME_TRANS_VN.PASSWORD}</InputLabel>
                 <OutlinedInput
                   type={showPassword ? "text" : "password"}
                   value={values.password}
                   name="password"
-                  label="Password"
+                  label={NAME_TRANS_VN.PASSWORD}
                   onBlur={handleBlur}
                   onChange={(e) => {
                     handleChange(e);
@@ -263,12 +261,12 @@ const SignUpComponent = ({ ...others }) => {
                 )}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel>Confirm Password</InputLabel>
+                <InputLabel>{NAME_TRANS_VN.CONFIRM_PASSWORD}</InputLabel>
                 <OutlinedInput
                   type={showConfirmPassword ? "text" : "password"}
                   value={values.confirm_password}
                   name="confirm_password"
-                  label="Confirm Password"
+                  label={NAME_TRANS_VN.CONFIRM_PASSWORD}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   endAdornment={
@@ -301,7 +299,7 @@ const SignUpComponent = ({ ...others }) => {
                 error={Boolean(touched.phone_Number && errors.phone_Number)}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel>Phone Number</InputLabel>
+                <InputLabel>{NAME_TRANS_VN.PHONE_NUMBER}</InputLabel>
                 <OutlinedInput
                   type="phone"
                   value={values.phone_Number}
@@ -318,7 +316,7 @@ const SignUpComponent = ({ ...others }) => {
                 error={Boolean(touched.address && errors.address)}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel>Address</InputLabel>
+                <InputLabel>{NAME_TRANS_VN.ADDRESS}</InputLabel>
                 <OutlinedInput
                   type="text"
                   value={values.address}
@@ -344,8 +342,8 @@ const SignUpComponent = ({ ...others }) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 >
-                  <MenuItem value={2}>Student</MenuItem>
-                  <MenuItem value={3}>Teacher</MenuItem>
+                  <MenuItem value={2}>{NAME_TRANS_VN.STUDENT}</MenuItem>
+                  <MenuItem value={3}>{NAME_TRANS_VN.TEACHER}</MenuItem>
                 </Select>
                 {touched.user_Type && errors.user_Type && (
                   <FormHelperText error>{errors.user_Type}</FormHelperText>
@@ -354,28 +352,8 @@ const SignUpComponent = ({ ...others }) => {
               <Grid
                 container
                 alignItems="center"
-                justifyContent="space-between"
+                justifyContent="flex-end"
               >
-                <Grid item>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={checked}
-                        onChange={(event) => setChecked(event.target.checked)}
-                        name="checked"
-                        color="primary"
-                      />
-                    }
-                    label={
-                      <Typography variant="subtitle1">
-                        Agree with &nbsp;
-                        <Typography variant="subtitle1" component={Link} to="#">
-                          Terms & Condition.
-                        </Typography>
-                      </Typography>
-                    }
-                  />
-                </Grid>
                 <Grid item>
                   <Typography
                     variant="subtitle1"
@@ -384,7 +362,7 @@ const SignUpComponent = ({ ...others }) => {
                     component={Link}
                     to="/signin"
                   >
-                    Already Have Account?
+                    {NAME_TRANS_VN.ALREADY_HAVE_ACCOUNT}?
                   </Typography>
                 </Grid>
               </Grid>
@@ -402,7 +380,7 @@ const SignUpComponent = ({ ...others }) => {
                       loading ? <CircularProgress color="secondary" /> : null
                     }
                   >
-                    Sign up
+                    {NAME_TRANS_VN.SIGN_UP}
                   </Button>
                 </AnimateButton>
               </Box>

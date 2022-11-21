@@ -1,5 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Autocomplete, Box, Button, CircularProgress, Divider, FormControl, FormHelperText, Grid, IconButton, InputLabel, OutlinedInput, TextField, Toolbar, Typography, useTheme } from "@mui/material";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  FormControl,
+  FormHelperText,
+  Grid,
+  IconButton,
+  InputLabel,
+  OutlinedInput,
+  TextField,
+  Toolbar,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { IconX } from "@tabler/icons";
 import { useFormik } from "formik";
@@ -7,41 +23,60 @@ import { addClassSchema } from "../schema";
 import { useDispatch, useSelector } from "react-redux";
 import { addClassAction } from "../../../redux/class/operators";
 import AnimateButton from "../../../components/extended/AnimateButton";
-// import { MuiChipsInput } from "mui-chips-input";
-import _ from "lodash"
-import teacherMockData from "../../../config/data/teacher-mock-data.json"
-import studentMockData from "../../../config/data/student-mock_data.json"
+import { MuiChipsInput } from "mui-chips-input";
+import _ from "lodash";
+import teacherMockData from "../../../config/data/teacher-mock-data.json";
+import studentMockData from "../../../config/data/student-mock_data.json";
+import { NAME_TRANS_VN } from "../../../config/constant";
+import { sortStudentFunc, sortTeacherFunc } from "./Class";
 // import { sleep } from "../../../utils";
 
-const teachers = _.cloneDeep(teacherMockData)
-const students = _.cloneDeep(studentMockData)
+const teachers = _.cloneDeep(teacherMockData);
+const students = _.cloneDeep(studentMockData);
 
 const ClassAddModal = ({ open, handleClose }) => {
-  const theme = useTheme()
-  const dispatch = useDispatch()
-  const loading = useSelector(state => state.common.loading)
-  const [teacherList, setTeacherList] = useState([])
-  // const [teacherObject, setTeacherObject] = useState({})
-  const [studentList, setStudentList] = useState([])
-  // const [studentObject, setStudentObject] = useState({})
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.common.loading);
+  const [teacherList, setTeacherList] = useState([]);
+  const [studentList, setStudentList] = useState([]);
+  const [chipValues, setChipValues] = useState([]);
+
+  const teacherOptions = useMemo(
+    () =>
+      _.cloneDeep(teacherList).sort(sortTeacherFunc),
+    [teacherList]
+  );
+  const studentOptions = useMemo(
+    () =>
+      _.cloneDeep(studentList).sort(sortStudentFunc),
+    [studentList]
+  );
 
   const formik = useFormik({
     initialValues: {
       class_Name: "",
       teacher_Id: "",
-      student_Ids: "",
+      student_Ids: [],
       teacherInput: "",
-      studentInput: ""
+      studentInput: "",
     },
     validationSchema: addClassSchema,
     onSubmit: (values) => {
-      dispatch(addClassAction(values.class_Name, values.teacher_Id, values.student_Ids, addClassCallback))
-    }
-  })
+      dispatch(
+        addClassAction(
+          values.class_Name,
+          values.teacher_Id,
+          values.student_Ids,
+          addClassCallback
+        )
+      );
+    },
+  });
 
   const addClassCallback = (res, err) => {
-    console.log(res, err)
-    debugger
+    console.log(res, err);
+    debugger;
   };
 
   const {
@@ -52,39 +87,55 @@ const ClassAddModal = ({ open, handleClose }) => {
     isValid,
     touched,
     values,
-    setFieldValue
+    setFieldValue,
+    resetForm,
   } = formik;
 
-
   const initData = async () => {
+    setTeacherList(_.cloneDeep(teachers));
+    setStudentList(_.cloneDeep(students));
 
-    setTeacherList(_.cloneDeep(teachers.slice(10, 50)))
-    setStudentList(_.cloneDeep(students.slice(10, 50)))
-
-    console.log(studentList)
-  }
-
+    console.log(studentList);
+  };
 
   useEffect(() => {
-    initData()
-  }, [])
+    setFieldValue(
+      "student_Ids",
+      _.cloneDeep(chipValues).map((item) => item.student_Id)
+    );
+  }, [chipValues]);
 
-  console.log("[values]", values)
+  useEffect(() => {
+    !open && resetForm() && setChipValues([]);
+  }, [open]);
+
+  useEffect(() => {
+    initData();
+  }, []);
+
+  console.log("[values]", values);
   return (
     <CustomModal open={open} handleClose={handleClose}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="h4">New Class</Typography>
+        <Typography variant="h4">{NAME_TRANS_VN.CLASS_NEW}</Typography>
         <IconButton onClick={handleClose}>
-          <IconX strokeWidth={1.5}
+          <IconX
+            strokeWidth={1.5}
             size="1rem"
-            style={{ marginTop: "auto", marginBottom: "auto" }} />
+            style={{ marginTop: "auto", marginBottom: "auto" }}
+          />
         </IconButton>
       </Toolbar>
       <Divider />
       <Grid container p={2}>
         <Grid item xs={12}>
           <form noValidate onSubmit={handleSubmit} style={{ width: "100%" }}>
-            <Grid container columnGap={0.5} flexWrap="nowrap" justifyContent={{ xs: "space-evenly", md: "" }}>
+            <Grid
+              container
+              columnGap={0.5}
+              flexWrap="nowrap"
+              justifyContent={{ xs: "space-evenly", md: "" }}
+            >
               <Grid item xs={12} md={6}>
                 <FormControl
                   fullWidth
@@ -98,8 +149,7 @@ const ClassAddModal = ({ open, handleClose }) => {
                     name="class_Name"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    label="Tên Lớp"
-                    inputProps={{}}
+                    label={NAME_TRANS_VN.CLASS_NAME}
                   />
                   {touched.class_Name && errors.class_Name && (
                     <FormHelperText error>{errors.class_Name}</FormHelperText>
@@ -113,24 +163,31 @@ const ClassAddModal = ({ open, handleClose }) => {
                   sx={{ ...theme.typography.customInput }}
                 >
                   <Autocomplete
-                    options={_.cloneDeep(teacherList)}
-                    renderOption={(props, option) => <div {...props}>{`${option.teacher_Name} - ${option.teacher_Id}`}</div>}
-                    value={teacherList.find(item => item.teacher_Id === values.teacher_Id)}
+                    options={teacherOptions}
+                    renderOption={(props, option) => (
+                      <div
+                        {...props}
+                      >{`${option.teacher_Name} - ${option.teacher_Id}`}</div>
+                    )}
+                    value={teacherList.find(
+                      (item) => item.teacher_Id === values.teacher_Id
+                    )}
                     getOptionLabel={(option) => option.teacher_Name}
                     onChange={(event, newValue) => {
-                      newValue?.teacher_Id && setFieldValue("teacher_Id", newValue.teacher_Id)
+                      newValue?.teacher_Id &&
+                        setFieldValue("teacher_Id", newValue.teacher_Id);
                     }}
                     inputValue={values.teacherInput}
                     onInputChange={(event, newInputValue) => {
-                      setFieldValue("teacherInput", newInputValue)
-                      !newInputValue && setFieldValue("teacher_Id", "")
+                      setFieldValue("teacherInput", newInputValue);
+                      !newInputValue && setFieldValue("teacher_Id", "");
                     }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         onBlur={handleBlur}
                         error={Boolean(touched.teacher_Id && errors.teacher_Id)}
-                        label="Giảng Viên"
+                        label={NAME_TRANS_VN.TEACHER}
                         name="teacher_Id"
                       />
                     )}
@@ -141,40 +198,68 @@ const ClassAddModal = ({ open, handleClose }) => {
                 </FormControl>
               </Grid>
             </Grid>
-
-
-            {/* <FormControl
+            <FormControl
               fullWidth
-              error={Boolean(touched.class_Name && errors.class_Name)}
+              error={Boolean(touched.student_Ids && errors.student_Ids)}
               sx={{ ...theme.typography.customInput }}
             >
-              <MuiChipsInput value={_.cloneDeep(students).filter(item => values.student_Ids.includes(item.student_Id)).map(item => item.student_Name)} hideClearAll />
+              <MuiChipsInput
+                onDeleteChip={(chipValue) => {
+                  console.log("[chipValue]", chipValue)
+                  setChipValues((prevChips) =>
+                    prevChips.filter((item) => !chipValue.includes(item.student_Id))
+                  )
+                }}
+                onDeleteAllChips={() => setChipValues([])}
+                value={chipValues.map(
+                  (item) => item.student_Name + " - " + item.student_Id
+                )}
+                InputProps={{
+                  disabled: true,
+                  label: "Danh Sách Học Viên",
+                  placeholder: "",
+                  error: Boolean(touched.student_Ids && errors.student_Ids),
+                }}
+              />
+              {touched.student_Ids && errors.student_Ids && (
+                <FormHelperText error>{errors.student_Ids}</FormHelperText>
+              )}
               <Autocomplete
-                freeSolo
-                disableClearable
-                options={optionsStudent}
+                sx={{ marginTop: 2 }}
+                options={studentOptions}
+                renderOption={(props, option) => (
+                  <div
+                    {...props}
+                  >{`${option.student_Name} - ${option.student_Id}`}</div>
+                )}
+                getOptionLabel={(option) => option.student_Name}
                 onChange={(event, newValue) => {
-                  console.log("[newValue]", newValue)
+                  if (
+                    !newValue?.student_Id ||
+                    _.cloneDeep(chipValues).some(
+                      (item) => item?.student_Id === newValue?.student_Id
+                    )
+                  ) {
+                    return;
+                  }
+                  setChipValues((prevChips) =>
+                    [...prevChips, newValue].sort(sortStudentFunc)
+                  );
+                }}
+                inputValue={values.studentInput}
+                onInputChange={(event, newInputValue) => {
+                  setFieldValue("studentInput", newInputValue);
                 }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Tên sinh"
-                    InputProps={{
-                      ...params.InputProps,
-                      type: "search",
-                      value: values.studentInput,
-                      onChange: (event) => {
-                        setFieldValue("studentInput", event.target.value)
-                      },
-                    }}
+                    onBlur={handleBlur}
+                    label={NAME_TRANS_VN.STUDENT}
+                    name="student_Ids"
                   />
                 )}
               />
-              {touched.class_Name && errors.class_Name && (
-                <FormHelperText error>{errors.class_Name}</FormHelperText>
-              )}
-            </FormControl> */}
+            </FormControl>
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button
@@ -189,7 +274,7 @@ const ClassAddModal = ({ open, handleClose }) => {
                     loading ? <CircularProgress color="secondary" /> : null
                   }
                 >
-                  Add Class
+                  {NAME_TRANS_VN.CLASS_ADD}
                 </Button>
               </AnimateButton>
             </Box>

@@ -2,6 +2,7 @@ import { Autocomplete, Button, Grid, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import { initClassFilter } from "./Class";
+import { NAME_TRANS_VN } from "../../../config/constant";
 const ClassFilterComponent = ({ filter, setFilter, classList }) => {
   const [filterInput, setFilterInput] = useState(_.cloneDeep(initClassFilter));
 
@@ -18,9 +19,6 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
     ...new Set(
       _.cloneDeep(classList)
         .map((option) => option.class_Id)
-        .filter((item) =>
-          item.toLowerCase().includes(filterInput.class_Id.toLowerCase())
-        )
     ),
   ];
 
@@ -28,9 +26,6 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
     ...new Set(
       _.cloneDeep(classList)
         .map((option) => option.class_Name)
-        .filter((item) =>
-          item.toLowerCase().includes(filterInput.class_Name.toLowerCase())
-        )
     ),
   ];
 
@@ -38,9 +33,6 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
     ...new Set(
       _.cloneDeep(classList)
         .map((option) => option.teacher)
-        .filter((item) =>
-          item.toLowerCase().includes(filterInput.teacher.toLowerCase())
-        )
     ),
   ];
 
@@ -65,21 +57,17 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
             setFilterInput({ ...filterInput, class_Id: newValue });
           }}
           value={filterInput.class_Id}
+          onInputChange={(event) => {
+            setFilterInput({
+              ...filterInput,
+              class_Id: event.target.value,
+            });
+          }}
+          inputValue={filterInput.class_Id}
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Id"
-              InputProps={{
-                ...params.InputProps,
-                type: "search",
-                value: filterInput.class_Id,
-                onChange: (event) => {
-                  setFilterInput({
-                    ...filterInput,
-                    class_Id: event.target.value,
-                  });
-                },
-              }}
+              label={NAME_TRANS_VN.ID}
             />
           )}
         />
@@ -93,21 +81,17 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
             setFilterInput({ ...filterInput, class_Name: newValue });
           }}
           value={filterInput.class_Name}
+          onInputChange={(event) => {
+            setFilterInput({
+              ...filterInput,
+              class_Name: event.target.value,
+            });
+          }}
+          inputValue={filterInput.class_Name}
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Tên Lớp"
-              InputProps={{
-                ...params.InputProps,
-                type: "search",
-                value: filterInput.class_Name,
-                onChange: (event) => {
-                  setFilterInput({
-                    ...filterInput,
-                    class_Name: event.target.value,
-                  });
-                },
-              }}
+              label={NAME_TRANS_VN.CLASS_NAME}
             />
           )}
         />
@@ -121,21 +105,17 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
             setFilterInput({ ...filterInput, teacher: newValue });
           }}
           value={filterInput.teacher}
+          onInputChange={(event) => {
+            setFilterInput({
+              ...filterInput,
+              teacher: event.target.value,
+            });
+          }}
+          inputValue={filterInput.teacher}
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Giảng Viên"
-              InputProps={{
-                ...params.InputProps,
-                type: "search",
-                value: filterInput.teacher,
-                onChange: (event) => {
-                  setFilterInput({
-                    ...filterInput,
-                    teacher: event.target.value,
-                  });
-                },
-              }}
+              label={NAME_TRANS_VN.TEACHER}
             />
           )}
         />
@@ -154,7 +134,7 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
               onClick={handleApply}
               sx={{ width: "100%" }}
             >
-              Apply
+              {NAME_TRANS_VN.APPLY_FILTER}
             </Button>
           </Grid>
           <Grid item xs={6}>
@@ -164,7 +144,7 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
               onClick={handleClear}
               sx={{ width: "100%" }}
             >
-              Clear
+              {NAME_TRANS_VN.CLEAR_FILTER}
             </Button>
           </Grid>
         </Grid>

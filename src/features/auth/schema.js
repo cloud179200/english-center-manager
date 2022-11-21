@@ -15,7 +15,7 @@ export const signUpSchema = Yup.object().shape({
     .max(255)
     .label("confirm password")
     .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED)
-    .oneOf([Yup.ref("password"), null], "confirm password not match"),
+    .oneOf([Yup.ref("password"), null], FORM_VALIDATE_ERROR_MESSAGE.INVALID),
   first_Name: Yup.string()
     .max(255)
     .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),

@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import EmailSentPNG from "../../../assets/images/email-sent.png";
+import { NAME_TRANS_VN } from "../../../config/constant";
 
 const VerifyEmailComponent = () => {
   return (
@@ -16,7 +17,7 @@ const VerifyEmailComponent = () => {
     >
       <img src={EmailSentPNG} width="20%" />
       <Typography sx={{ fontWeight: "bold" }} variant="h3" color="black">
-        Check your email for verify account!
+        {NAME_TRANS_VN.CHECK_EMAIL_FOR_VERIFY}!
       </Typography>
     </Box>
   );

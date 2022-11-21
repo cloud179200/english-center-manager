@@ -3,11 +3,9 @@ import { useTheme } from "@mui/material/styles";
 import {
   Box,
   Button,
-  Checkbox,
   CircularProgress,
   Container,
   FormControl,
-  FormControlLabel,
   FormHelperText,
   Grid,
   IconButton,
@@ -27,13 +25,13 @@ import { signInAction } from "../../../redux/auth/operators";
 import { addNotificationAction } from "../../../redux/utils/operators";
 import { setUserAction } from "../../../redux/user/operators";
 import { signInSchema } from "../schema";
+import { NAME_TRANS_VN } from "../../../config/constant";
 
 const SignInComponent = ({ ...others }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.common.loading);
 
-  const [checked, setChecked] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -103,7 +101,7 @@ const SignInComponent = ({ ...others }) => {
                     variant="h3"
                     color="black"
                   >
-                    Sign in with Email address
+                    {NAME_TRANS_VN.SIGN_IN_TITLE}
                   </Typography>
                 </Box>
               </Grid>
@@ -122,8 +120,7 @@ const SignInComponent = ({ ...others }) => {
                   name="email"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  label="Email Address / Username"
-                  inputProps={{}}
+                  label={NAME_TRANS_VN.EMAIL}
                 />
                 {touched.email && errors.email && (
                   <FormHelperText error>{errors.email}</FormHelperText>
@@ -134,7 +131,7 @@ const SignInComponent = ({ ...others }) => {
                 error={Boolean(touched.password && errors.password)}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel>Password</InputLabel>
+                <InputLabel>{NAME_TRANS_VN.PASSWORD}</InputLabel>
                 <OutlinedInput
                   type={showPassword ? "text" : "password"}
                   value={values.password}
@@ -154,8 +151,7 @@ const SignInComponent = ({ ...others }) => {
                       </IconButton>
                     </InputAdornment>
                   }
-                  label="Password"
-                  inputProps={{}}
+                  label={NAME_TRANS_VN.PASSWORD}
                 />
                 {touched.password && errors.password && (
                   <FormHelperText error>{errors.password}</FormHelperText>
@@ -167,17 +163,6 @@ const SignInComponent = ({ ...others }) => {
                 justifyContent="space-between"
                 spacing={1}
               >
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={checked}
-                      onChange={(event) => setChecked(event.target.checked)}
-                      name="checked"
-                      color="primary"
-                    />
-                  }
-                  label="Remember me"
-                />
                 <Typography
                   variant="subtitle1"
                   color="secondary"
@@ -185,7 +170,7 @@ const SignInComponent = ({ ...others }) => {
                   component={Link}
                   to="/forgot"
                 >
-                  Forgot Password?
+                  {NAME_TRANS_VN.FORGOT_PASSWORD}?
                 </Typography>
                 <Typography
                   variant="subtitle1"
@@ -194,7 +179,7 @@ const SignInComponent = ({ ...others }) => {
                   component={Link}
                   to="/signup"
                 >
-                  Don't Have Account?
+                  {NAME_TRANS_VN.DONT_HAVE_ACCOUNT}?
                 </Typography>
               </Stack>
               <Box sx={{ mt: 2 }}>
@@ -211,7 +196,7 @@ const SignInComponent = ({ ...others }) => {
                       loading ? <CircularProgress color="secondary" /> : null
                     }
                   >
-                    Sign in
+                    {NAME_TRANS_VN.SIGN_IN}
                   </Button>
                 </AnimateButton>
               </Box>

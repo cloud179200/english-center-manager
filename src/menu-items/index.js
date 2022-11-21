@@ -1,4 +1,5 @@
 import * as icons from "@tabler/icons";
+import { NAME_TRANS_VN } from "../config/constant";
 
 const listMenuItems = {
   id: "dashboard",
@@ -25,32 +26,32 @@ const listMenuItemsAdmin = {
   type: "group",
   children: [
     {
-      id: "default",
-      title: "Trang chủ",
+      id: NAME_TRANS_VN.HOME,
+      title: NAME_TRANS_VN.HOME,
       type: "item",
       url: "/dashboard",
       icon: icons.IconDashboard,
       breadcrumbs: false,
     },
     {
-      id: "class",
-      title: "Lớp",
+      id: NAME_TRANS_VN.CLASS,
+      title: NAME_TRANS_VN.CLASS,
       type: "item",
       url: "/class",
       icon: icons.IconChalkboard,
       breadcrumbs: false,
     },
     {
-      id: "teacher",
-      title: "Giảng viên",
+      id: NAME_TRANS_VN.TEACHER,
+      title: NAME_TRANS_VN.TEACHER,
       type: "item",
       url: "/teacher",
       icon: icons.IconUser,
       breadcrumbs: false,
     },
     {
-      id: "student",
-      title: "Học viên",
+      id: NAME_TRANS_VN.STUDENT,
+      title: NAME_TRANS_VN.STUDENT,
       type: "item",
       url: "/student",
       icon: icons.IconUser,

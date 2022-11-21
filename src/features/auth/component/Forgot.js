@@ -20,6 +20,7 @@ import { addNotificationAction } from "../../../redux/utils/operators";
 import { forgotAction } from "../../../redux/auth/operators";
 import { useTheme } from "@mui/styles";
 import { Link } from "react-router-dom/cjs/react-router-dom";
+import { NAME_TRANS_VN } from "../../../config/constant";
 
 const ForgotComponent = ({ ...others }) => {
   const theme = useTheme();
@@ -80,7 +81,7 @@ const ForgotComponent = ({ ...others }) => {
                   variant="h3"
                   color="black"
                 >
-                  Forgot password
+                  {NAME_TRANS_VN.FORGOT_PASSWORD}
                 </Typography>
               </Box>
             </Grid>
@@ -92,20 +93,19 @@ const ForgotComponent = ({ ...others }) => {
               error={Boolean(touched.email && errors.email)}
               sx={{ ...theme.typography.customInput }}
             >
-              <InputLabel>Email</InputLabel>
+              <InputLabel>{NAME_TRANS_VN.EMAIL}</InputLabel>
               <OutlinedInput
                 type="email"
                 value={values.email}
                 name="email"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                label="Email Address / Username"
+                label={NAME_TRANS_VN.EMAIL}
                 inputProps={{}}
               />
               {touched.email && errors.email && (
                 <FormHelperText
                   error
-                  id="standard-weight-helper-text-email-login"
                 >
                   {errors.email}
                 </FormHelperText>
@@ -124,7 +124,7 @@ const ForgotComponent = ({ ...others }) => {
                 component={Link}
                 to="/signin"
               >
-                Back to signin
+                Quay Lại Đăng Nhập
               </Typography>
             </Stack>
             <Box sx={{ mt: 2 }}>
@@ -141,7 +141,7 @@ const ForgotComponent = ({ ...others }) => {
                     loading ? <CircularProgress color="secondary" /> : null
                   }
                 >
-                  Send email
+                  {NAME_TRANS_VN.SEND_EMAIL}
                 </Button>
               </AnimateButton>
             </Box>

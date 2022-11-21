@@ -11,9 +11,31 @@ import { useTimeout } from "react-use";
 import ClassAddModal from "./ClassAddModal";
 import ClassFilterComponent from "./ClassFilterComponent";
 import classMockData from "../../../config/data/class-mock-data.json"
+import { NAME_TRANS_VN } from "../../../config/constant";
 const rows = _.cloneDeep(classMockData)
 
 export const initClassFilter = { class_Id: "", class_Name: "", teacher: "" };
+
+export const sortStudentFunc = (a, b) =>
+  a.student_Name > b.student_Name
+    ? 1
+    : ((a.student_Name < b.student_Name)
+      ? -1
+      : 0)
+
+export const sortTeacherFunc = (a, b) =>
+  a.teacher_Name > b.teacher_Name
+    ? 1
+    : ((a.teacher_Name < b.teacher_Name)
+      ? -1
+      : 0)
+
+export const sortClassFunc = (a, b) =>
+  a.class_Name > b.class_Name
+    ? 1
+    : ((a.class_Name < b.class_Name)
+      ? -1
+      : 0)
 
 const ClassComponent = () => {
   const dispatch = useDispatch();
@@ -41,7 +63,7 @@ const ClassComponent = () => {
   }
 
   useEffect(() => {
-    setClassList(_.cloneDeep(rows));
+    setClassList(_.cloneDeep(rows).sort(sortClassFunc));
     return;
     dispatch(
       getClassAction((res, err) => {
@@ -85,7 +107,7 @@ const ClassComponent = () => {
                 width: "100%"
               }}
             >
-              New
+              {NAME_TRANS_VN.CLASS_NEW}
             </Button>
           </Grid>
           <Grid item md={12}>

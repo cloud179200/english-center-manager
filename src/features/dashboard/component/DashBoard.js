@@ -11,7 +11,7 @@ const DashBoard = () => {
 
   const loadData = async () => {
     if (userInfo?.token && userInfo?.email) {
-      dispatch(getUserDetailAction(userInfo?.email, () => {}));
+      dispatch(getUserDetailAction(userInfo?.email));
     }
   };
 

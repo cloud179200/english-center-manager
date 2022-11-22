@@ -76,7 +76,7 @@ const SignUpComponent = ({ ...others }) => {
     if (err) {
       return;
     }
-    dispatch(addNotificationAction("Sign up success!", false));
+    dispatch(addNotificationAction(res.message, false));
     history.push("/verify-email");
   };
 

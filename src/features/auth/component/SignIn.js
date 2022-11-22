@@ -49,14 +49,11 @@ const SignInComponent = ({ ...others }) => {
   });
 
   const signInCallback = (res, err) => {
-    dispatch(setUserAction({ email: "cloud179200@gmail.com", token: "token_test" }));
-    dispatch(addNotificationAction("Sign in success!", false));
-    return
     if (err) {
       return;
     }
     dispatch(setUserAction({ email: values.email, token: res.token }));
-    dispatch(addNotificationAction("Sign in success!", false));
+    dispatch(addNotificationAction(res.message, false));
   };
   const {
     errors,

@@ -31,6 +31,7 @@ export const signUpAction = (
         phone_Number,
         user_Type,
       });
+      debugger
       if (res?.data) {
         callback(res.data, null);
         return;
@@ -55,6 +56,7 @@ export const signInAction = (email, password, callback) => {
         email,
         password,
       });
+      debugger
       if (res?.data) {
         callback(res.data, null);
         return;
@@ -81,6 +83,7 @@ export const signOutAction = (email = null, callback = null) => {
         const res = await signOutService({
           email,
         });
+        debugger
         if (res?.data?.message) {
           dispatch(addNotificationAction(res?.data?.message, false))
           callback && callback(res?.data?.message, null);
@@ -109,6 +112,7 @@ export const forgotAction = (email, callback) => {
       const res = await signInService({
         email,
       });
+      debugger
       if (res?.data) {
         callback(res.data, null);
         return;

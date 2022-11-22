@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import { Zoom, TableRow, TableCell } from "@mui/material";
-import { uniqueKey } from "../../utils";
 import _ from "lodash";
 
 const CustomRow = ({ rowData, index }) => {
@@ -11,7 +10,7 @@ const CustomRow = ({ rowData, index }) => {
           Object.keys(_.cloneDeep(rowData)).map((key, id) => {
             return (
               <TableCell
-                key={uniqueKey()}
+                key={rowData + key + id}
                 component={id === 0 ? "th" : ""}
                 scope={id === 0 ? "row" : ""}
                 align={id === 0 ? "inherit" : "right"}

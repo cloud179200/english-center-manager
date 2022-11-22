@@ -215,7 +215,7 @@ const ClassAddModal = ({ open, handleClose }) => {
                   <div
                     {...props}
                   >{`${option.student_Name} - ${option.student_Id}`}&nbsp;
-                    {values.student_Ids.includes(option.student_Id) && <IconCircleCheck
+                    {(values?.student_Ids || []).includes(option.student_Id) && <IconCircleCheck
                       strokeWidth={1.5}
                       size="2rem"
                       style={{ marginTop: "auto", marginBottom: "auto" }}

@@ -47,7 +47,7 @@ const CustomModal = (props) => {
             maxWidth: matchDownSM ? "100%" : "1000px",
           }}
         >
-          <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Toolbar sx={{ display: "flex", justifyContent: "space-between", padding: 1 }}>
             <Typography variant="h4">{props.title}</Typography>
             <IconButton onClick={props.handleClose}>
               <IconX

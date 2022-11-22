@@ -107,7 +107,7 @@ const ClassComponent = () => {
   }, [filter, classList]);
 
   useEffect(() => {
-    setClassList(_.cloneDeep(rows).slice(0, 100).sort(sortClassFunc));
+    setClassList(_.cloneDeep(rows).sort(sortClassFunc));
     return;
     dispatch(
       getClassAction((res, err) => {
@@ -175,7 +175,6 @@ const ClassComponent = () => {
           </Grid>
         </CustomBox>
       </>}
-
     </>
   );
 };

@@ -12,8 +12,7 @@ import {
   Pagination,
   Box,
 } from "@mui/material";
-import React, { memo, useEffect, useState } from "react";
-import { uniqueKey } from "../../utils";
+import React, { useEffect, useState } from "react";
 import CustomRow from "./CustomRow";
 
 const CustomTable = ({ data = [], headers = [], title = "" }) => {
@@ -58,7 +57,7 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
             <TableRow>
               {headers.map((item, index) => (
                 <TableCell
-                  key={uniqueKey()}
+                  key={item + index}
                   align={index ? "right" : "inherit"}
                   sx={{
                     fontWeight: "bold",
@@ -72,7 +71,7 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
           </TableHead>
           <TableBody>
             {data.slice(page * 10 - 10, page * 10).map((row, id) => (
-              <CustomRow key={uniqueKey()} rowData={row} index={id} />
+              <CustomRow key={row + page + id} rowData={row} index={id} />
             ))}
           </TableBody>
         </Table>
@@ -90,4 +89,4 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
   );
 };
 
-export default memo(CustomTable);
+export default CustomTable;

@@ -1,10 +1,10 @@
 import React, { memo } from "react";
-import { Zoom, TableRow, TableCell } from "@mui/material";
+import { TableRow, TableCell, Fade } from "@mui/material";
 import _ from "lodash";
 
 const CustomRow = ({ rowData, index }) => {
   return (
-    <Zoom in={true} style={{ transitionDelay: `${index * 40}ms` }}>
+    <Fade in={true} style={{ transitionDelay: `${index * 40}ms` }}>
       <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
         {typeof rowData === "object" &&
           Object.keys(_.cloneDeep(rowData)).map((key, id) => {
@@ -20,7 +20,7 @@ const CustomRow = ({ rowData, index }) => {
             );
           })}
       </TableRow>
-    </Zoom>
+    </Fade>
   );
 };
 

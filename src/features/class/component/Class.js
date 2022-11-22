@@ -152,8 +152,8 @@ const ClassComponent = () => {
                 size="small"
                 endIcon={
                   <IconPlus
-                    strokeWidth={1.5}
-                    size="1.3rem"
+                    stroke={1.5}
+                    size="2rem"
                     style={{ marginTop: "auto", marginBottom: "auto" }}
                   />
                 }

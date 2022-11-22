@@ -202,9 +202,8 @@ const ClassEditModal = ({ open, handleClose, classObject }) => {
                   (item) => item.student_Name + " - " + item.student_Id
                 )}
                 InputProps={{
-                  disabled: true,
-                  label: "Danh Sách Học Viên",
-                  placeholder: "",
+                  value: "",
+                  placeholder: `chọn học viên từ trường "Học Viên"`,
                   error: Boolean(touched.student_Ids && errors.student_Ids),
                 }}
               />

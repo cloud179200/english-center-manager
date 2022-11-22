@@ -106,7 +106,7 @@ export default function componentStyleOverrides(theme) {
         root: {
           background: bgColor,
           borderRadius: `${theme?.customization?.borderRadius}px`,
-          "& .MuiOutlinedInput-notchedOutline": {
+          "& .MuiOutlinedInput-notchedOutline:not(.Mui-error)": {
             borderColor: theme.colors?.grey400,
           },
           "&:hover $notchedOutline": {

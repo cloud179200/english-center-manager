@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import CustomBox from "../custom-box/CustomBox";
 import { IconX } from "@tabler/icons";
+import PerfectScrollbar from "react-perfect-scrollbar";
 
 const CustomModal = (props) => {
   const theme = useTheme();
@@ -58,7 +59,9 @@ const CustomModal = (props) => {
             </IconButton>
           </Toolbar>
           <Divider />
-          {props.children}
+          <PerfectScrollbar component="div">
+            {props.children}
+          </PerfectScrollbar>
         </CustomBox>
       </Box>
     </Modal>

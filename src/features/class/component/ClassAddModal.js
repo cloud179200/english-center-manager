@@ -18,13 +18,13 @@ import { addClassSchema } from "../schema";
 import { useDispatch, useSelector } from "react-redux";
 import { addClassAction } from "../../../redux/class/operators";
 import AnimateButton from "../../../components/extended/AnimateButton";
-import { MuiChipsInput } from "mui-chips-input";
 import _ from "lodash";
 import teacherMockData from "../../../config/data/teacher-mock-data.json";
 import studentMockData from "../../../config/data/student-mock_data.json";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import { sortStudentFunc, sortTeacherFunc } from "./Class";
-// import { sleep } from "../../../utils";
+import CustomChipsInput from "../../../components/custom-input-chips/CustomInputChips";
+import { IconCircleCheck } from "@tabler/icons";
 
 const teachers = _.cloneDeep(teacherMockData);
 const students = _.cloneDeep(studentMockData);
@@ -35,7 +35,7 @@ const ClassAddModal = ({ open, handleClose }) => {
   const loading = useSelector((state) => state.common.loading);
   const [teacherList, setTeacherList] = useState([]);
   const [studentList, setStudentList] = useState([]);
-  const [chipValues, setChipValues] = useState([]);
+  const [studentChipValues, setStudentChipValues] = useState([]);
 
   const teacherOptions = useMemo(
     () =>
@@ -94,14 +94,14 @@ const ClassAddModal = ({ open, handleClose }) => {
   useEffect(() => {
     setFieldValue(
       "student_Ids",
-      _.cloneDeep(chipValues).map((item) => item.student_Id)
+      _.cloneDeep(studentChipValues).map((item) => item.student_Id)
     );
-  }, [chipValues]);
+  }, [studentChipValues]);
 
   useEffect(() => {
     if (!open) {
       resetForm();
-      setChipValues([]);
+      setStudentChipValues([]);
       return;
     }
   }, [open]);
@@ -188,14 +188,14 @@ const ClassAddModal = ({ open, handleClose }) => {
               error={Boolean(touched.student_Ids && errors.student_Ids)}
               sx={{ ...theme.typography.customInput }}
             >
-              <MuiChipsInput
+              <CustomChipsInput
                 onDeleteChip={(chipValue) => {
-                  setChipValues((prevChips) =>
+                  setStudentChipValues((prevChips) =>
                     prevChips.filter((item) => !chipValue.includes(item.student_Id))
                   )
                 }}
-                onDeleteAllChips={() => setChipValues([])}
-                value={chipValues.map(
+                onDeleteAllChips={() => setStudentChipValues([])}
+                value={studentChipValues.map(
                   (item) => item.student_Name + " - " + item.student_Id
                 )}
                 InputProps={{
@@ -214,19 +214,26 @@ const ClassAddModal = ({ open, handleClose }) => {
                 renderOption={(props, option) => (
                   <div
                     {...props}
-                  >{`${option.student_Name} - ${option.student_Id}`}</div>
+                  >{`${option.student_Name} - ${option.student_Id}`}&nbsp;
+                    {values.student_Ids.includes(option.student_Id) && <IconCircleCheck
+                      strokeWidth={1.5}
+                      size="2rem"
+                      style={{ marginTop: "auto", marginBottom: "auto" }}
+                      color={theme.palette.primary.main}
+                    />}
+                  </div>
                 )}
                 getOptionLabel={(option) => option.student_Name}
                 onChange={(event, newValue) => {
                   if (
                     !newValue?.student_Id ||
-                    _.cloneDeep(chipValues).some(
+                    _.cloneDeep(studentChipValues).some(
                       (item) => item?.student_Id === newValue?.student_Id
                     )
                   ) {
                     return;
                   }
-                  setChipValues((prevChips) =>
+                  setStudentChipValues((prevChips) =>
                     [...prevChips, newValue].sort(sortStudentFunc)
                   );
                 }}

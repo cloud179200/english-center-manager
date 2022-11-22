@@ -26,6 +26,7 @@ const CustomModal = (props) => {
       BackdropProps={{
         timeout: 500,
       }}
+      keepMounted
     >
       <Box
         sx={{

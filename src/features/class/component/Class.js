@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Grid, IconButton } from "@mui/material";
 import { IconPlus, IconTrash, IconEdit } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,15 +22,15 @@ export const sortStudentFunc = (a, b) =>
   a.student_Name > b.student_Name
     ? 1
     : a.student_Name < b.student_Name
-    ? -1
-    : 0;
+      ? -1
+      : 0;
 
 export const sortTeacherFunc = (a, b) =>
   a.teacher_Name > b.teacher_Name
     ? 1
     : a.teacher_Name < b.teacher_Name
-    ? -1
-    : 0;
+      ? -1
+      : 0;
 
 export const sortClassFunc = (a, b) =>
   a.class_Name > b.class_Name ? 1 : a.class_Name < b.class_Name ? -1 : 0;
@@ -61,34 +61,34 @@ const ClassComponent = () => {
     setDeleteClassObject(null);
   };
 
+  const Utility = useCallback(({ item }) => {
+    return <Grid container justifyContent="flex-end" flexWrap="nowrap" columnGap={2}>
+      <Grid item>
+        <IconButton onClick={() => setEditClassObject(_.cloneDeep(item))}>
+          <IconEdit
+            strokeWidth={1.5}
+            size="1.3rem"
+            style={{ marginTop: "auto", marginBottom: "auto" }}
+          />
+        </IconButton>
+      </Grid>
+      <Grid item>
+        <IconButton onClick={() => setDeleteClassObject(_.cloneDeep(item))} color="error">
+          <IconTrash
+            strokeWidth={1.5}
+            size="1.3rem"
+            style={{ marginTop: "auto", marginBottom: "auto" }}
+          />
+        </IconButton>
+      </Grid>
+    </Grid>
+  }, [])
+
   const classData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
     const cloneClassList = _.cloneDeep(classList).map((item) => ({
       ...item,
-      utility: (
-        <>
-          <Grid container justifyContent="flex-end" flexWrap="nowrap" columnGap={2}>
-            <Grid item>
-              <IconButton onClick={() => setEditClassObject(_.cloneDeep(item))}>
-                <IconEdit
-                  strokeWidth={1.5}
-                  size="1.3rem"
-                  style={{ marginTop: "auto", marginBottom: "auto" }}
-                />
-              </IconButton>
-            </Grid>
-            <Grid item>
-              <IconButton onClick={() => setDeleteClassObject(_.cloneDeep(item))} color="error">
-                <IconTrash
-                  strokeWidth={1.5}
-                  size="1.3rem"
-                  style={{ marginTop: "auto", marginBottom: "auto" }}
-                />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </>
-      ),
+      utility: <Utility item={item} />,
     }));
     if (!isFilter) {
       return cloneClassList;
@@ -119,10 +119,6 @@ const ClassComponent = () => {
     );
   }, []);
 
-  if (loading || !ready()) {
-    return <LoadingComponent />;
-  }
-
   return (
     <>
       <ClassDeleteModal
@@ -139,44 +135,47 @@ const ClassComponent = () => {
         open={openAddClassModal}
         handleClose={handleCloseAddClassModal}
       />
-      <CustomBox>
-        <ClassFilterComponent
-          filter={filter}
-          setFilter={setFilter}
-          classList={classList}
-        />
-      </CustomBox>
-      <CustomBox>
-        <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
-          <Grid item xs={12} md={2}>
-            <Button
-              variant="contained"
-              color="secondary"
-              size="small"
-              endIcon={
-                <IconPlus
-                  strokeWidth={1.5}
-                  size="1.3rem"
-                  style={{ marginTop: "auto", marginBottom: "auto" }}
-                />
-              }
-              onClick={handleOpenAddClassModal}
-              sx={{
-                width: "100%",
-              }}
-            >
-              {NAME_TRANS_VN.CLASS_NEW}
-            </Button>
+      {(loading || !ready()) ? <LoadingComponent /> : <>
+        <CustomBox>
+          <ClassFilterComponent
+            filter={filter}
+            setFilter={setFilter}
+            classList={classList}
+          />
+        </CustomBox>
+        <CustomBox>
+          <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
+            <Grid item xs={12} md={2}>
+              <Button
+                variant="contained"
+                color="secondary"
+                size="small"
+                endIcon={
+                  <IconPlus
+                    strokeWidth={1.5}
+                    size="1.3rem"
+                    style={{ marginTop: "auto", marginBottom: "auto" }}
+                  />
+                }
+                onClick={handleOpenAddClassModal}
+                sx={{
+                  width: "100%",
+                }}
+              >
+                {NAME_TRANS_VN.CLASS_NEW}
+              </Button>
+            </Grid>
+            <Grid item md={12}>
+              <CustomTable
+                headers={["Id", "Tên Lớp", "Sĩ Số", "Giảng Viên", "#"]}
+                data={classData}
+                title="Danh Sách Lớp"
+              />
+            </Grid>
           </Grid>
-          <Grid item md={12}>
-            <CustomTable
-              headers={["Id", "Tên Lớp", "Sĩ Số", "Giảng Viên", "#"]}
-              data={classData}
-              title="Danh Sách Lớp"
-            />
-          </Grid>
-        </Grid>
-      </CustomBox>
+        </CustomBox>
+      </>}
+
     </>
   );
 };

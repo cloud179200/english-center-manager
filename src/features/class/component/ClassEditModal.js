@@ -18,12 +18,14 @@ import { editClassSchema } from "../schema";
 import { useDispatch, useSelector } from "react-redux";
 import { addClassAction } from "../../../redux/class/operators";
 import AnimateButton from "../../../components/extended/AnimateButton";
-import { MuiChipsInput } from "mui-chips-input";
+
 import _ from "lodash";
 import teacherMockData from "../../../config/data/teacher-mock-data.json";
 import studentMockData from "../../../config/data/student-mock_data.json";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import { sortStudentFunc, sortTeacherFunc } from "./Class";
+import CustomChipsInput from "../../../components/custom-input-chips/CustomInputChips";
+import { IconCircleCheck } from "@tabler/icons";
 
 const teachers = _.cloneDeep(teacherMockData);
 const students = _.cloneDeep(studentMockData);
@@ -187,7 +189,7 @@ const ClassEditModal = ({ open, handleClose, classObject }) => {
               error={Boolean(touched.student_Ids && errors.student_Ids)}
               sx={{ ...theme.typography.customInput }}
             >
-              <MuiChipsInput
+              <CustomChipsInput
                 onDeleteChip={(chipValue) => {
                   setChipValues((prevChips) =>
                     prevChips.filter(
@@ -215,7 +217,14 @@ const ClassEditModal = ({ open, handleClose, classObject }) => {
                 renderOption={(props, option) => (
                   <div
                     {...props}
-                  >{`${option.student_Name} - ${option.student_Id}`}</div>
+                  >{`${option.student_Name} - ${option.student_Id}`}&nbsp;
+                    {values.student_Ids.includes(option.student_Id) && <IconCircleCheck
+                      strokeWidth={1.5}
+                      size="2rem"
+                      style={{ marginTop: "auto", marginBottom: "auto" }}
+                      color={theme.palette.primary.main}
+                    />}
+                  </div>
                 )}
                 getOptionLabel={(option) => option.student_Name}
                 onChange={(event, newValue) => {

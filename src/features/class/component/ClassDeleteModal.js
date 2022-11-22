@@ -12,7 +12,7 @@ const ClassDeleteModal = ({ open, handleClose, classObject }) => {
     await sleep(3000);
     setLoading(false);
   };
-  console.log("[class_]", classObject);
+
   return (
     <CustomModal
       open={open}

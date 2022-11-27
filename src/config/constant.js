@@ -14,9 +14,11 @@ export const FORM_VALIDATE_ERROR_MESSAGE = {
 };
 
 export const API_MESSAGE = {
-  SERVER_ERROR: "Server error",
-  UPDATE_SUCCESS: "Update successfuly!",
-  UPDATE_FAIL: "Update failed!",
+  SERVER_ERROR: "Lỗi Máy Chủ",
+  SUCCESS: "Thành Công",
+  FAIL: "Thất Bại",
+  UPDATE_SUCCESS: "Cập Nhật Thành Công",
+  UPDATE_FAIL: "Cập Nhật Thất Bại",
 };
 
 export const USER_ROLE = {
@@ -52,10 +54,12 @@ export const NAME_TRANS_VN = {
   ID: "Id",
   CLASS: "Lớp",
   CLASS_NAME: "Tên Lớp",
+  CLASS_FEE: "Phí",
   CLASS_NEW: "Lớp Mới",
   CLASS_EDIT: "Sửa Lớp",
   CLASS_DELETE: "Xóa Lớp",
   CLASS_ADD: "Thêm Lớp",
   APPLY_FILTER: "Áp Dụng Bộ Lọc",
-  CLEAR_FILTER: "Xóa Bộ Lọc"
+  CLEAR_FILTER: "Xóa Bộ Lọc",
+  TRANSACTION_HISTORY: "Lịch Sử Giao Dịch"
 }

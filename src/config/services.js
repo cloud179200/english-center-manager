@@ -26,6 +26,7 @@ export const postService = async (
       JSON.stringify(body),
       {
         headers,
+        timeout: 10000,
       }
     );
 
@@ -37,14 +38,14 @@ export const postService = async (
     }
   } catch (error) {
     if (error?.response?.status === HTTP_RESPONSE_STATUS.BAD_REQUEST) {
-      throw error;
+      throw error?.response;
     }
 
     if (error?.response?.status === HTTP_RESPONSE_STATUS.UNAUTHORIZED) {
       localStorage.clear();
       sessionStorage.clear();
       window.location.reload();
-      throw error;
+      throw error?.response;
     }
 
     if (
@@ -56,11 +57,11 @@ export const postService = async (
           return postService(url, body, messErr, true, false, retries - 1);
         }
       } catch (err) {
-        throw err;
+        throw error?.response;
       }
     }
     if (error?.response) {
-      throw error.response.message;
+      throw error.response;
     } else {
       throw error;
     }
@@ -87,6 +88,7 @@ export const getService = async (
 
     const response = await axios.get(`${config.HOST_API}${url}`, {
       headers,
+      timeout: 10000,
     });
     if (response.status === HTTP_RESPONSE_STATUS.OK) {
       return response.data;
@@ -96,14 +98,14 @@ export const getService = async (
     }
   } catch (error) {
     if (error?.response?.status === HTTP_RESPONSE_STATUS.BAD_REQUEST) {
-      throw error;
+      throw error?.response;
     }
 
     if (error?.response?.status === HTTP_RESPONSE_STATUS.UNAUTHORIZED) {
       localStorage.clear();
       sessionStorage.clear();
       window.location.reload();
-      throw error;
+      throw error?.response;
     }
 
     if (
@@ -115,11 +117,11 @@ export const getService = async (
           return getService(url, messErr, true, false, retries - 1);
         }
       } catch (err) {
-        throw err;
+        throw error?.response;
       }
     }
     if (error?.response) {
-      throw error.response.message;
+      throw error.response;
     } else {
       throw error;
     }

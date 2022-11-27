@@ -31,7 +31,7 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
   const optionsTeacher = [
     ...new Set(
       _.cloneDeep(classList)
-        .map((option) => option.teacher)
+        .map((option) => option.teacher_Name)
     ),
   ];
 
@@ -101,16 +101,16 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
           disableClearable
           options={optionsTeacher}
           onChange={(event, newValue) => {
-            setFilterInput({ ...filterInput, teacher: newValue });
+            setFilterInput({ ...filterInput, teacher_Name: newValue });
           }}
-          value={filterInput.teacher}
+          value={filterInput.teacher_Name}
           onInputChange={(event) => {
             setFilterInput({
               ...filterInput,
-              teacher: event.target.value,
+              teacher_Name: event.target.value,
             });
           }}
-          inputValue={filterInput.teacher}
+          inputValue={filterInput.teacher_Name}
           renderInput={(params) => (
             <TextField
               {...params}

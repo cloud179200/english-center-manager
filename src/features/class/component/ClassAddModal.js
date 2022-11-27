@@ -19,15 +19,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { addClassAction } from "../../../redux/class/operators";
 import AnimateButton from "../../../components/extended/AnimateButton";
 import _ from "lodash";
-import teacherMockData from "../../../config/data/teacher-mock-data.json";
-import studentMockData from "../../../config/data/student-mock_data.json";
+// import teacherMockData from "../../../config/data/teacher-mock-data.json";
+// import studentMockData from "../../../config/data/student-mock_data.json";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import { sortStudentFunc, sortTeacherFunc } from "./Class";
 import CustomChipsInput from "../../../components/custom-input-chips/CustomInputChips";
 import { IconCircleCheck } from "@tabler/icons";
+import { getListStudentAction } from "./../../../redux/student/operators";
+import { getListTeacherAction } from "./../../../redux/teacher/operators";
 
-const teachers = _.cloneDeep(teacherMockData);
-const students = _.cloneDeep(studentMockData);
+// const teachers = _.cloneDeep(teacherMockData);
+// const students = _.cloneDeep(studentMockData);
 
 const ClassAddModal = ({ open, handleClose }) => {
   const theme = useTheme();
@@ -38,13 +40,11 @@ const ClassAddModal = ({ open, handleClose }) => {
   const [studentChipValues, setStudentChipValues] = useState([]);
 
   const teacherOptions = useMemo(
-    () =>
-      _.cloneDeep(teacherList).sort(sortTeacherFunc),
+    () => _.cloneDeep(teacherList).sort(sortTeacherFunc),
     [teacherList]
   );
   const studentOptions = useMemo(
-    () =>
-      _.cloneDeep(studentList).sort(sortStudentFunc),
+    () => _.cloneDeep(studentList).sort(sortStudentFunc),
     [studentList]
   );
 
@@ -52,9 +52,10 @@ const ClassAddModal = ({ open, handleClose }) => {
     initialValues: {
       class_Name: "",
       teacher_Id: "",
-      student_Ids: [],
+      list_Student: [],
       teacherInput: "",
       studentInput: "",
+      class_Fee: 0,
     },
     validationSchema: addClassSchema,
     onSubmit: (values) => {
@@ -62,7 +63,8 @@ const ClassAddModal = ({ open, handleClose }) => {
         addClassAction(
           values.class_Name,
           values.teacher_Id,
-          values.student_Ids,
+          values.list_Student,
+          values.class_Fee,
           addClassCallback
         )
       );
@@ -70,8 +72,9 @@ const ClassAddModal = ({ open, handleClose }) => {
   });
 
   const addClassCallback = (res, err) => {
-    console.log(res, err);
-    debugger;
+    if (err) {
+      return;
+    }
   };
 
   const {
@@ -87,14 +90,40 @@ const ClassAddModal = ({ open, handleClose }) => {
   } = formik;
 
   const initData = async () => {
-    setTeacherList(_.cloneDeep(teachers));
-    setStudentList(_.cloneDeep(students));
+    dispatch(
+      getListStudentAction((res, err) => {
+        if (err) return;
+        setStudentList(
+          _.cloneDeep(
+            res.map((item) => ({
+              student_Id: item.student_Id,
+              student_Name: item.first_Name + " " + item.last_Name,
+            }))
+          )
+        );
+      })
+    );
+    dispatch(
+      getListTeacherAction((res, err) => {
+        if (err) return;
+        setTeacherList(
+          _.cloneDeep(
+            res.map((item) => ({
+              teacher_Id: item.teacher_Id,
+              teacher_Name: item.first_Name + " " + item.last_Name,
+            }))
+          )
+        );
+      })
+    );
   };
 
   useEffect(() => {
     setFieldValue(
-      "student_Ids",
-      _.cloneDeep(studentChipValues).map((item) => item.student_Id)
+      "list_Student",
+      _.cloneDeep(studentChipValues).map((item) => ({
+        student_Id: item.student_Id,
+      }))
     );
   }, [studentChipValues]);
 
@@ -111,7 +140,11 @@ const ClassAddModal = ({ open, handleClose }) => {
   }, []);
 
   return (
-    <CustomModal open={open} handleClose={handleClose} title={NAME_TRANS_VN.CLASS_NEW}>
+    <CustomModal
+      open={open}
+      handleClose={handleClose}
+      title={NAME_TRANS_VN.CLASS_NEW}
+    >
       <Grid container p={2}>
         <Grid item xs={12}>
           <form noValidate onSubmit={handleSubmit} style={{ width: "100%" }}>
@@ -157,7 +190,9 @@ const ClassAddModal = ({ open, handleClose }) => {
                     value={teacherList.find(
                       (item) => item.teacher_Id === values.teacher_Id
                     )}
-                    getOptionLabel={(option) => option.teacher_Name}
+                    getOptionLabel={(option) =>
+                      (option.teacher_Name || option.teacher_Id)
+                    }
                     onChange={(event, newValue) => {
                       newValue?.teacher_Id &&
                         setFieldValue("teacher_Id", newValue.teacher_Id);
@@ -185,14 +220,16 @@ const ClassAddModal = ({ open, handleClose }) => {
             </Grid>
             <FormControl
               fullWidth
-              error={Boolean(touched.student_Ids && errors.student_Ids)}
+              error={Boolean(touched.list_Student && errors.list_Student)}
               sx={{ ...theme.typography.customInput }}
             >
               <CustomChipsInput
                 onDeleteChip={(chipValue) => {
                   setStudentChipValues((prevChips) =>
-                    prevChips.filter((item) => !chipValue.includes(item.student_Id))
-                  )
+                    prevChips.filter(
+                      (item) => !chipValue.includes(item.student_Id)
+                    )
+                  );
                 }}
                 onDeleteAllChips={() => setStudentChipValues([])}
                 value={studentChipValues.map(
@@ -201,28 +238,33 @@ const ClassAddModal = ({ open, handleClose }) => {
                 InputProps={{
                   value: "",
                   placeholder: `chọn học viên từ trường "Học Viên"`,
-                  error: Boolean(touched.student_Ids && errors.student_Ids),
+                  error: Boolean(touched.list_Student && errors.list_Student),
                 }}
               />
-              {touched.student_Ids && errors.student_Ids && (
-                <FormHelperText error>{errors.student_Ids}</FormHelperText>
+              {touched.list_Student && errors.list_Student && (
+                <FormHelperText error>{errors.list_Student}</FormHelperText>
               )}
               <Autocomplete
                 sx={{ marginTop: 2 }}
                 options={studentOptions}
                 renderOption={(props, option) => (
-                  <div
-                    {...props}
-                  >{`${option.student_Name} - ${option.student_Id}`}&nbsp;
-                    {(values?.student_Ids || []).includes(option.student_Id) && <IconCircleCheck
-                      strokeWidth={1.5}
-                      size="2rem"
-                      style={{ marginTop: "auto", marginBottom: "auto" }}
-                      color={theme.palette.primary.main}
-                    />}
+                  <div {...props}>
+                    {`${option.student_Name} - ${option.student_Id}`}&nbsp;
+                    {_.cloneDeep(values?.list_Student || [])
+                      .map((item) => item.student_Id)
+                      .includes(option.student_Id) && (
+                      <IconCircleCheck
+                        strokeWidth={1.5}
+                        size="2rem"
+                        style={{ marginTop: "auto", marginBottom: "auto" }}
+                        color={theme.palette.primary.main}
+                      />
+                    )}
                   </div>
                 )}
-                getOptionLabel={(option) => option.student_Name}
+                getOptionLabel={(option) =>
+                  (option.student_Name || option.student_Id)
+                }
                 onChange={(event, newValue) => {
                   if (
                     !newValue?.student_Id ||
@@ -245,11 +287,31 @@ const ClassAddModal = ({ open, handleClose }) => {
                     {...params}
                     onBlur={handleBlur}
                     label={NAME_TRANS_VN.STUDENT}
-                    name="student_Ids"
+                    name="list_Student"
                   />
                 )}
               />
             </FormControl>
+            <Grid item xs={12}>
+              <FormControl
+                fullWidth
+                error={Boolean(touched.class_Fee && errors.class_Fee)}
+                sx={{ ...theme.typography.customInput }}
+              >
+                <InputLabel>{NAME_TRANS_VN.CLASS_FEE}</InputLabel>
+                <OutlinedInput
+                  type="number"
+                  value={values.class_Fee}
+                  name="class_Fee"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  label={NAME_TRANS_VN.CLASS_FEE}
+                />
+                {touched.class_Fee && errors.class_Fee && (
+                  <FormHelperText error>{errors.class_Fee}</FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button
@@ -261,7 +323,9 @@ const ClassAddModal = ({ open, handleClose }) => {
                   variant="contained"
                   color="secondary"
                   endIcon={
-                    loading ? <CircularProgress color="secondary" size={20} /> : null
+                    loading ? (
+                      <CircularProgress color="secondary" size={20} />
+                    ) : null
                   }
                 >
                   {NAME_TRANS_VN.CLASS_ADD}

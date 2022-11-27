@@ -29,7 +29,7 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
   if (!data.length) {
     return (
       <Grid container>
-        <Grid item md="12">
+        <Grid item md={12}>
           <Typography variant="h3" align="center" mb={2} mt={2}>
             Không có dữ liệu để hiển thị
           </Typography>

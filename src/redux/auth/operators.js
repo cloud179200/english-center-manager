@@ -31,17 +31,19 @@ export const signUpAction = (
         phone_Number,
         user_Type,
       });
-      debugger
-      if (res?.data) {
-        callback(res.data, null);
+      if (res) {
+        callback(res, null);
         return;
       }
       callback(null, API_MESSAGE.SERVER_ERROR);
     } catch (error) {
       dispatch(
-        addNotificationAction(error?.message || API_MESSAGE.SERVER_ERROR, true)
+        addNotificationAction(
+          error?.data?.message || API_MESSAGE.SERVER_ERROR,
+          true
+        )
       );
-      callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
+      callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
     } finally {
       dispatch(setLoadingAction(false));
     }
@@ -56,17 +58,19 @@ export const signInAction = (email, password, callback) => {
         email,
         password,
       });
-      debugger
-      if (res?.data) {
-        callback(res.data, null);
+      if (res) {
+        callback(res, null);
         return;
       }
       callback(null, API_MESSAGE.SERVER_ERROR);
     } catch (error) {
       dispatch(
-        addNotificationAction(error?.message || API_MESSAGE.SERVER_ERROR, true)
+        addNotificationAction(
+          error?.data?.message || API_MESSAGE.SERVER_ERROR,
+          true
+        )
       );
-      callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
+      callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
     } finally {
       dispatch(setLoadingAction(false));
       dispatch({ type: SIGN_IN_ACTION });
@@ -83,16 +87,16 @@ export const signOutAction = (email = null, callback = null) => {
         const res = await signOutService({
           email,
         });
-        debugger
         if (res?.data?.message) {
-          dispatch(addNotificationAction(res?.data?.message, false))
+          dispatch(addNotificationAction(res?.data?.message, false));
           callback && callback(res?.data?.message, null);
           return;
         }
         callback && callback(null, API_MESSAGE.SERVER_ERROR);
       }
     } catch (error) {
-      callback && callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
+      callback &&
+        callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
     } finally {
       dispatch(resetCustomizationReducerAction());
       dispatch(resetUserReducerAction());
@@ -112,7 +116,6 @@ export const forgotAction = (email, callback) => {
       const res = await signInService({
         email,
       });
-      debugger
       if (res?.data) {
         callback(res.data, null);
         return;
@@ -120,9 +123,12 @@ export const forgotAction = (email, callback) => {
       callback(null, API_MESSAGE.SERVER_ERROR);
     } catch (error) {
       dispatch(
-        addNotificationAction(error?.message || API_MESSAGE.SERVER_ERROR, true)
+        addNotificationAction(
+          error?.data?.messagee || API_MESSAGE.SERVER_ERROR,
+          true
+        )
       );
-      callback(null, error?.message || API_MESSAGE.SERVER_ERROR);
+      callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
     } finally {
       dispatch(setLoadingAction(false));
     }

@@ -29,6 +29,11 @@ export const PRIVATE_ROUTE = [
     component: <DashBoard />,
   },
   {
+    path: "/transaction/history",
+    exact: true,
+    component: <DashBoard />,
+  },
+  {
     path: "/user/settings",
     exact: true,
     component: <div>Settings</div>,

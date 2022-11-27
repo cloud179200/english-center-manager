@@ -1,10 +1,10 @@
 import { getService } from "../../config/services";
 
-export const getUserService = async (email) => {
+export const getListTeacherService = async () => {
   try {
     return await getService(
-      `/api/users/get-by-email?p_email=`+email,
-      "get user fail",
+      `/api/teachers/get-all`,
+      "get teachers fail",
       true
     );
   } catch (error) {

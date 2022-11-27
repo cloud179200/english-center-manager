@@ -8,7 +8,7 @@ const listMenuItems = {
   children: [
     {
       id: "default",
-      title: "Dashboard",
+      title: NAME_TRANS_VN.HOME,
       type: "item",
       url: "/dashboard",
       icon: icons.IconDashboard,
@@ -55,6 +55,14 @@ const listMenuItemsAdmin = {
       type: "item",
       url: "/student",
       icon: icons.IconUser,
+      breadcrumbs: false,
+    },
+    {
+      id: NAME_TRANS_VN.TRANSACTION_HISTORY,
+      title: NAME_TRANS_VN.TRANSACTION_HISTORY,
+      type: "item",
+      url: "/transaction/history",
+      icon: icons.IconHistory,
       breadcrumbs: false,
     },
   ],

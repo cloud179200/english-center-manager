@@ -24,7 +24,7 @@ const userReducer = (state = _.cloneDeep(initialState), action) => {
         ...state,
         userDetail: action.data,
       };
-    case actionTypes.REMOVE_USER_DETIAL_ACTION:
+    case actionTypes.REMOVE_USER_DETAIL_ACTION:
       return {
         ...state,
         userDetail: action.data,

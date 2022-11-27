@@ -1,7 +1,7 @@
 import { API_MESSAGE } from "../../config/constant";
 import { addNotificationAction, setLoadingAction } from "../utils/operators";
 import {
-  GET_USER_DETIAL_ACTION,
+  GET_USER_DETAIL_ACTION,
   RESET_USER_REDUCER_ACTION,
   SET_USER_ACTION,
   SET_USER_DETAIL_ACTION,
@@ -10,18 +10,17 @@ import { getUserService } from "./services";
 
 export const getUserDetailAction = (email) => {
   return async (dispatch) => {
-    dispatch({ type: GET_USER_DETIAL_ACTION });
+    dispatch({ type: GET_USER_DETAIL_ACTION });
     dispatch(setLoadingAction(true));
     try {
       const res = await getUserService(email);
-      debugger
       if (res?.data) {
         dispatch(setUserDetailAction(res.data));
         return;
       }
     } catch (error) {
       dispatch(
-        addNotificationAction(error?.message || API_MESSAGE.SERVER_ERROR, true)
+        addNotificationAction(error?.data?.message || API_MESSAGE.SERVER_ERROR, true)
       );
     } finally {
       dispatch(setLoadingAction(false));

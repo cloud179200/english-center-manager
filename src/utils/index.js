@@ -19,3 +19,20 @@ export const sleep = (ms) => {
 export const uniqueKey = () => {
   return uuidv4()
 }
+
+export const sortStudentFunc = (a, b) =>
+  a.student_Name > b.student_Name
+    ? 1
+    : a.student_Name < b.student_Name
+    ? -1
+    : 0;
+
+export const sortTeacherFunc = (a, b) =>
+  a.teacher_Name > b.teacher_Name
+    ? 1
+    : a.teacher_Name < b.teacher_Name
+    ? -1
+    : 0;
+
+export const sortClassFunc = (a, b) =>
+  a.class_Name > b.class_Name ? 1 : a.class_Name < b.class_Name ? -1 : 0;

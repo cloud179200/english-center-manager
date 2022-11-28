@@ -20,11 +20,11 @@ import { setClassAction } from "../../../redux/class/operators";
 import AnimateButton from "../../../components/extended/AnimateButton";
 import _ from "lodash";
 import { NAME_TRANS_VN } from "../../../config/constant";
-import { sortStudentFunc, sortTeacherFunc } from "./Class";
 import CustomChipsInput from "../../../components/custom-input-chips/CustomInputChips";
 import { IconCircleCheck } from "@tabler/icons";
 import { getListStudentAction } from "./../../../redux/student/operators";
 import { getListTeacherAction } from "./../../../redux/teacher/operators";
+import { sortStudentFunc, sortTeacherFunc } from "../../../utils";
 
 const ClassEditModal = ({
   open,
@@ -211,9 +211,7 @@ const ClassEditModal = ({
                     }}
                     inputValue={values.teacherInput}
                     onInputChange={(event, newInputValue) => {
-                      debugger
-                      setFieldValue("teacherInput", newInputValue);
-                      
+                      newInputValue && setFieldValue("teacherInput", newInputValue);
                     }}
                     renderInput={(params) => (
                       <TextField

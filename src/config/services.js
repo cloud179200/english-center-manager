@@ -20,6 +20,7 @@ export const postService = async (
     if (isAuthorization) {
       headers["Authorization"] =
         "Bearer " + (localStorage.getItem("auth_token") || "");
+      headers["Access-Control-Allow-Origin"] = "*";
     }
     const response = await axios.post(
       `${config.HOST_API}${url}`,
@@ -84,6 +85,7 @@ export const getService = async (
     if (isAuthorization) {
       headers["Authorization"] =
         "Bearer " + (localStorage.getItem("auth_token") || "");
+      headers["Access-Control-Allow-Origin"] = "*";
     }
 
     const response = await axios.get(`${config.HOST_API}${url}`, {

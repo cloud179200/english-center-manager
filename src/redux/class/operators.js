@@ -77,11 +77,11 @@ export const setClassAction = (
   class_Name,
   teacher_Id,
   list_Student,
+  class_Fee,
   callback
 ) => {
   return async (dispatch) => {
     dispatch({ type: SET_CLASS_ACTION });
-    dispatch(setLoadingAction(true));
     try {
       const res = await setClassService({
         class_Id,
@@ -92,6 +92,7 @@ export const setClassAction = (
           },
         ],
         list_Student,
+        class_Fee,
       });
       if (res) {
         dispatch(addNotificationAction(API_MESSAGE.UPDATE_SUCCESS, false));
@@ -106,8 +107,6 @@ export const setClassAction = (
         )
       );
       callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
-    } finally {
-      dispatch(setLoadingAction(false));
     }
   };
 };
@@ -115,20 +114,24 @@ export const setClassAction = (
 export const removeClassAction = (class_Id, callback) => {
   return async (dispatch) => {
     dispatch({ type: ADD_CLASS_ACTION });
-    dispatch(setLoadingAction(true));
     try {
       const res = await deleteClassService({
         class_Id,
       });
-      if (res?.data) {
-        callback(res.data, null);
+      if (res) {
+        dispatch(addNotificationAction(API_MESSAGE.SUCCESS, true));
+        callback(res, null);
         return;
       }
       callback(null, API_MESSAGE.SERVER_ERROR);
     } catch (error) {
       callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
-    } finally {
-      dispatch(setLoadingAction(false));
+      dispatch(
+        addNotificationAction(
+          error?.data?.message || API_MESSAGE.SERVER_ERROR,
+          true
+        )
+      );
     }
   };
 };

@@ -30,7 +30,7 @@ export const setClassService = async (body) => {
 
 export const deleteClassService = async (body) => {
   try {
-    return await postService(`/api/class/remove`, body, "remove class fail", true);
+    return await postService(`/api/class/remove?p_class_id=${body.class_Id}`, body, "remove class fail", true);
   } catch (error) {
     throw error;
   }

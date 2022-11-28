@@ -6,6 +6,9 @@ import SignUpComponent from "../features/auth/component/SignUp";
 import VerifyEmailComponent from "../features/auth/component/VerifyEmail";
 import ClassComponent from "../features/class/component/Class";
 import DashBoard from "../features/dashboard/component/DashBoard";
+import Settings from "../features/settings/component/Settings";
+import StudentComponent from "../features/student/component/Student";
+import TeacherComponent from "../features/teacher/component/Teacher";
 
 export const PRIVATE_ROUTE = [
   {
@@ -18,15 +21,16 @@ export const PRIVATE_ROUTE = [
     exact: true,
     component: <ClassComponent />,
   },
-  {
-    path: "/student",
-    exact: true,
-    component: <DashBoard />,
-  },
+
   {
     path: "/teacher",
     exact: true,
-    component: <DashBoard />,
+    component: <TeacherComponent />,
+  },
+  {
+    path: "/student",
+    exact: true,
+    component: <StudentComponent />,
   },
   {
     path: "/transaction/history",
@@ -36,7 +40,7 @@ export const PRIVATE_ROUTE = [
   {
     path: "/user/settings",
     exact: true,
-    component: <div>Settings</div>,
+    component: <Settings />,
   },
 ];
 export const AUTH_ROUTE = [

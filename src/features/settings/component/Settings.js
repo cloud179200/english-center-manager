@@ -1,0 +1,36 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import CustomBox from "../../../components/custom-box/CustomBox";
+import LoadingComponent from "../../../utils/component/Loading";
+import { sleep } from "../../../utils";
+import { addNotificationAction } from "../../../redux/utils/operators";
+
+const Settings = () => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  const initData = async () => {
+    setLoading(true);
+    await sleep(2000);
+    dispatch(addNotificationAction("Success", false));
+    setLoading(false);
+  };
+  useEffect(() => {
+    initData();
+  }, []);
+
+  return (
+    <>
+      {loading ? (
+        <LoadingComponent />
+      ) : (
+        <>
+          <CustomBox>Bing Chilling</CustomBox>
+          <CustomBox>Brrr</CustomBox>
+        </>
+      )}
+    </>
+  );
+};
+
+export default Settings;

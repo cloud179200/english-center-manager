@@ -4,6 +4,7 @@ import CustomBox from "../../../components/custom-box/CustomBox";
 import LoadingComponent from "../../../utils/component/Loading";
 import { sleep } from "../../../utils";
 import { addNotificationAction } from "../../../redux/utils/operators";
+import { Grid, Typography } from "@mui/material";
 
 const Settings = () => {
   const dispatch = useDispatch();
@@ -25,8 +26,13 @@ const Settings = () => {
         <LoadingComponent />
       ) : (
         <>
-          <CustomBox>Bing Chilling</CustomBox>
-          <CustomBox>Brrr</CustomBox>
+          <CustomBox>
+            <Typography variant="h4">Settings</Typography>
+            <Grid container>
+              <Grid item xs={12}></Grid>
+              <Grid item xs={12}></Grid>
+            </Grid>
+          </CustomBox>
         </>
       )}
     </>

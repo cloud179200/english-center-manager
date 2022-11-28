@@ -14,25 +14,24 @@ import {
 } from "@mui/material";
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { useFormik } from "formik";
-import { editClassSchema } from "../schema";
+import { addClassSchema } from "../schema";
 import { useDispatch, useSelector } from "react-redux";
-import { addClassAction } from "../../../redux/class/operators";
+import { setClassAction } from "../../../redux/class/operators";
 import AnimateButton from "../../../components/extended/AnimateButton";
-
 import _ from "lodash";
-// import teacherMockData from "../../../config/data/teacher-mock-data.json";
-// import studentMockData from "../../../config/data/student-mock_data.json";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import { sortStudentFunc, sortTeacherFunc } from "./Class";
 import CustomChipsInput from "../../../components/custom-input-chips/CustomInputChips";
 import { IconCircleCheck } from "@tabler/icons";
-import { getListStudentAction } from "../../../redux/student/operators";
-import { getListTeacherAction } from "../../../redux/teacher/operators";
+import { getListStudentAction } from "./../../../redux/student/operators";
+import { getListTeacherAction } from "./../../../redux/teacher/operators";
 
-// const teachers = _.cloneDeep(teacherMockData);
-// const students = _.cloneDeep(studentMockData);
-
-const ClassEditModal = ({ open, handleClose, classObject }) => {
+const ClassEditModal = ({
+  open,
+  handleClose,
+  classObject,
+  reloadClassData,
+}) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.common.loading);
@@ -51,20 +50,23 @@ const ClassEditModal = ({ open, handleClose, classObject }) => {
 
   const formik = useFormik({
     initialValues: {
+      class_Id: 0,
       class_Name: "",
-      teacher_Id: "",
+      teacher_Id: 0,
       list_Student: [],
       teacherInput: "",
       studentInput: "",
       class_Fee: 0,
     },
-    validationSchema: editClassSchema,
+    validationSchema: addClassSchema,
     onSubmit: (values) => {
       dispatch(
-        addClassAction(
+        setClassAction(
+          values.class_Id,
           values.class_Name,
           values.teacher_Id,
           values.list_Student,
+          values.class_Fee,
           editClassCallback
         )
       );
@@ -75,6 +77,7 @@ const ClassEditModal = ({ open, handleClose, classObject }) => {
     if (err) {
       return;
     }
+    reloadClassData();
   };
 
   const {
@@ -86,8 +89,7 @@ const ClassEditModal = ({ open, handleClose, classObject }) => {
     touched,
     values,
     setFieldValue,
-    resetForm,
-    setValues,
+    resetForm
   } = formik;
 
   const initData = async () => {
@@ -134,17 +136,24 @@ const ClassEditModal = ({ open, handleClose, classObject }) => {
       setStudentChipValues([]);
       return;
     }
-    console.log(classObject);
-    if (open && classObject) {
-      setValues({ ...values, ...classObject });
-      setStudentChipValues(_.cloneDeep(classObject).list_Student)
-    }
+    initData();
+    const { class_Name, class_Id, class_Fee, teacher_Id, teacher_Name, list_Student } = classObject;
+    // class_Id: 0,
+    //   class_Name: "",
+    //   teacher_Id: 0,
+    //   list_Student: [],
+    //   teacherInput: "",
+    //   studentInput: "",
+    //   class_Fee: 0,
+    setFieldValue("class_Id", class_Id);
+    setFieldValue("class_Name", class_Name);
+    setFieldValue("teacher_Id", teacher_Id);
+    setFieldValue("teacherInput", `${teacher_Name} - ${teacher_Id}`);
+    setFieldValue("class_Fee", class_Fee);
+    setStudentChipValues(_.cloneDeep(list_Student))
   }, [open]);
 
-  useEffect(() => {
-    initData();
-  }, []);
-  console.log("[values]", values);
+  console.log("[values]", values)
   return (
     <CustomModal
       open={open}
@@ -193,11 +202,8 @@ const ClassEditModal = ({ open, handleClose, classObject }) => {
                         {...props}
                       >{`${option.teacher_Name} - ${option.teacher_Id}`}</div>
                     )}
-                    value={teacherList.find(
-                      (item) => item.teacher_Id === values.teacher_Id
-                    )}
                     getOptionLabel={(option) =>
-                      option.teacher_Name || option.teacher_Id
+                      `${option.teacher_Name} - ${option.teacher_Id}`
                     }
                     onChange={(event, newValue) => {
                       newValue?.teacher_Id &&
@@ -205,8 +211,9 @@ const ClassEditModal = ({ open, handleClose, classObject }) => {
                     }}
                     inputValue={values.teacherInput}
                     onInputChange={(event, newInputValue) => {
+                      debugger
                       setFieldValue("teacherInput", newInputValue);
-                      !newInputValue && setFieldValue("teacher_Id", "");
+                      
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -256,9 +263,9 @@ const ClassEditModal = ({ open, handleClose, classObject }) => {
                 renderOption={(props, option) => (
                   <div {...props}>
                     {`${option.student_Name} - ${option.student_Id}`}&nbsp;
-                    {(values?.list_Student || []).includes(
-                      option.student_Id
-                    ) && (
+                    {_.cloneDeep(values?.list_Student || [])
+                      .map((item) => item.student_Id)
+                      .includes(option.student_Id) && (
                       <IconCircleCheck
                         strokeWidth={1.5}
                         size="2rem"
@@ -269,7 +276,7 @@ const ClassEditModal = ({ open, handleClose, classObject }) => {
                   </div>
                 )}
                 getOptionLabel={(option) =>
-                  option.student_Name || option.student_Id
+                  `${option.student_Name} - ${option.student_Id}`
                 }
                 onChange={(event, newValue) => {
                   if (
@@ -334,7 +341,7 @@ const ClassEditModal = ({ open, handleClose, classObject }) => {
                     ) : null
                   }
                 >
-                  {NAME_TRANS_VN.CLASS_ADD}
+                  {NAME_TRANS_VN.CLASS_EDIT}
                 </Button>
               </AnimateButton>
             </Box>

@@ -7,7 +7,6 @@ import CustomBox from "../../../components/custom-box/CustomBox";
 import _ from "lodash";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import LoadingComponent from "../../../utils/component/Loading";
-import { useTimeout } from "react-use";
 import ClassAddModal from "./ClassAddModal";
 import ClassFilterComponent from "./ClassFilterComponent";
 // import classMockData from "../../../config/data/class-mock-data.json";
@@ -16,7 +15,11 @@ import ClassEditModal from "./ClassEditModal";
 import ClassDeleteModal from "./ClassDeleteModal";
 // const rows = _.cloneDeep(classMockData);
 
-export const initClassFilter = { class_Id: "", class_Name: "", teacher_Name: "" };
+export const initClassFilter = {
+  class_Id: "",
+  class_Name: "",
+  teacher_Name: "",
+};
 
 export const sortStudentFunc = (a, b) =>
   a.student_Name > b.student_Name
@@ -38,7 +41,6 @@ export const sortClassFunc = (a, b) =>
 const ClassComponent = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.common.loading);
-  const [ready] = useTimeout(2000);
   const [filter, setFilter] = useState(_.cloneDeep(initClassFilter));
   const [classList, setClassList] = useState([]);
   const [openAddClassModal, setOpenAddClassModal] = useState(false);
@@ -46,7 +48,6 @@ const ClassComponent = () => {
   const [deleteClassObject, setDeleteClassObject] = useState(null);
 
   const handleCloseAddClassModal = () => {
-    getClassData();
     setOpenAddClassModal(false);
   };
 
@@ -55,12 +56,10 @@ const ClassComponent = () => {
   };
 
   const handleCloseEditClassModal = () => {
-    getClassData();
     setEditClassObject(null);
   };
 
   const handleCloseDeleteClassModal = () => {
-    getClassData();
     setDeleteClassObject(null);
   };
 
@@ -81,13 +80,19 @@ const ClassComponent = () => {
               item.list_Teacher[0].last_Name,
             class_Fee: item.class_Fee,
             teacher_Id: item.list_Teacher[0].teacher_Id,
-            list_Student: item.list_Student.map(i => i.student_Id)
+            list_Student: item.list_Student.map((i) => ({
+              student_Id: i.student_Id,
+              student_Name: i.first_Name + " " + i.last_Name,
+            })),
           }))
         );
       })
     );
   };
 
+  const reloadClassData = () => {
+    getClassData();
+  }
   const Utility = useCallback(({ item }) => {
     return (
       <Grid container justifyContent="flex-end" flexWrap="nowrap" columnGap={2}>
@@ -137,7 +142,9 @@ const ClassComponent = () => {
         filter.class_Name ? item.class_Name.includes(filter.class_Name) : true
       )
       .filter((item) =>
-        filter.teacher_Name ? item.teacher_Name.includes(filter.teacher_Name) : true
+        filter.teacher_Name
+          ? item.teacher_Name.includes(filter.teacher_Name)
+          : true
       );
     return filterResult;
   }, [filter, classList]);
@@ -152,17 +159,20 @@ const ClassComponent = () => {
         classObject={deleteClassObject}
         open={Boolean(deleteClassObject)}
         handleClose={handleCloseDeleteClassModal}
+        reloadClassData={reloadClassData}
       />
       <ClassEditModal
         classObject={editClassObject}
         open={Boolean(editClassObject)}
         handleClose={handleCloseEditClassModal}
+        reloadClassData={reloadClassData}
       />
       <ClassAddModal
         open={openAddClassModal}
         handleClose={handleCloseAddClassModal}
+        reloadClassData={reloadClassData}
       />
-      {loading || !ready() ? (
+      {loading ? (
         <LoadingComponent />
       ) : (
         <>

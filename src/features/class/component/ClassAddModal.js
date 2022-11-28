@@ -15,12 +15,10 @@ import {
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { useFormik } from "formik";
 import { addClassSchema } from "../schema";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addClassAction } from "../../../redux/class/operators";
 import AnimateButton from "../../../components/extended/AnimateButton";
 import _ from "lodash";
-// import teacherMockData from "../../../config/data/teacher-mock-data.json";
-// import studentMockData from "../../../config/data/student-mock_data.json";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import { sortStudentFunc, sortTeacherFunc } from "./Class";
 import CustomChipsInput from "../../../components/custom-input-chips/CustomInputChips";
@@ -28,13 +26,10 @@ import { IconCircleCheck } from "@tabler/icons";
 import { getListStudentAction } from "./../../../redux/student/operators";
 import { getListTeacherAction } from "./../../../redux/teacher/operators";
 
-// const teachers = _.cloneDeep(teacherMockData);
-// const students = _.cloneDeep(studentMockData);
-
-const ClassAddModal = ({ open, handleClose }) => {
+const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.common.loading);
+  const [loading, setLoading] = useState(false);
   const [teacherList, setTeacherList] = useState([]);
   const [studentList, setStudentList] = useState([]);
   const [studentChipValues, setStudentChipValues] = useState([]);
@@ -51,7 +46,7 @@ const ClassAddModal = ({ open, handleClose }) => {
   const formik = useFormik({
     initialValues: {
       class_Name: "",
-      teacher_Id: "",
+      teacher_Id: 0,
       list_Student: [],
       teacherInput: "",
       studentInput: "",
@@ -75,6 +70,7 @@ const ClassAddModal = ({ open, handleClose }) => {
     if (err) {
       return;
     }
+    reloadClassData();
   };
 
   const {
@@ -90,6 +86,7 @@ const ClassAddModal = ({ open, handleClose }) => {
   } = formik;
 
   const initData = async () => {
+    setLoading(true);
     dispatch(
       getListStudentAction((res, err) => {
         if (err) return;
@@ -103,8 +100,10 @@ const ClassAddModal = ({ open, handleClose }) => {
         );
       })
     );
+    setLoading(true);
     dispatch(
       getListTeacherAction((res, err) => {
+        setLoading(false);
         if (err) return;
         setTeacherList(
           _.cloneDeep(
@@ -133,11 +132,8 @@ const ClassAddModal = ({ open, handleClose }) => {
       setStudentChipValues([]);
       return;
     }
-  }, [open]);
-
-  useEffect(() => {
     initData();
-  }, []);
+  }, [open]);
 
   return (
     <CustomModal
@@ -191,7 +187,7 @@ const ClassAddModal = ({ open, handleClose }) => {
                       (item) => item.teacher_Id === values.teacher_Id
                     )}
                     getOptionLabel={(option) =>
-                      (option.teacher_Name || option.teacher_Id)
+                      `${option.teacher_Name} - ${option.teacher_Id}`
                     }
                     onChange={(event, newValue) => {
                       newValue?.teacher_Id &&
@@ -200,7 +196,7 @@ const ClassAddModal = ({ open, handleClose }) => {
                     inputValue={values.teacherInput}
                     onInputChange={(event, newInputValue) => {
                       setFieldValue("teacherInput", newInputValue);
-                      !newInputValue && setFieldValue("teacher_Id", "");
+                      !newInputValue && setFieldValue("teacher_Id", 0);
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -263,7 +259,7 @@ const ClassAddModal = ({ open, handleClose }) => {
                   </div>
                 )}
                 getOptionLabel={(option) =>
-                  (option.student_Name || option.student_Id)
+                  `${option.student_Name} - ${option.student_Id}`
                 }
                 onChange={(event, newValue) => {
                   if (

@@ -1,8 +1,10 @@
 import React from "react";
-const { Box } = require("@mui/material");
+import { useSelector } from "react-redux";
+const { Box, CircularProgress } = require("@mui/material");
 import loadingSVG from "../../assets/images/loading.svg";
 
 const LoadingComponent = () => {
+  const userDetail = useSelector((state) => state.user.userDetail);
   return (
     <Box
       sx={{
@@ -13,7 +15,11 @@ const LoadingComponent = () => {
         height: "100vh",
       }}
     >
-      <img src={loadingSVG} width="20%" />
+      {userDetail?.user_Type ? (
+        <CircularProgress size={40} />
+      ) : (
+        <img src={loadingSVG} width="20%" />
+      )}
     </Box>
   );
 };

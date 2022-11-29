@@ -7,7 +7,7 @@ import _ from "lodash";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import LoadingComponent from "../../../utils/component/Loading";
 import StudentFilterComponent from "./StudentFilterComponent";
-import { getListStudentAction } from './../../../redux/student/operators';
+import { getListStudentAction } from '../../../redux/student/operators';
 
 export const initStudentFilter = {
   student_Id: "",

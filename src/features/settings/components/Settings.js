@@ -27,7 +27,7 @@ const Settings = () => {
       ) : (
         <>
           <CustomBox>
-            <Typography variant="h4">Settings</Typography>
+            <Typography variant="h3">Settings</Typography>
             <Grid container>
               <Grid item xs={12}></Grid>
               <Grid item xs={12}></Grid>

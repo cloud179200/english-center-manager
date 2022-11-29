@@ -15,26 +15,21 @@ import {
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { useFormik } from "formik";
 import { addClassSchema } from "../schema";
-import { useDispatch, useSelector } from "react-redux";
-import { setClassAction } from "../../../redux/class/operators";
+import { useDispatch } from "react-redux";
+import { addClassAction } from "../../../redux/class/operators";
 import AnimateButton from "../../../components/extended/AnimateButton";
 import _ from "lodash";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import CustomChipsInput from "../../../components/custom-input-chips/CustomInputChips";
 import { IconCircleCheck } from "@tabler/icons";
-import { getListStudentAction } from "./../../../redux/student/operators";
-import { getListTeacherAction } from "./../../../redux/teacher/operators";
+import { getListStudentAction } from "../../../redux/student/operators";
+import { getListTeacherAction } from "../../../redux/teacher/operators";
 import { sortStudentFunc, sortTeacherFunc } from "../../../utils";
 
-const ClassEditModal = ({
-  open,
-  handleClose,
-  classObject,
-  reloadClassData,
-}) => {
+const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.common.loading);
+  const [loading, setLoading] = useState(false);
   const [teacherList, setTeacherList] = useState([]);
   const [studentList, setStudentList] = useState([]);
   const [studentChipValues, setStudentChipValues] = useState([]);
@@ -50,7 +45,6 @@ const ClassEditModal = ({
 
   const formik = useFormik({
     initialValues: {
-      class_Id: 0,
       class_Name: "",
       teacher_Id: 0,
       list_Student: [],
@@ -61,19 +55,18 @@ const ClassEditModal = ({
     validationSchema: addClassSchema,
     onSubmit: (values) => {
       dispatch(
-        setClassAction(
-          values.class_Id,
+        addClassAction(
           values.class_Name,
           values.teacher_Id,
           values.list_Student,
           values.class_Fee,
-          editClassCallback
+          addClassCallback
         )
       );
     },
   });
 
-  const editClassCallback = (res, err) => {
+  const addClassCallback = (res, err) => {
     if (err) {
       return;
     }
@@ -89,10 +82,11 @@ const ClassEditModal = ({
     touched,
     values,
     setFieldValue,
-    resetForm
+    resetForm,
   } = formik;
 
   const initData = async () => {
+    setLoading(true);
     dispatch(
       getListStudentAction((res, err) => {
         if (err) return;
@@ -106,8 +100,10 @@ const ClassEditModal = ({
         );
       })
     );
+    setLoading(true);
     dispatch(
       getListTeacherAction((res, err) => {
+        setLoading(false);
         if (err) return;
         setTeacherList(
           _.cloneDeep(
@@ -137,28 +133,13 @@ const ClassEditModal = ({
       return;
     }
     initData();
-    const { class_Name, class_Id, class_Fee, teacher_Id, teacher_Name, list_Student } = classObject;
-    // class_Id: 0,
-    //   class_Name: "",
-    //   teacher_Id: 0,
-    //   list_Student: [],
-    //   teacherInput: "",
-    //   studentInput: "",
-    //   class_Fee: 0,
-    setFieldValue("class_Id", class_Id);
-    setFieldValue("class_Name", class_Name);
-    setFieldValue("teacher_Id", teacher_Id);
-    setFieldValue("teacherInput", `${teacher_Name} - ${teacher_Id}`);
-    setFieldValue("class_Fee", class_Fee);
-    setStudentChipValues(_.cloneDeep(list_Student))
   }, [open]);
 
-  console.log("[values]", values)
   return (
     <CustomModal
       open={open}
       handleClose={handleClose}
-      title={NAME_TRANS_VN.CLASS_EDIT}
+      title={NAME_TRANS_VN.CLASS_NEW}
     >
       <Grid container p={2}>
         <Grid item xs={12}>
@@ -202,6 +183,9 @@ const ClassEditModal = ({
                         {...props}
                       >{`${option.teacher_Name} - ${option.teacher_Id}`}</div>
                     )}
+                    value={teacherList.find(
+                      (item) => item.teacher_Id === values.teacher_Id
+                    )}
                     getOptionLabel={(option) =>
                       `${option.teacher_Name} - ${option.teacher_Id}`
                     }
@@ -211,7 +195,8 @@ const ClassEditModal = ({
                     }}
                     inputValue={values.teacherInput}
                     onInputChange={(event, newInputValue) => {
-                      newInputValue && setFieldValue("teacherInput", newInputValue);
+                      setFieldValue("teacherInput", newInputValue);
+                      !newInputValue && setFieldValue("teacher_Id", 0);
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -339,7 +324,7 @@ const ClassEditModal = ({
                     ) : null
                   }
                 >
-                  {NAME_TRANS_VN.CLASS_EDIT}
+                  {NAME_TRANS_VN.CLASS_ADD}
                 </Button>
               </AnimateButton>
             </Box>
@@ -350,4 +335,4 @@ const ClassEditModal = ({
   );
 };
 
-export default ClassEditModal;
+export default ClassAddModal;

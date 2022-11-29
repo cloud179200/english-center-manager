@@ -1,14 +1,14 @@
 import React from "react";
 import { Redirect } from "react-router";
-import ForgotComponent from "../features/auth/component/Forgot";
-import SignInComponent from "../features/auth/component/SignIn";
-import SignUpComponent from "../features/auth/component/SignUp";
-import VerifyEmailComponent from "../features/auth/component/VerifyEmail";
-import ClassComponent from "../features/class/component/Class";
-import DashBoard from "../features/dashboard/component/DashBoard";
-import Settings from "../features/settings/component/Settings";
-import StudentComponent from "../features/student/component/Student";
-import TeacherComponent from "../features/teacher/component/Teacher";
+import ForgotComponent from "../features/auth/components/Forgot";
+import SignInComponent from "../features/auth/components/SignIn";
+import SignUpComponent from "../features/auth/components/SignUp";
+import VerifyEmailComponent from "../features/auth/components/VerifyEmail";
+import ClassComponent from "../features/class/components/Class";
+import DashBoard from "../features/dashboard/components/DashBoard";
+import Settings from "../features/settings/components/Settings";
+import StudentComponent from "../features/student/components/Student";
+import TeacherComponent from "../features/teacher/components/Teacher";
 
 export const PRIVATE_ROUTE = [
   {

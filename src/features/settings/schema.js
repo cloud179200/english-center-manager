@@ -12,7 +12,8 @@ export const changePasswordSchema = Yup.object().shape({
     }
     return Yup.string()
       .max(255)
-      .not(Yup.ref("password", FORM_VALIDATE_ERROR_MESSAGE.INVALID))
+      .min(6, FORM_VALIDATE_ERROR_MESSAGE.INVALID_LENGTH)
+      .notOneOf([Yup.ref("password")], FORM_VALIDATE_ERROR_MESSAGE.INVALID)
       .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED);
   }),
   confirm_new_password: Yup.string().when("new_password", (password) => {
@@ -21,6 +22,7 @@ export const changePasswordSchema = Yup.object().shape({
     }
     return Yup.string()
       .max(255)
+      .min(6, FORM_VALIDATE_ERROR_MESSAGE.INVALID_LENGTH)
       .required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED)
       .oneOf(
         [Yup.ref("new_password"), null],

@@ -57,15 +57,15 @@ const StudentComponent = () => {
 
   const teacherData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
-    const cloneClassList = _.cloneDeep(studentList).map((item) => ({
+    const cloneStudentList = _.cloneDeep(studentList).map((item) => ({
       student_Id: item.student_Id,
       student_Name: item.student_Name,
       utility: <Utility />,
     }));
     if (!isFilter) {
-      return cloneClassList;
+      return cloneStudentList;
     }
-    let filterResult = cloneClassList
+    let filterResult = cloneStudentList
       .filter((item) =>
         filter.student_Id ? item.student_Id.includes(filter.student_Id) : true
       )

@@ -64,5 +64,6 @@ export const NAME_TRANS_VN = {
   CLEAR_FILTER: "Xóa Bộ Lọc",
   TRANSACTION_HISTORY: "Lịch Sử Giao Dịch",
   CHANGE_PASSWORD: "Đổi Mật Khẩu",
-  INFORMATION: "Thông Tin"
+  INFORMATION: "Thông Tin",
+  DESCRIPTION: "Ghi Chú"
 }

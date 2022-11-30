@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import { initTransactionFilter } from "./Transaction";
 import { NAME_TRANS_VN } from "../../../config/constant";
-const ClassFilterComponent = ({ filter, setFilter, transactionList }) => {
+const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
   const [filterInput, setFilterInput] = useState(
     _.cloneDeep(initTransactionFilter)
   );
@@ -74,7 +74,7 @@ const ClassFilterComponent = ({ filter, setFilter, transactionList }) => {
           }}
           inputValue={filterInput.transaction_Description}
           renderInput={(params) => (
-            <TextField {...params} label={NAME_TRANS_VN.TEACHER} />
+            <TextField {...params} label={NAME_TRANS_VN.DESCRIPTION} />
           )}
         />
       </Grid>
@@ -110,4 +110,4 @@ const ClassFilterComponent = ({ filter, setFilter, transactionList }) => {
     </Grid>
   );
 };
-export default ClassFilterComponent;
+export default TransactionFilterComponent;

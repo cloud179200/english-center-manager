@@ -6,7 +6,7 @@ import CustomBox from "../../../components/custom-box/CustomBox";
 import _ from "lodash";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import LoadingComponent from "../../../utils/component/Loading";
-import ClassFilterComponent from "./TeacherFilterComponent";
+import TeacherFilterComponent from "./TeacherFilterComponent";
 import { getListTeacherAction } from "../../../redux/teacher/operators";
 
 export const initTeacherFilter = {
@@ -58,15 +58,15 @@ const TeacherComponent = () => {
 
   const teacherData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
-    const cloneClassList = _.cloneDeep(teacherList).map((item) => ({
+    const cloneTeacherList = _.cloneDeep(teacherList).map((item) => ({
       teacher_Id: item.teacher_Id,
       teacher_Name: item.teacher_Name,
       utility: <Utility />,
     }));
     if (!isFilter) {
-      return cloneClassList;
+      return cloneTeacherList;
     }
-    let filterResult = cloneClassList
+    let filterResult = cloneTeacherList
       .filter((item) =>
         filter.teacher_Id ? item.teacher_Id.includes(filter.teacher_Id) : true
       )
@@ -89,7 +89,7 @@ const TeacherComponent = () => {
       ) : (
         <>
           <CustomBox>
-            <ClassFilterComponent
+            <TeacherFilterComponent
               filter={filter}
               setFilter={setFilter}
               teacherList={teacherList}

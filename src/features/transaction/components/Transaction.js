@@ -10,7 +10,7 @@ import CustomBox from "../../../components/custom-box/CustomBox";
 import _ from "lodash";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import LoadingComponent from "../../../utils/component/Loading";
-import ClassFilterComponent from "./TransactionFilterComponent";
+import TransactionFilterComponent from "./TransactionFilterComponent";
 import { getListTeacherAction } from "../../../redux/teacher/operators";
 import transactionMockData from "../../../config/data/transaction-mock-data.json";
 export const initTransactionFilter = {
@@ -77,7 +77,7 @@ const TransactionComponent = () => {
 
   const transactionData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
-    const cloneClassList = _.cloneDeep(transactionList).map((item) => ({
+    const cloneTransactionList = _.cloneDeep(transactionList).map((item) => ({
       transaction_Id: item.transaction_Id,
       transaction_Description: item.transaction_Description,
       transaction_Total: (
@@ -98,9 +98,9 @@ const TransactionComponent = () => {
       utility: <Utility item={item} />,
     }));
     if (!isFilter) {
-      return cloneClassList;
+      return cloneTransactionList;
     }
-    let filterResult = cloneClassList
+    let filterResult = cloneTransactionList
       .filter((item) =>
         filter.transaction_Id
           ? item.transaction_Id.includes(filter.transaction_Id)
@@ -127,7 +127,7 @@ const TransactionComponent = () => {
       ) : (
         <>
           <CustomBox>
-            <ClassFilterComponent
+            <TransactionFilterComponent
               filter={filter}
               setFilter={setFilter}
               transactionList={transactionList}

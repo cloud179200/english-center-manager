@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import { initTeacherFilter } from "./Teacher";
 import { NAME_TRANS_VN } from "../../../config/constant";
-const ClassFilterComponent = ({ filter, setFilter, teacherList }) => {
+const TeacherFilterComponent = ({ filter, setFilter, teacherList }) => {
   const [filterInput, setFilterInput] = useState(
     _.cloneDeep(initTeacherFilter)
   );
@@ -110,4 +110,4 @@ const ClassFilterComponent = ({ filter, setFilter, teacherList }) => {
     </Grid>
   );
 };
-export default ClassFilterComponent;
+export default TeacherFilterComponent;

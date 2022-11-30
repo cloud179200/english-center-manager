@@ -14,6 +14,8 @@ import {
   FormControl,
   FormHelperText,
   Grid,
+  IconButton,
+  InputAdornment,
   InputLabel,
   OutlinedInput,
   Typography,
@@ -25,6 +27,7 @@ import { NAME_TRANS_VN } from "./../../../config/constant";
 import { getUserDetailAction } from "./../../../redux/user/operators";
 import { sleep } from "../../../utils";
 import WangBinh from "../../../assets/images/users/nguoiwangbinh.jpg";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Settings = () => {
   const theme = useTheme();
@@ -32,12 +35,21 @@ const Settings = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const userDetail = useSelector((state) => state.user.userDetail);
   const dispatch = useDispatch();
-  const [chilling, setChilling] = useState();
-  const initialValues = useMemo(() => ({
-    password: "",
-    new_password: "",
-    confirm_new_password: "",
-  }));
+  const [chilling, setChilling] = useState(null);
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    new_password: false,
+    confirm_new_password: false,
+  });
+
+  const initialValues = useMemo(
+    () => ({
+      password: "",
+      new_password: "",
+      confirm_new_password: "",
+    }),
+    []
+  );
 
   const formik = useFormik({
     initialValues,
@@ -119,7 +131,7 @@ const Settings = () => {
                           height="300"
                           src={WangBinh}
                           alt="wang ping"
-                          sx={(chilling || {})}
+                          sx={chilling || {}}
                         />
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
@@ -156,13 +168,34 @@ const Settings = () => {
                     >
                       <InputLabel>{NAME_TRANS_VN.PASSWORD}</InputLabel>
                       <OutlinedInput
-                        type="pass"
                         value={values.password}
                         name="password"
                         onBlur={handleBlur}
                         onChange={handleChange}
                         label={NAME_TRANS_VN.PASSWORD}
                         autoComplete="off"
+                        type={showPassword.password ? "text" : "password"}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={() =>
+                                setShowPassword({
+                                  ...showPassword,
+                                  password: !showPassword.password,
+                                })
+                              }
+                              edge="end"
+                              size="large"
+                            >
+                              {showPassword.password ? (
+                                <Visibility />
+                              ) : (
+                                <VisibilityOff />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        }
                       />
                       {touched.password && errors.password && (
                         <FormHelperText error>{errors.password}</FormHelperText>
@@ -179,13 +212,34 @@ const Settings = () => {
                     >
                       <InputLabel>{NAME_TRANS_VN.NEW_PASSWORD}</InputLabel>
                       <OutlinedInput
-                        type="password"
                         value={values.new_password}
                         name="new_password"
                         onBlur={handleBlur}
                         onChange={handleChange}
                         label={NAME_TRANS_VN.NEW_PASSWORD}
                         autoComplete="off"
+                        type={showPassword.new_password ? "text" : "password"}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={() =>
+                                setShowPassword({
+                                  ...showPassword,
+                                  new_password: !showPassword.new_password,
+                                })
+                              }
+                              edge="end"
+                              size="large"
+                            >
+                              {showPassword.new_password ? (
+                                <Visibility />
+                              ) : (
+                                <VisibilityOff />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        }
                       />
                       {touched.new_password && errors.new_password && (
                         <FormHelperText error>
@@ -205,13 +259,39 @@ const Settings = () => {
                     >
                       <InputLabel>{NAME_TRANS_VN.CONFIRM_PASSWORD}</InputLabel>
                       <OutlinedInput
-                        type="pass"
                         value={values.confirm_new_password}
                         name="confirm_new_password"
                         onBlur={handleBlur}
                         onChange={handleChange}
                         label={NAME_TRANS_VN.CLASS_NAME}
                         autoComplete="off"
+                        type={
+                          showPassword.confirm_new_password
+                            ? "text"
+                            : "password"
+                        }
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={() =>
+                                setShowPassword({
+                                  ...showPassword,
+                                  confirm_new_password:
+                                    !showPassword.confirm_new_password,
+                                })
+                              }
+                              edge="end"
+                              size="large"
+                            >
+                              {showPassword.confirm_new_password ? (
+                                <Visibility />
+                              ) : (
+                                <VisibilityOff />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        }
                       />
                       {touched.confirm_new_password &&
                         errors.confirm_new_password && (

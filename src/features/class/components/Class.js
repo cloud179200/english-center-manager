@@ -82,7 +82,7 @@ const ClassComponent = () => {
         <Grid item>
           <IconButton onClick={() => setEditClassObject(_.cloneDeep(item))}>
             <IconEdit
-              strokeWidth={1.5}
+              strokeWidth={2}
               size="1.3rem"
               style={{ marginTop: "auto", marginBottom: "auto" }}
             />
@@ -94,7 +94,7 @@ const ClassComponent = () => {
             color="error"
           >
             <IconTrash
-              strokeWidth={1.5}
+              strokeWidth={2}
               size="1.3rem"
               style={{ marginTop: "auto", marginBottom: "auto" }}
             />

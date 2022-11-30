@@ -18,6 +18,7 @@ import MainLayout from "./layout/MainLayout";
 import { removeNotificationAction } from "./redux/utils/operators";
 import NotFoundComponent from "./utils/component/NotFound";
 import _ from "lodash";
+import ErrorBoundary from "./utils/component/ErrorBoundary";
 
 function App() {
   const customization = useSelector((state) => state.customization);
@@ -127,14 +128,15 @@ function App() {
   useEffect(() => {
     userInfo?.token && localStorage.setItem("auth_token", userInfo.token);
   }, [userInfo]);
-
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={themes(customization)}>
         <CssBaseline />
         <BrowserRouter>
           <div className="app">
-            <Switch>{router}</Switch>
+            <ErrorBoundary>
+              <Switch>{router}</Switch>
+            </ErrorBoundary>
             {ToastNotificationContainer}
           </div>
         </BrowserRouter>

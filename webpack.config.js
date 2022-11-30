@@ -14,12 +14,25 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 
 module.exports = {
   mode: "development",
-  entry: "./src/index.js",
   devtool: "inline-source-map",
-  output: {
-    filename: "main.js",
-    path: path.resolve(__dirname, "build"),
+  entry: {
+    vendor: [
+      "react",
+      "react-dom",
+      "react-redux",
+      "react-router",
+      "react-router-dom",
+      "redux",
+    ],
+    app: "./src/index.js",
   },
+  output: {
+    filename: "scripts/[name].js",
+    chunkFilename: "scripts/[id].chunk.js",
+    path: path.resolve(__dirname, "./build/dist"),
+    publicPath: '/'
+  },
+  context: path.resolve(__dirname),
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "public", "index.html"),
@@ -42,7 +55,7 @@ module.exports = {
       dependenciesCount: 10000,
       percentBy: null,
     }),
-    new ESLintPlugin()
+    new ESLintPlugin(),
   ],
   devServer: {
     static: {
@@ -54,7 +67,7 @@ module.exports = {
     historyApiFallback: true,
     client: {
       progress: true,
-    }
+    },
   },
   module: {
     // exclude node_modules

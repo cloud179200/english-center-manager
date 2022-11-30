@@ -30,8 +30,8 @@ const Breadcrumbs = ({ card, divider, icon, icons, maxItems, navigation, rightAl
     const theme = useTheme();
 
     const iconStyle = {
-        marginRight: theme.spacing(0.75),
-        marginTop: `-${theme.spacing(0.25)}`,
+        marginRight: theme.spacing * 0.75,
+        marginTop: `-${theme.spacing * 0.25}`,
         width: '1rem',
         height: '1rem',
         color: theme.palette.secondary.main
@@ -114,7 +114,7 @@ const Breadcrumbs = ({ card, divider, icon, icons, maxItems, navigation, rightAl
             breadcrumbContent = (
                 <Card
                     sx={{
-                        marginBottom: card === false ? 0 : theme.spacing(gridSpacing),
+                        marginBottom: card === false ? 0 : theme.spacing * gridSpacing,
                         border: card === false ? 'none' : '1px solid',
                         borderColor: theme.palette.primary[200] + 75,
                         background: card === false ? 'transparent' : theme.palette.background.default

@@ -6,7 +6,7 @@ const dotenv = require("dotenv");
 // call dotenv and it will return an Object with a parsed key
 const env = dotenv.config().parsed;
 const ESLintPlugin = require("eslint-webpack-plugin");
-const WebpackObfuscator = require('webpack-obfuscator');
+const WebpackObfuscator = require("webpack-obfuscator");
 // reduce it to a nice object, the same as before
 const envKeys = Object.keys(env).reduce((prev, next) => {
   prev[`process.env.${next}`] = JSON.stringify(env[next]);
@@ -15,12 +15,25 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 
 module.exports = {
   mode: "production",
-  entry: "./src/index.js",
   devtool: "inline-source-map",
-  output: {
-    filename: "main.js",
-    path: path.resolve(__dirname, "build"),
+  entry: {
+    vendor: [
+      "react",
+      "react-dom",
+      "react-redux",
+      "react-router",
+      "react-router-dom",
+      "redux",
+    ],
+    app: "./src/index.js",
   },
+  output: {
+    filename: "scripts/[name].js",
+    chunkFilename: "scripts/[id].chunk.js",
+    path: path.resolve(__dirname, "./build/dist"),
+    publicPath: '/'
+  },
+  context: path.resolve(__dirname),
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "public", "index.html"),
@@ -44,9 +57,12 @@ module.exports = {
       percentBy: null,
     }),
     new ESLintPlugin(),
-    new WebpackObfuscator({
-        rotateStringArray: true
-    }, ['excluded_bundle_name.js'])
+    new WebpackObfuscator(
+      {
+        rotateStringArray: true,
+      },
+      ["excluded_bundle_name.js"]
+    ),
   ],
   devServer: {
     static: {
@@ -58,7 +74,7 @@ module.exports = {
     historyApiFallback: true,
     client: {
       progress: true,
-    }
+    },
   },
   module: {
     // exclude node_modules

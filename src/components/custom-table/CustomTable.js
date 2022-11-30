@@ -47,7 +47,7 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
         </Toolbar>
       )}
       <Divider />
-      <TableContainer>
+      <TableContainer sx={{ maxHeight: "60vh" }}>
         <Table
           sx={{
             backgroundColor: "#ffff",
@@ -75,7 +75,8 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
             ))}
           </TableBody>
         </Table>
-        <Box>
+      </TableContainer>
+      <Box>
           <Pagination
             sx={{ marginTop: "1rem" }}
             color="secondary"
@@ -84,7 +85,6 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
             onChange={handlePageChange}
           />
         </Box>
-      </TableContainer>
     </>
   );
 };

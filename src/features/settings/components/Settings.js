@@ -156,12 +156,13 @@ const Settings = () => {
                     >
                       <InputLabel>{NAME_TRANS_VN.PASSWORD}</InputLabel>
                       <OutlinedInput
-                        type="text"
+                        type="pass"
                         value={values.password}
                         name="password"
                         onBlur={handleBlur}
                         onChange={handleChange}
                         label={NAME_TRANS_VN.PASSWORD}
+                        autoComplete="off"
                       />
                       {touched.password && errors.password && (
                         <FormHelperText error>{errors.password}</FormHelperText>
@@ -178,12 +179,13 @@ const Settings = () => {
                     >
                       <InputLabel>{NAME_TRANS_VN.NEW_PASSWORD}</InputLabel>
                       <OutlinedInput
-                        type="text"
+                        type="password"
                         value={values.new_password}
                         name="new_password"
                         onBlur={handleBlur}
                         onChange={handleChange}
                         label={NAME_TRANS_VN.NEW_PASSWORD}
+                        autoComplete="off"
                       />
                       {touched.new_password && errors.new_password && (
                         <FormHelperText error>
@@ -203,12 +205,13 @@ const Settings = () => {
                     >
                       <InputLabel>{NAME_TRANS_VN.CONFIRM_PASSWORD}</InputLabel>
                       <OutlinedInput
-                        type="text"
+                        type="pass"
                         value={values.confirm_new_password}
                         name="confirm_new_password"
                         onBlur={handleBlur}
                         onChange={handleChange}
                         label={NAME_TRANS_VN.CLASS_NAME}
+                        autoComplete="off"
                       />
                       {touched.confirm_new_password &&
                         errors.confirm_new_password && (

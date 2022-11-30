@@ -187,32 +187,30 @@ export default function componentStyleOverrides(theme) {
     },
     MuiCssBaseline: {
       "@global": {
-        body: {
-          scrollbarColor: "#6b6b6b #2b2b2b",
-          "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
-            backgroundColor: "#2b2b2b",
-          },
-          "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
-            borderRadius: 8,
-            backgroundColor: "#6b6b6b",
-            minHeight: 24,
-            border: "3px solid #2b2b2b",
-          },
-          "&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus":
+        scrollbarColor: "#6b6b6b #2b2b2b",
+        "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
+          backgroundColor: "#2b2b2b",
+        },
+        "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
+          borderRadius: 8,
+          backgroundColor: "#6b6b6b",
+          minHeight: 24,
+          border: "3px solid #2b2b2b",
+        },
+        "&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus":
           {
             backgroundColor: "#959595",
           },
-          "&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active":
+        "&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active":
           {
             backgroundColor: "#959595",
           },
-          "&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover":
+        "&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover":
           {
             backgroundColor: "#959595",
           },
-          "&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner": {
-            backgroundColor: "#2b2b2b",
-          },
+        "&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner": {
+          backgroundColor: "#2b2b2b",
         },
       },
     },
@@ -223,14 +221,14 @@ export default function componentStyleOverrides(theme) {
         },
         select: {
           padding: "21px 14px",
-        }
+        },
       },
     },
     MuiCircularProgress: {
       styleOverrides: {
         root: {
           width: "2rem",
-          height: "2rem"
+          height: "2rem",
         },
       },
     },
@@ -242,15 +240,15 @@ export default function componentStyleOverrides(theme) {
             left: 0,
             color: theme.grey500,
             '&[data-shrink="false"]': {
-                top: 5
-            }
+              top: 5,
+            },
           },
           "&>.MuiAutocomplete-root>.MuiFormControl-root>.MuiInputBase-root": {
             paddingTop: "0",
-            paddingBottom: "0"
-          }
-        }
-      }
+            paddingBottom: "0",
+          },
+        },
+      },
     },
   };
 }

@@ -9,6 +9,7 @@ import DashBoard from "../features/dashboard/components/DashBoard";
 import Settings from "../features/settings/components/Settings";
 import StudentComponent from "../features/student/components/Student";
 import TeacherComponent from "../features/teacher/components/Teacher";
+import TransactionComponent from "../features/transaction/components/Transaction";
 
 export const PRIVATE_ROUTE_ADMIN = [
   {
@@ -35,7 +36,7 @@ export const PRIVATE_ROUTE_ADMIN = [
   {
     path: "/transaction/history",
     exact: true,
-    component: <DashBoard />,
+    component: <TransactionComponent />,
   },
   {
     path: "/settings",
@@ -57,7 +58,7 @@ export const PRIVATE_ROUTE = [
   {
     path: "/transaction/history",
     exact: true,
-    component: <DashBoard />,
+    component: <TransactionComponent />,
   },
   {
     path: "/settings",

@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 // defaultTheme
 import themes from "./themes";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { AUTH_ROUTE, PRIVATE_ROUTE } from "./config/route";
+import { AUTH_ROUTE, PRIVATE_ROUTE_ADMIN, PRIVATE_ROUTE } from "./config/route";
 import MinimalLayout from "./layout/MinimalLayout";
 import MainLayout from "./layout/MainLayout";
 import { removeNotificationAction } from "./redux/utils/operators";
@@ -23,9 +23,10 @@ function App() {
   const customization = useSelector((state) => state.customization);
   const notifications = useSelector((state) => state.common.notifications);
   const userInfo = useSelector((state) => state.user.userInfo);
+  const userDetail = useSelector((state) => state.user.userDetail);
   const dispatch = useDispatch();
   const isValidPath = _.cloneDeep(AUTH_ROUTE)
-    .concat(_.cloneDeep(PRIVATE_ROUTE))
+    .concat(_.cloneDeep(PRIVATE_ROUTE_ADMIN))
     .some((route) => route.path === window.location.pathname);
   `  `;
 
@@ -65,7 +66,9 @@ function App() {
     <AuthRoute key={routeInfo.path} routeInfo={routeInfo} />
   ));
 
-  const privateRouter = PRIVATE_ROUTE.map((routeInfo) => (
+  const privateRouter = (
+    userDetail?.user_Type === 1 ? PRIVATE_ROUTE_ADMIN : PRIVATE_ROUTE
+  ).map((routeInfo) => (
     <PrivateRoute key={routeInfo.path} routeInfo={routeInfo} />
   ));
 

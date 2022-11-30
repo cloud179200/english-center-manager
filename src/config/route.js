@@ -10,7 +10,7 @@ import Settings from "../features/settings/components/Settings";
 import StudentComponent from "../features/student/components/Student";
 import TeacherComponent from "../features/teacher/components/Teacher";
 
-export const PRIVATE_ROUTE = [
+export const PRIVATE_ROUTE_ADMIN = [
   {
     path: "/dashboard",
     exact: true,
@@ -38,7 +38,29 @@ export const PRIVATE_ROUTE = [
     component: <DashBoard />,
   },
   {
-    path: "/user/settings",
+    path: "/settings",
+    exact: true,
+    component: <Settings />,
+  },
+];
+export const PRIVATE_ROUTE = [
+  {
+    path: "/dashboard",
+    exact: true,
+    component: <DashBoard />,
+  },
+  {
+    path: "/class",
+    exact: true,
+    component: <ClassComponent />,
+  },
+  {
+    path: "/transaction/history",
+    exact: true,
+    component: <DashBoard />,
+  },
+  {
+    path: "/settings",
     exact: true,
     component: <Settings />,
   },

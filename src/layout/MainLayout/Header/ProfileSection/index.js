@@ -260,7 +260,7 @@ const ProfileSection = () => {
                         }}
                         selected={selectedIndex === 0}
                         onClick={(event) =>
-                          handleListItemClick(event, 0, "/user/settings")
+                          handleListItemClick(event, 0, "/settings")
                         }
                       >
                         <ListItemIcon>

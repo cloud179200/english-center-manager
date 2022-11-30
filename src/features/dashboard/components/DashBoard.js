@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingComponent from "../../../utils/component/Loading";
@@ -16,7 +17,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import faker from "faker";
-import { useTheme } from "@mui/material";
+import { Grid, useTheme } from "@mui/material";
 
 ChartJS.register(
   CategoryScale,
@@ -44,7 +45,20 @@ const DashBoard = () => {
     }
   };
   const labels = useMemo(
-    () => ["January", "February", "March", "April", "May", "June", "July"],
+    () => [
+      "Tháng 1",
+      "Tháng 2",
+      "Tháng 3",
+      "Tháng 4",
+      "Tháng 5",
+      "Tháng 6",
+      "Tháng 7",
+      "Tháng 8",
+      "Tháng 9",
+      "Tháng 10",
+      "Tháng 11",
+      "Tháng 12",
+    ],
     []
   );
 
@@ -58,7 +72,7 @@ const DashBoard = () => {
     plugins: {
       title: {
         display: true,
-        text: "Chart.js Line Chart - Multi Axis",
+        text: "",
       },
     },
     scales: {
@@ -82,18 +96,18 @@ const DashBoard = () => {
     labels,
     datasets: [
       {
-        label: "Dataset 1",
+        label: "Doanh Thu",
         data: labels.map(() =>
-          faker.datatype.number({ min: -1000, max: 1000 })
+          faker.datatype.number({ min: 0, max: 100000000 })
         ),
         borderColor: theme.palette.secondary.light,
         backgroundColor: theme.palette.secondary.main,
         yAxisID: "y",
       },
       {
-        label: "Dataset 2",
+        label: "Chi Tiêu",
         data: labels.map(() =>
-          faker.datatype.number({ min: -1000, max: 1000 })
+          faker.datatype.number({ min: 0, max: 100000000 })
         ),
         borderColor: theme.palette.primary.light,
         backgroundColor: theme.palette.primary.main,
@@ -112,7 +126,13 @@ const DashBoard = () => {
         <LoadingComponent />
       ) : (
         <CustomBox>
-          <Line options={options} data={data} />
+          <Grid container>
+            <Grid item xs={12}>
+              <Line options={options} data={data} />
+            </Grid>
+            <Grid item xs={12}>
+            </Grid>
+          </Grid>
         </CustomBox>
       )}
     </>

@@ -38,6 +38,7 @@ export const NAME_TRANS_VN = {
   ADDRESS: "Địa Chỉ",
   EMAIL: "Email",
   PASSWORD: "Mật Khẩu",
+  NEW_PASSWORD: "Mật Khẩu Mới",
   SEND_EMAIL: "Gửi Email",
   CONFIRM_PASSWORD: "Xác Nhận Mật Khẩu",
   ALREADY_HAVE_ACCOUNT: "Đã Có Tài Khoản",
@@ -61,5 +62,7 @@ export const NAME_TRANS_VN = {
   CLASS_ADD: "Thêm Lớp",
   APPLY_FILTER: "Áp Dụng Bộ Lọc",
   CLEAR_FILTER: "Xóa Bộ Lọc",
-  TRANSACTION_HISTORY: "Lịch Sử Giao Dịch"
+  TRANSACTION_HISTORY: "Lịch Sử Giao Dịch",
+  CHANGE_PASSWORD: "Đổi Mật Khẩu",
+  INFORMATION: "Thông Tin"
 }

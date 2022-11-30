@@ -1,9 +1,7 @@
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
-import { forwardRef } from 'react';
-
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material';
+ // material-ui
+import { Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
 
 // constant
 const headerSX = {
@@ -65,7 +63,7 @@ const MainCard = forwardRef(
         );
     }
 );
-
+MainCard.displayName = "MainCard"
 MainCard.propTypes = {
     border: PropTypes.bool,
     boxShadow: PropTypes.bool,

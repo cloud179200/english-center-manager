@@ -7,11 +7,27 @@ const listMenuItems = {
   type: "group",
   children: [
     {
-      id: "default",
+      id: NAME_TRANS_VN.HOME,
       title: NAME_TRANS_VN.HOME,
       type: "item",
       url: "/dashboard",
       icon: icons.IconDashboard,
+      breadcrumbs: false,
+    },
+    {
+      id: NAME_TRANS_VN.CLASS,
+      title: NAME_TRANS_VN.CLASS,
+      type: "item",
+      url: "/class",
+      icon: icons.IconChalkboard,
+      breadcrumbs: false,
+    },
+    {
+      id: NAME_TRANS_VN.TRANSACTION_HISTORY,
+      title: NAME_TRANS_VN.TRANSACTION_HISTORY,
+      type: "item",
+      url: "/transaction/history",
+      icon: icons.IconHistory,
       breadcrumbs: false,
     },
   ],

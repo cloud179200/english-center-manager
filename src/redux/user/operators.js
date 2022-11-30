@@ -8,7 +8,7 @@ import {
 } from "./action";
 import { getUserService } from "./services";
 
-export const getUserDetailAction = (email) => {
+export const getUserDetailAction = (email, callback = null) => {
   return async (dispatch) => {
     dispatch({ type: GET_USER_DETAIL_ACTION });
     dispatch(setLoadingAction(true));
@@ -24,6 +24,7 @@ export const getUserDetailAction = (email) => {
       );
     } finally {
       dispatch(setLoadingAction(false));
+      callback && callback()
     }
   };
 };

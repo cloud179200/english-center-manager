@@ -3,21 +3,23 @@ import { Grid, Box, Button, CircularProgress } from "@mui/material";
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import AnimateButton from "../../../components/extended/AnimateButton";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeClassAction } from "../../../redux/class/operators";
 
 const ClassDeleteModal = ({ open, handleClose, reloadClassData, classObject }) => {
   const dispatch = useDispatch();
+  const userInfo = useSelector(state => state.user.userInfo)
   const [loading, setLoading] = useState(false);
   const handleDeleteClass = async () => {
     setLoading(true);
-    dispatch(removeClassAction(classObject?.class_Id, removeClassCallback));
+    dispatch(removeClassAction(classObject?.class_Id, userInfo?.email, removeClassCallback));
   };
   const removeClassCallback = (res, err) => {
     setLoading(false);
     if (err) {
       return;
     }
+    handleClose();
     reloadClassData()
   };
 

@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
+  Button,
+  CircularProgress,
   Fade,
   Grid,
   IconButton,
   Tab,
   Tabs,
   Tooltip,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -18,7 +21,9 @@ import _ from "lodash";
 import moment from "moment";
 import { Cash, CheckupList, ClockHour3 } from "tabler-icons-react";
 import CustomBox from "./../../../components/custom-box/CustomBox";
-import { IconCircleCheck } from "@tabler/icons";
+import { IconCircleCheck, IconCurrencyDong } from "@tabler/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { studentPaymentClassFeeAction } from "../../../redux/student/operators";
 const ClassManageByStudentModal = ({
   open,
   handleClose,
@@ -26,14 +31,12 @@ const ClassManageByStudentModal = ({
   reloadClassData,
 }) => {
   const theme = useTheme();
-  // const dispatch = useDispatch();
-  // const [loading, setLoading] = useState(false);
-  // console.log(theme, dispatch, loading, setLoading, reloadClassData);
-  console.log(reloadClassData);
+  const dispatch = useDispatch();
+  const userDetail = useSelector((state) => state.user.userDetail);
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
-
   const [dateAttendance, setDateAttendance] = useState([]);
   const [markedAttendance, setMarkedAttendance] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [tab, setTab] = React.useState(0);
   const nowDate = moment().format("DD.MM.YYYY");
 
@@ -41,6 +44,22 @@ const ClassManageByStudentModal = ({
     setTab(newValue);
   };
 
+  const handlePaymentClassFee = () => {
+    setLoading(true);
+    dispatch(
+      studentPaymentClassFeeAction(
+        userDetail?.reference_Id,
+        classObject.class_Id,
+        (res, err) => {
+          setLoading(false);
+          if (err) {
+            return;
+          }
+          reloadClassData();
+        }
+      )
+    );
+  };
   const handleAttendance = (date) => {
     setDateAttendance(
       _.cloneDeep(dateAttendance).filter((item) => item !== date)
@@ -68,7 +87,7 @@ const ClassManageByStudentModal = ({
         return (
           <Tooltip title="Nhấn Để Điểm Danh">
             <IconButton
-              disabled={false}
+              disabled={loading}
               onClick={() => handleAttendance(momentDate)}
               color="primary"
               size="large"
@@ -94,7 +113,7 @@ const ClassManageByStudentModal = ({
       }
       return null;
     },
-    [dateAttendance, markedAttendance, matchDownSM]
+    [dateAttendance, markedAttendance, matchDownSM, loading]
   );
 
   useEffect(() => {
@@ -109,8 +128,6 @@ const ClassManageByStudentModal = ({
     ]);
     setMarkedAttendance([]);
   }, [open]);
-
-  console.log("[dateAttendance]", dateAttendance);
 
   return (
     <CustomModal
@@ -134,7 +151,40 @@ const ClassManageByStudentModal = ({
                 tileContent={({ date }) => <AttendanceButton date={date} />}
               />
             )}
-            {tab === 1 && <>Bú</>}
+            {tab === 1 && (
+              <Grid container>
+                <Grid item xs={6}>
+                  <Typography variant="body1">
+                    {`Bằng cách nhấn vào ${NAME_TRANS_VN.PAYMENT} bạn đồng ý thanh toán tiền học phí ${classObject?.class_Fee}`}{" "}
+                    <IconCurrencyDong
+                      strokeWidth={2}
+                      size="1.3rem"
+                      style={{
+                        marginTop: "auto",
+                        marginBottom: "auto",
+                        position: "relative",
+                        top: theme.spacing(1),
+                      }}
+                    />
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button
+                    disabled={loading}
+                    color="secondary"
+                    variant="contained"
+                    onClick={handlePaymentClassFee}
+                    fullWidth
+                    endIcon={
+                      loading ? <CircularProgress color="error" size={20} /> : null
+                    }
+                    
+                  >
+                    {NAME_TRANS_VN.PAYMENT} 
+                  </Button>
+                </Grid>
+              </Grid>
+            )}
           </CustomBox>
         </Grid>
       </Grid>

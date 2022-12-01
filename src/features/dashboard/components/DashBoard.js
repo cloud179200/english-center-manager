@@ -133,13 +133,6 @@ const DashBoard = () => {
               </Grid>
             </Grid>
           </CustomBox>
-          <CustomBox>
-            <Grid container>
-              <Grid item xs={12}>
-                <Line options={options} data={data} />
-              </Grid>
-            </Grid>
-          </CustomBox>
         </>
       )}
     </>

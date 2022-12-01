@@ -90,7 +90,7 @@ const TeacherFilterComponent = ({ filter, setFilter, teacherList }) => {
             <Button
               variant="contained"
               onClick={handleApply}
-              sx={{ width: "100%" }}
+              fullWidth
             >
               {NAME_TRANS_VN.APPLY_FILTER}
             </Button>
@@ -100,7 +100,7 @@ const TeacherFilterComponent = ({ filter, setFilter, teacherList }) => {
               variant="contained"
               color="secondary"
               onClick={handleClear}
-              sx={{ width: "100%" }}
+              fullWidth
             >
               {NAME_TRANS_VN.CLEAR_FILTER}
             </Button>

@@ -96,7 +96,7 @@ const StudentComponent = () => {
           </CustomBox>
           <CustomBox>
             <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
-              <Grid item md={12}>
+              <Grid item xs={12}>
                 <CustomTable
                   headers={["Id", "Tên Học Viên", "#"]}
                   data={teacherData}

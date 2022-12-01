@@ -24,7 +24,7 @@ export const initClassFilter = {
 
 const ClassComponent = () => {
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.common.loading);
+  const [loading, setLoading] = useState(false);
   const userDetail = useSelector((state) => state.user.userDetail);
 
   const [filter, setFilter] = useState(_.cloneDeep(initClassFilter));
@@ -57,8 +57,10 @@ const ClassComponent = () => {
   };
 
   const getClassData = () => {
+    setLoading(true);
     dispatch(
       getClassAction((res, err) => {
+        setLoading(false);
         if (err) {
           return;
         }
@@ -82,11 +84,12 @@ const ClassComponent = () => {
             .filter((item) => {
               if (userDetail?.user_Type === 2) {
                 return (item?.list_Student || []).some(
-                  (itemStudent) => itemStudent.student_Id === 503
+                  (itemStudent) =>
+                    itemStudent.student_Id === userDetail.reference_Id
                 );
               }
               if (userDetail?.user_Type === 3) {
-                return item?.teacher_Id === userDetail.user_Id;
+                return item?.teacher_Id === userDetail.reference_Id;
               }
               return true;
             })
@@ -246,7 +249,7 @@ const ClassComponent = () => {
                   </Button>
                 </Grid>
               )}
-              <Grid item md={12}>
+              <Grid item xs={12}>
                 <CustomTable
                   headers={[
                     "Id",

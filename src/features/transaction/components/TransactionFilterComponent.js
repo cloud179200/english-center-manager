@@ -17,11 +17,15 @@ const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
   };
 
   const optionsTeacherId = [
-    ...new Set(_.cloneDeep(transactionList).map((option) => option.transaction_Id)),
+    ...new Set(
+      _.cloneDeep(transactionList).map((option) => option.teacher_Name)
+    ),
   ];
 
   const optionsTransactionDescription = [
-    ...new Set(_.cloneDeep(transactionList).map((option) => option.transaction_Description)),
+    ...new Set(
+      _.cloneDeep(transactionList).map((option) => option.student_Name)
+    ),
   ];
 
   useEffect(() => {
@@ -42,18 +46,18 @@ const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
           disableClearable
           options={optionsTeacherId}
           onChange={(event, newValue) => {
-            setFilterInput({ ...filterInput, transaction_Id: newValue });
+            setFilterInput({ ...filterInput, teacher_Name: newValue });
           }}
-          value={filterInput.transaction_Id}
+          value={filterInput.teacher_Name}
           onInputChange={(event) => {
             setFilterInput({
               ...filterInput,
-              transaction_Id: event.target.value,
+              teacher_Name: event.target.value,
             });
           }}
-          inputValue={filterInput.transaction_Id}
+          inputValue={filterInput.teacher_Name}
           renderInput={(params) => (
-            <TextField {...params} label={NAME_TRANS_VN.ID} />
+            <TextField {...params} label={NAME_TRANS_VN.CLASS_NAME} />
           )}
         />
       </Grid>
@@ -63,18 +67,18 @@ const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
           disableClearable
           options={optionsTransactionDescription}
           onChange={(event, newValue) => {
-            setFilterInput({ ...filterInput, transaction_Description: newValue });
+            setFilterInput({ ...filterInput, student_Name: newValue });
           }}
-          value={filterInput.transaction_Description}
+          value={filterInput.student_Name}
           onInputChange={(event) => {
             setFilterInput({
               ...filterInput,
-              transaction_Description: event.target.value,
+              student_Name: event.target.value,
             });
           }}
-          inputValue={filterInput.transaction_Description}
+          inputValue={filterInput.student_Name}
           renderInput={(params) => (
-            <TextField {...params} label={NAME_TRANS_VN.DESCRIPTION} />
+            <TextField {...params} label={NAME_TRANS_VN.STUDENT_NAME} />
           )}
         />
       </Grid>
@@ -90,7 +94,7 @@ const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
             <Button
               variant="contained"
               onClick={handleApply}
-              sx={{ width: "100%" }}
+              fullWidth
             >
               {NAME_TRANS_VN.APPLY_FILTER}
             </Button>
@@ -100,7 +104,7 @@ const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
               variant="contained"
               color="secondary"
               onClick={handleClear}
-              sx={{ width: "100%" }}
+              fullWidth
             >
               {NAME_TRANS_VN.CLEAR_FILTER}
             </Button>

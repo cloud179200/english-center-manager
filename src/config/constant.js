@@ -49,6 +49,7 @@ export const NAME_TRANS_VN = {
   SIGN_UP_TITLE: "Đăng Ký Với Email",
   TEACHER: "Giảng Viên",
   STUDENT: "Học Viên",
+  STUDENT_NAME: "Tên Học Viên",
   ADMIN: "Quản Trị Viên",
   HOME: "Trang Chủ",
   NEW: "Mới",
@@ -65,5 +66,6 @@ export const NAME_TRANS_VN = {
   TRANSACTION_HISTORY: "Lịch Sử Giao Dịch",
   CHANGE_PASSWORD: "Đổi Mật Khẩu",
   INFORMATION: "Thông Tin",
-  DESCRIPTION: "Ghi Chú"
+  DESCRIPTION: "Ghi Chú",
+  PAYMENT: "Nộp Tiền"
 }

@@ -93,6 +93,7 @@ const Settings = () => {
             <Divider />
             <Grid
               container
+              rowSpacing={2}
               columnSpacing={4}
               sx={{ marginTop: theme.spacing(2) }}
             >

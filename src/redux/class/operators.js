@@ -111,15 +111,16 @@ export const setClassAction = (
   };
 };
 
-export const removeClassAction = (class_Id, callback) => {
+export const removeClassAction = (class_Id, email, callback) => {
   return async (dispatch) => {
     dispatch({ type: ADD_CLASS_ACTION });
     try {
       const res = await deleteClassService({
         class_Id,
+        email
       });
       if (res) {
-        dispatch(addNotificationAction(API_MESSAGE.SUCCESS, true));
+        dispatch(addNotificationAction(API_MESSAGE.SUCCESS, false));
         callback(res, null);
         return;
       }

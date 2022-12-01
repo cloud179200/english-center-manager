@@ -15,16 +15,19 @@ export const getUserDetailAction = (email, callback = null) => {
     try {
       const res = await getUserService(email);
       if (res?.data) {
-        dispatch(setUserDetailAction(res.data));
+        dispatch(setUserDetailAction({ ...res.data }));
         return;
       }
     } catch (error) {
       dispatch(
-        addNotificationAction(error?.data?.message || API_MESSAGE.SERVER_ERROR, true)
+        addNotificationAction(
+          error?.data?.message || API_MESSAGE.SERVER_ERROR,
+          true
+        )
       );
     } finally {
       dispatch(setLoadingAction(false));
-      callback && callback()
+      callback && callback();
     }
   };
 };

@@ -1,42 +1,49 @@
-@import 'themes-vars.module.scss';
-@import url('https://fonts.googleapis.com/css2?family=Sono:wght@200;300;400;500;600;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import "_themes-vars.module.scss";
+@import url("https://fonts.googleapis.com/css2?family=Sono:wght@200;300;400;500;600;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 * {
     padding: 0;
     margin: 0;
-    scrollbar-color: "#6b6b6b #2b2b2b";
-
+    scrollbar-color: $grey700;
     ::-webkit-scrollbar,
     *::-webkit-scrollbar {
-        background-color: "#2b2b2b";
+        background-color: $grey50;
+        width: 0.4rem;
+        height: 0.4rem;
     }
 
     ::-webkit-scrollbar-thumb,
     *::-webkit-scrollbar-thumb {
-        border-radius: 8;
-        background-color: "#6b6b6b";
-        min-height: 24;
-        border: "3px solid #2b2b2b";
+        border-radius: 8px;
+        background-color: $grey300;
+        min-height: 24px;
+        transition: all 0.5s ease;
     }
 
     ::-webkit-scrollbar-thumb:focus,
     *::-webkit-scrollbar-thumb:focus {
-        background-color: "#959595";
+        background-color: $grey500;
+        width: 0.5rem;
+        height: 0.5rem;
     }
 
     ::-webkit-scrollbar-thumb:active,
     *::-webkit-scrollbar-thumb:active {
-        background-color: "#959595";
+        background-color: $grey500;
+        width: 0.5rem;
+        height: 0.5rem;
     }
 
     ::-webkit-scrollbar-thumb:hover,
     *::-webkit-scrollbar-thumb:hover {
-        background-color: "#959595";
+        background-color: $grey500;
+        width: 0.5rem;
+        height: 0.5rem;
     }
 
     ::-webkit-scrollbar-corner,
     *::-webkit-scrollbar-corner {
-        background-color: "#2b2b2b";
+        background-color: $grey500;
     }
 }
 

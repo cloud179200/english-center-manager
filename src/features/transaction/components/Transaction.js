@@ -51,8 +51,8 @@ const TransactionComponent = () => {
         <Grid item>
           {props?.item?.transaction_Status ? (
             <Tooltip title="Fullfilled">
-              <IconButton color="primary">
-                <IconClockHour3
+              <IconButton color="warning">
+                <IconInfoCircle
                   strokeWidth={2}
                   size="1.3rem"
                   style={{ marginTop: "auto", marginBottom: "auto" }}
@@ -61,8 +61,8 @@ const TransactionComponent = () => {
             </Tooltip>
           ) : (
             <Tooltip title="Pending">
-              <IconButton color="warning">
-                <IconInfoCircle
+              <IconButton color="primary">
+                <IconClockHour3
                   strokeWidth={2}
                   size="1.3rem"
                   style={{ marginTop: "auto", marginBottom: "auto" }}
@@ -90,7 +90,7 @@ const TransactionComponent = () => {
               marginTop: "auto",
               marginBottom: "auto",
               position: "relative",
-              top: theme.spacing,
+              top: theme.spacing(1),
             }}
           />
         </>
@@ -119,7 +119,7 @@ const TransactionComponent = () => {
   useEffect(() => {
     getTransactionData();
   }, []);
-  console.log("[transactionData]", transactionList);
+
   return (
     <>
       {loading ? (

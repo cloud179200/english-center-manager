@@ -17,7 +17,11 @@ import CustomRow from "./CustomRow";
 
 const CustomTable = ({ data = [], headers = [], title = "" }) => {
   const [page, setPage] = useState(1);
-
+  const rowsPerPage = 10;
+  const totalPage =
+    Math.round(data.length / rowsPerPage) < data.length / rowsPerPage
+      ? Math.round(data.length / rowsPerPage) + 1
+      : Math.round(data.length / rowsPerPage);
   const handlePageChange = (_, p) => {
     setPage(p);
   };
@@ -47,8 +51,9 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
         </Toolbar>
       )}
       <Divider />
-      <TableContainer sx={{ maxHeight: "60vh" }}>
+      <TableContainer sx={{ maxHeight: "50vh" }}>
         <Table
+          stickyHeader
           sx={{
             backgroundColor: "#ffff",
           }}
@@ -70,21 +75,23 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.slice(page * 10 - 10, page * 10).map((row, id) => (
-              <CustomRow key={row + page + id} rowData={row} index={id} />
-            ))}
+            {data
+              .slice(page * rowsPerPage - rowsPerPage, page * rowsPerPage)
+              .map((row, id) => (
+                <CustomRow key={row + page + id} rowData={row} index={id} />
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
       <Box>
-          <Pagination
-            sx={{ marginTop: "1rem" }}
-            color="secondary"
-            count={Math.round(data.length / 10)}
-            page={page}
-            onChange={handlePageChange}
-          />
-        </Box>
+        <Pagination
+          sx={{ marginTop: "1rem" }}
+          color="secondary"
+          count={totalPage}
+          page={page}
+          onChange={handlePageChange}
+        />
+      </Box>
     </>
   );
 };

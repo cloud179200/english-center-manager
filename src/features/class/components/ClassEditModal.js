@@ -153,7 +153,6 @@ const ClassEditModal = ({
     setStudentChipValues(_.cloneDeep(list_Student))
   }, [open]);
 
-  console.log("[values]", values)
   return (
     <CustomModal
       open={open}

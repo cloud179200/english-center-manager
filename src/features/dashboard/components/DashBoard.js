@@ -125,15 +125,22 @@ const DashBoard = () => {
       {!ready() ? (
         <LoadingComponent />
       ) : (
-        <CustomBox>
-          <Grid container>
-            <Grid item xs={12}>
-              <Line options={options} data={data} />
+        <>
+          <CustomBox>
+            <Grid container>
+              <Grid item xs={12}>
+                <Line options={options} data={data} />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
+          </CustomBox>
+          <CustomBox>
+            <Grid container>
+              <Grid item xs={12}>
+                <Line options={options} data={data} />
+              </Grid>
             </Grid>
-          </Grid>
-        </CustomBox>
+          </CustomBox>
+        </>
       )}
     </>
   );

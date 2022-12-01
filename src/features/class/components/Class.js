@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Grid, IconButton } from "@mui/material";
-import { IconPlus, IconTrash, IconEdit } from "@tabler/icons";
+import { IconPlus, IconTrash, IconEdit, IconChevronRight } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getClassAction } from "../../../redux/class/operators";
 import CustomBox from "../../../components/custom-box/CustomBox";
@@ -24,6 +24,8 @@ export const initClassFilter = {
 const ClassComponent = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.common.loading);
+  const userDetail = useSelector((state) => state.user.userDetail);
+
   const [filter, setFilter] = useState(_.cloneDeep(initClassFilter));
   const [classList, setClassList] = useState([]);
   const [openAddClassModal, setOpenAddClassModal] = useState(false);
@@ -67,7 +69,15 @@ const ClassComponent = () => {
               student_Id: i.student_Id,
               student_Name: i.first_Name + " " + i.last_Name,
             })),
-          }))
+          })).filter(item => {
+            if(userDetail.user_Type === 2){
+              return (item?.list_Student || []).some(itemStudent => itemStudent.Id === userDetail.user_Id);
+            }
+            if(userDetail.user_Type === 3){
+              return item?.teacher_Id === userDetail.user_Id;
+            }
+            return true
+          })
         );
       })
     );
@@ -77,6 +87,26 @@ const ClassComponent = () => {
     getClassData();
   };
   const Utility = useCallback(({ item }) => {
+    if (userDetail?.user_Type === 2) {
+      return (
+        <Grid
+          container
+          justifyContent="flex-end"
+          flexWrap="nowrap"
+          columnGap={2}
+        >
+          <Grid item>
+            <IconButton>
+              <IconChevronRight
+                strokeWidth={2}
+                size="1.3rem"
+                style={{ marginTop: "auto", marginBottom: "auto" }}
+              />
+            </IconButton>
+          </Grid>
+        </Grid>
+      );
+    }
     return (
       <Grid container justifyContent="flex-end" flexWrap="nowrap" columnGap={2}>
         <Grid item>
@@ -102,7 +132,7 @@ const ClassComponent = () => {
         </Grid>
       </Grid>
     );
-  }, []);
+  }, [userDetail]);
 
   const classData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));

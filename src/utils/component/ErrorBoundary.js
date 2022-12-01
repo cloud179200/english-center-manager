@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import React from "react";
 import CustomBox from "../../components/custom-box/CustomBox";
-import MainLayout from "../../layout/MainLayout";
+import MinimalLayout from "../../layout/MinimalLayout";
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -13,18 +13,18 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.log(error, errorInfo);
+    console.log("[component Error]", error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
       return (
-        <MainLayout>
+        <MinimalLayout>
           <CustomBox>
             <Typography color="error">{this.state.error}</Typography>
           </CustomBox>
-        </MainLayout>
+        </MinimalLayout>
       );
     }
 

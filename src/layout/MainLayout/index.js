@@ -13,7 +13,6 @@ import Sidebar from "./Sidebar";
 // import Customization from "../Customization";
 import { drawerWidth } from "../../redux/customization/constant";
 import { SET_MENU } from "../../redux/customization/actions";
-import PerfectScrollbar from 'react-perfect-scrollbar';
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -105,9 +104,9 @@ const MainLayout = (props) => {
       <Main
         theme={theme}
         open={leftDrawerOpened}
-        style={{ marginLeft: leftDrawerOpened ? "20px" : null }}
+        style={{ marginLeft: leftDrawerOpened ? "20px" : null, overflow: "auto" }}
       >
-        <PerfectScrollbar component="div">{props.children}</PerfectScrollbar>
+        {props.children}
       </Main>
     </Box>
   );

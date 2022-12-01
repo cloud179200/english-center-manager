@@ -13,6 +13,7 @@ import ClassFilterComponent from "./ClassFilterComponent";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import ClassEditModal from "./ClassEditModal";
 import ClassDeleteModal from "./ClassDeleteModal";
+import ClassManageByStudentModal from "./ClassManageByStudentModal";
 // const rows = _.cloneDeep(classMockData);
 
 export const initClassFilter = {
@@ -31,6 +32,9 @@ const ClassComponent = () => {
   const [openAddClassModal, setOpenAddClassModal] = useState(false);
   const [editClassObject, setEditClassObject] = useState(null);
   const [deleteClassObject, setDeleteClassObject] = useState(null);
+  const [manageByStudentClassObject, setManageByStudentClassObject] =
+    useState(null);
+  const isEnabledAddClass = userDetail?.user_Type === 1;
 
   const handleCloseAddClassModal = () => {
     setOpenAddClassModal(false);
@@ -48,6 +52,10 @@ const ClassComponent = () => {
     setDeleteClassObject(null);
   };
 
+  const handleCloseManagaByStudentClassModal = () => {
+    setManageByStudentClassObject(null);
+  };
+
   const getClassData = () => {
     dispatch(
       getClassAction((res, err) => {
@@ -55,29 +63,33 @@ const ClassComponent = () => {
           return;
         }
         setClassList(
-          res.map((item) => ({
-            class_Id: item.class_Id,
-            class_Name: item.class_Name,
-            total: item.list_Student.length,
-            teacher_Name:
-              item.list_Teacher[0].first_Name +
-              " " +
-              item.list_Teacher[0].last_Name,
-            class_Fee: item.class_Fee,
-            teacher_Id: item.list_Teacher[0].teacher_Id,
-            list_Student: item.list_Student.map((i) => ({
-              student_Id: i.student_Id,
-              student_Name: i.first_Name + " " + i.last_Name,
-            })),
-          })).filter(item => {
-            if(userDetail.user_Type === 2){
-              return (item?.list_Student || []).some(itemStudent => itemStudent.Id === userDetail.user_Id);
-            }
-            if(userDetail.user_Type === 3){
-              return item?.teacher_Id === userDetail.user_Id;
-            }
-            return true
-          })
+          res
+            .map((item) => ({
+              class_Id: item.class_Id,
+              class_Name: item.class_Name,
+              total: item.list_Student.length,
+              teacher_Name:
+                item.list_Teacher[0].first_Name +
+                " " +
+                item.list_Teacher[0].last_Name,
+              class_Fee: item.class_Fee,
+              teacher_Id: item.list_Teacher[0].teacher_Id,
+              list_Student: item.list_Student.map((i) => ({
+                student_Id: i.student_Id,
+                student_Name: i.first_Name + " " + i.last_Name,
+              })),
+            }))
+            .filter((item) => {
+              if (userDetail?.user_Type === 2) {
+                return (item?.list_Student || []).some(
+                  (itemStudent) => itemStudent.student_Id === 503
+                );
+              }
+              if (userDetail?.user_Type === 3) {
+                return item?.teacher_Id === userDetail.user_Id;
+              }
+              return true;
+            })
         );
       })
     );
@@ -86,8 +98,28 @@ const ClassComponent = () => {
   const reloadClassData = () => {
     getClassData();
   };
-  const Utility = useCallback(({ item }) => {
-    if (userDetail?.user_Type === 2) {
+  const Utility = useCallback(
+    ({ item }) => {
+      if (userDetail?.user_Type === 2) {
+        return (
+          <Grid
+            container
+            justifyContent="flex-end"
+            flexWrap="nowrap"
+            columnGap={2}
+          >
+            <Grid item>
+              <IconButton onClick={() => setManageByStudentClassObject(item)}>
+                <IconChevronRight
+                  strokeWidth={2}
+                  size="1.3rem"
+                  style={{ marginTop: "auto", marginBottom: "auto" }}
+                />
+              </IconButton>
+            </Grid>
+          </Grid>
+        );
+      }
       return (
         <Grid
           container
@@ -96,8 +128,20 @@ const ClassComponent = () => {
           columnGap={2}
         >
           <Grid item>
-            <IconButton>
-              <IconChevronRight
+            <IconButton onClick={() => setEditClassObject(_.cloneDeep(item))}>
+              <IconEdit
+                strokeWidth={2}
+                size="1.3rem"
+                style={{ marginTop: "auto", marginBottom: "auto" }}
+              />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <IconButton
+              onClick={() => setDeleteClassObject(_.cloneDeep(item))}
+              color="error"
+            >
+              <IconTrash
                 strokeWidth={2}
                 size="1.3rem"
                 style={{ marginTop: "auto", marginBottom: "auto" }}
@@ -106,33 +150,9 @@ const ClassComponent = () => {
           </Grid>
         </Grid>
       );
-    }
-    return (
-      <Grid container justifyContent="flex-end" flexWrap="nowrap" columnGap={2}>
-        <Grid item>
-          <IconButton onClick={() => setEditClassObject(_.cloneDeep(item))}>
-            <IconEdit
-              strokeWidth={2}
-              size="1.3rem"
-              style={{ marginTop: "auto", marginBottom: "auto" }}
-            />
-          </IconButton>
-        </Grid>
-        <Grid item>
-          <IconButton
-            onClick={() => setDeleteClassObject(_.cloneDeep(item))}
-            color="error"
-          >
-            <IconTrash
-              strokeWidth={2}
-              size="1.3rem"
-              style={{ marginTop: "auto", marginBottom: "auto" }}
-            />
-          </IconButton>
-        </Grid>
-      </Grid>
-    );
-  }, [userDetail]);
+    },
+    [userDetail]
+  );
 
   const classData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
@@ -164,10 +184,16 @@ const ClassComponent = () => {
 
   useEffect(() => {
     getClassData();
-  }, []);
+  }, [userDetail?.user_Type]);
 
   return (
     <>
+      <ClassManageByStudentModal
+        classObject={manageByStudentClassObject}
+        open={Boolean(manageByStudentClassObject)}
+        handleClose={handleCloseManagaByStudentClassModal}
+        reloadClassData={reloadClassData}
+      />
       <ClassDeleteModal
         classObject={deleteClassObject}
         open={Boolean(deleteClassObject)}
@@ -198,26 +224,28 @@ const ClassComponent = () => {
           </CustomBox>
           <CustomBox>
             <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
-              <Grid item xs={12} md={2}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  endIcon={
-                    <IconPlus
-                      stroke={1.5}
-                      size="2rem"
-                      style={{ marginTop: "auto", marginBottom: "auto" }}
-                    />
-                  }
-                  onClick={handleOpenAddClassModal}
-                  sx={{
-                    width: "100%",
-                  }}
-                >
-                  {NAME_TRANS_VN.CLASS_NEW}
-                </Button>
-              </Grid>
+              {isEnabledAddClass && (
+                <Grid item xs={12} md={2}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    size="small"
+                    endIcon={
+                      <IconPlus
+                        stroke={1.5}
+                        size="2rem"
+                        style={{ marginTop: "auto", marginBottom: "auto" }}
+                      />
+                    }
+                    onClick={handleOpenAddClassModal}
+                    sx={{
+                      width: "100%",
+                    }}
+                  >
+                    {NAME_TRANS_VN.CLASS_NEW}
+                  </Button>
+                </Grid>
+              )}
               <Grid item md={12}>
                 <CustomTable
                   headers={[

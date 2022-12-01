@@ -159,9 +159,8 @@ const ClassEditModal = ({
       handleClose={handleClose}
       title={NAME_TRANS_VN.CLASS_EDIT}
     >
-      <Grid container p={2}>
+      <Grid container component="form" onSubmit={handleSubmit} p={2}>
         <Grid item xs={12}>
-          <form noValidate onSubmit={handleSubmit} style={{ width: "100%" }}>
             <Grid
               container
               columnGap={0.5}
@@ -342,7 +341,6 @@ const ClassEditModal = ({
                 </Button>
               </AnimateButton>
             </Box>
-          </form>
         </Grid>
       </Grid>
     </CustomModal>

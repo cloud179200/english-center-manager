@@ -49,6 +49,9 @@ const ClassManageByStudentModal = ({
   const [expanded, setExpanded] = useState(false);
 
   const handleChangeTab = (event, newValue) => {
+    if (loading) {
+      return;
+    }
     setTab(newValue);
   };
 
@@ -149,7 +152,7 @@ const ClassManageByStudentModal = ({
           }}>
             {tab === 0 && (
               <>
-                {dateAttendance.slice(0, 30).map((item, dateAttendanceIndex) => (
+                {dateAttendance.slice(0, 20).map((item, dateAttendanceIndex) => (
                   <Accordion
                     key={item + "-" + dateAttendanceIndex}
                     expanded={expanded === item + "-" + dateAttendanceIndex}
@@ -170,7 +173,6 @@ const ClassManageByStudentModal = ({
                     </AccordionSummary>
                     <AccordionDetails>
                       <Calendar
-                        view="month"
                         value={null}
                         tileContent={({ date }) => (
                           <AttendanceButton date={date} />

@@ -43,13 +43,13 @@ const StageFilterComponent = ({ filter, setFilter, classList }) => {
             setFilterInput({ ...filterInput, stage_Id: newValue });
           }}
           value={filterInput.stage_Id}
-          onInputChange={(event) => {
+          inputValue={filterInput.stage_Id}
+          onInputChange={(event, newValue) => {
             setFilterInput({
               ...filterInput,
-              stage_Id: event.target.value,
+              stage_Id: newValue,
             });
           }}
-          inputValue={filterInput.stage_Id}
           renderInput={(params) => (
             <TextField {...params} label={NAME_TRANS_VN.ID} />
           )}
@@ -64,10 +64,10 @@ const StageFilterComponent = ({ filter, setFilter, classList }) => {
             setFilterInput({ ...filterInput, stage_Name: newValue });
           }}
           value={filterInput.stage_Name}
-          onInputChange={(event) => {
+          onInputChange={(event, newValue) => {
             setFilterInput({
               ...filterInput,
-              stage_Name: event.target.value,
+              stage_Name: newValue,
             });
           }}
           inputValue={filterInput.stage_Name}

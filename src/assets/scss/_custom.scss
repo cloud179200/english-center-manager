@@ -8,7 +8,7 @@
     scrollbar-color: $grey700;
     ::-webkit-scrollbar,
     *::-webkit-scrollbar {
-        background-color: $grey50;
+        background-color: none;
         width: 0.4rem;
         height: 0.4rem;
         border-radius: 0.4rem;
@@ -20,6 +20,7 @@
         background-color: $grey300;
         min-height: 24px;
         transition: all 0.5s ease;
+        display: none;
     }
 
     ::-webkit-scrollbar-thumb:focus,
@@ -27,6 +28,7 @@
         background-color: $grey500;
         width: 0.5rem;
         height: 0.5rem;
+        display: block;
     }
 
     ::-webkit-scrollbar-thumb:active,
@@ -34,6 +36,7 @@
         background-color: $grey500;
         width: 0.5rem;
         height: 0.5rem;
+        display: block;
     }
 
     ::-webkit-scrollbar-thumb:hover,
@@ -41,6 +44,7 @@
         background-color: $grey500;
         width: 0.5rem;
         height: 0.5rem;
+        display: block;
     }
 
     ::-webkit-scrollbar-corner,

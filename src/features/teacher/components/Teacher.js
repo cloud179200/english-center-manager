@@ -66,11 +66,11 @@ const TeacherComponent = () => {
     }
     let filterResult = cloneTeacherList
       .filter((item) =>
-        filter.teacher_Id ? item.teacher_Id.includes(filter.teacher_Id) : true
+        filter.teacher_Id ? item.teacher_Id.toString().includes(filter.teacher_Id) : true
       )
       .filter((item) =>
         filter.teacher_Name
-          ? item.teacher_Name.includes(filter.teacher_Name)
+          ? item.teacher_Name.toLowerCase().includes(filter.teacher_Name.toLowerCase())
           : true
       );
     return filterResult;

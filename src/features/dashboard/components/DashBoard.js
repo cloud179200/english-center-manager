@@ -1,9 +1,8 @@
 /* eslint-disable import/no-unresolved */
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingComponent from "../../../utils/component/Loading";
 import { getUserDetailAction } from "../../../redux/user/operators";
-import { useTimeout } from "react-use";
 import CustomBox from "../../../components/custom-box/CustomBox";
 import {
   Chart as ChartJS,
@@ -17,7 +16,8 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import faker from "faker";
-import { Grid, useTheme } from "@mui/material";
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
+import { sleep } from "../../../utils";
 
 ChartJS.register(
   CategoryScale,
@@ -36,13 +36,19 @@ export function App() {
 const DashBoard = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
+  const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
+
   const userInfo = useSelector((state) => state.user.userInfo);
-  const [ready] = useTimeout(2000);
+  const commonLoading = useSelector((state) => state.common.loading);
+  const [loading, setLoading] = useState(false);
 
   const loadData = async () => {
     if (userInfo?.token && userInfo?.email) {
       dispatch(getUserDetailAction(userInfo?.email));
     }
+    setLoading(true);
+    await sleep(1000);
+    setLoading(false);
   };
   const labels = useMemo(
     () => [
@@ -92,37 +98,40 @@ const DashBoard = () => {
     },
   }));
 
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "Doanh Thu",
-        data: labels.map(() =>
-          faker.datatype.number({ min: 0, max: 100000000 })
-        ),
-        borderColor: theme.palette.secondary.light,
-        backgroundColor: theme.palette.secondary.main,
-        yAxisID: "y",
-      },
-      {
-        label: "Chi Tiêu",
-        data: labels.map(() =>
-          faker.datatype.number({ min: 0, max: 100000000 })
-        ),
-        borderColor: theme.palette.primary.light,
-        backgroundColor: theme.palette.primary.main,
-        yAxisID: "y1",
-      },
-    ],
-  };
+  const data = useMemo(
+    () => ({
+      labels,
+      datasets: [
+        {
+          label: "Doanh Thu",
+          data: labels.map(() =>
+            faker.datatype.number({ min: 0, max: 100000000 })
+          ),
+          borderColor: theme.palette.secondary.light,
+          backgroundColor: theme.palette.secondary.main,
+          yAxisID: "y",
+        },
+        {
+          label: "Chi Tiêu",
+          data: labels.map(() =>
+            faker.datatype.number({ min: 0, max: 100000000 })
+          ),
+          borderColor: theme.palette.primary.light,
+          backgroundColor: theme.palette.primary.main,
+          yAxisID: "y1",
+        },
+      ],
+    }),
+    []
+  );
 
   useEffect(() => {
     loadData();
-  }, [userInfo]);
+  }, [userInfo, matchDownSM]);
 
   return (
     <>
-      {!ready() ? (
+      {loading || commonLoading ? (
         <LoadingComponent />
       ) : (
         <>

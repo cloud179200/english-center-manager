@@ -45,10 +45,10 @@ const StudentFilterComponent = ({ filter, setFilter, studentList }) => {
             setFilterInput({ ...filterInput, student_Id: newValue });
           }}
           value={filterInput.student_Id}
-          onInputChange={(event) => {
+          onInputChange={(event, newValue) => {
             setFilterInput({
               ...filterInput,
-              student_Id: event.target.value,
+              student_Id: newValue,
             });
           }}
           inputValue={filterInput.student_Id}
@@ -66,10 +66,10 @@ const StudentFilterComponent = ({ filter, setFilter, studentList }) => {
             setFilterInput({ ...filterInput, student_Name: newValue });
           }}
           value={filterInput.student_Name}
-          onInputChange={(event) => {
+          onInputChange={(event, newValue) => {
             setFilterInput({
               ...filterInput,
-              student_Name: event.target.value,
+              student_Name: newValue,
             });
           }}
           inputValue={filterInput.student_Name}

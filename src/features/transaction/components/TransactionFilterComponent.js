@@ -49,10 +49,10 @@ const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
             setFilterInput({ ...filterInput, teacher_Name: newValue });
           }}
           value={filterInput.teacher_Name}
-          onInputChange={(event) => {
+          onInputChange={(event, newValue) => {
             setFilterInput({
               ...filterInput,
-              teacher_Name: event.target.value,
+              teacher_Name: newValue,
             });
           }}
           inputValue={filterInput.teacher_Name}
@@ -70,10 +70,10 @@ const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
             setFilterInput({ ...filterInput, student_Name: newValue });
           }}
           value={filterInput.student_Name}
-          onInputChange={(event) => {
+          onInputChange={(event, newValue) => {
             setFilterInput({
               ...filterInput,
-              student_Name: event.target.value,
+              student_Name: newValue,
             });
           }}
           inputValue={filterInput.student_Name}

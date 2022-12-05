@@ -230,11 +230,11 @@ const TransactionComponent = () => {
     }
     let filterResult = cloneTransactionList
       .filter((item) =>
-        filter.class_Name ? item.class_Name.includes(filter.class_Name) : true
+        filter.class_Name ? item.class_Name.toLowerCase().includes(filter.class_Name.toLowerCase()) : true
       )
       .filter((item) =>
         filter.student_Name
-          ? item.student_Name.includes(filter.student_Name)
+          ? item.student_Name.toLowerCase().includes(filter.student_Name.toLowerCase())
           : true
       );
     return filterResult;

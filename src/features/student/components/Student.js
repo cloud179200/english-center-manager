@@ -66,11 +66,11 @@ const StudentComponent = () => {
     }
     let filterResult = cloneStudentList
       .filter((item) =>
-        filter.student_Id ? item.student_Id.includes(filter.student_Id) : true
+        filter.student_Id ? item.student_Id.toString().includes(filter.student_Id) : true
       )
       .filter((item) =>
         filter.student_Name
-          ? item.student_Name.includes(filter.student_Name)
+          ? item.student_Name.toLowerCase().includes(filter.student_Name.toLowerCase())
           : true
       );
     return filterResult;

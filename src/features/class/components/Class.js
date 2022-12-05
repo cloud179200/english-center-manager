@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Grid, IconButton } from "@mui/material";
 import {
-  IconPlus,
   IconTrash,
   IconEdit,
   IconChevronRight,
   IconCalendar,
+  IconCirclePlus,
 } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getClassAction } from "../../../redux/class/operators";
@@ -15,13 +15,11 @@ import CustomTable from "../../../components/custom-table/CustomTable";
 import LoadingComponent from "../../../utils/component/Loading";
 import ClassAddModal from "./ClassAddModal";
 import ClassFilterComponent from "./ClassFilterComponent";
-// import classMockData from "../../../config/data/class-mock-data.json";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import ClassEditModal from "./ClassEditModal";
 import ClassDeleteModal from "./ClassDeleteModal";
 import ClassManageByStudentModal from "./ClassManageByStudentModal";
 import ClassManageScheduleModal from "./ClassManageScheduleModal";
-// const rows = _.cloneDeep(classMockData);
 
 export const initClassFilter = {
   class_Id: "",
@@ -194,14 +192,14 @@ const ClassComponent = () => {
     }
     let filterResult = cloneClassList
       .filter((item) =>
-        filter.class_Id ? item.class_Id.includes(filter.class_Id) : true
+        filter.class_Id ? item.class_Id.toString().includes(filter.class_Id) : true
       )
       .filter((item) =>
-        filter.class_Name ? item.class_Name.includes(filter.class_Name) : true
+        filter.class_Name ? item.class_Name.toLowerCase().includes(filter.class_Name.toLowerCase()) : true
       )
       .filter((item) =>
         filter.teacher_Name
-          ? item.teacher_Name.includes(filter.teacher_Name)
+          ? item.teacher_Name.toLowerCase().includes(filter.teacher_Name.toLowerCase())
           : true
       );
     return filterResult;
@@ -251,17 +249,22 @@ const ClassComponent = () => {
           />
         </CustomBox>
         <CustomBox>
-          <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
+          <Grid
+            container
+            columnSpacing={{ xs: 0, md: 2 }}
+            rowSpacing={2}
+            sx={{ overflowX: "auto" }}
+          >
             {isEnabledAddClass && (
-              <Grid item xs={12} md={2}>
+              <Grid item xs={12} md={3}>
                 <Button
                   variant="contained"
                   color="secondary"
                   size="small"
                   endIcon={
-                    <IconPlus
+                    <IconCirclePlus
                       stroke={1.5}
-                      size="2rem"
+                      size="1.5rem"
                       style={{ marginTop: "auto", marginBottom: "auto" }}
                     />
                   }

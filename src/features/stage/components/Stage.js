@@ -3,7 +3,7 @@ import { Button, Grid, IconButton } from "@mui/material";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import "../../../assets/scss/_custom-calendar.scss";
 import CustomBox from "./../../../components/custom-box/CustomBox";
-import { IconPlus, IconEdit, IconTrash } from "@tabler/icons";
+import { IconEdit, IconTrash, IconCirclePlus } from "@tabler/icons";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
 import CustomTable from "../../../components/custom-table/CustomTable";
@@ -93,10 +93,10 @@ const StageComponent = ({
     }
     let filterResult = cloneStageList
       .filter((item) =>
-        filter.stage_Id ? item.class_Id.includes(filter.stage_Id) : true
+        filter.stage_Id ? item.class_Id.toString().includes(filter.stage_Id) : true
       )
       .filter((item) =>
-        filter.stage_Name ? item.stage_Name.includes(filter.stage_Name) : true
+        filter.stage_Name ? item.stage_Name.toLowerCase().includes(filter.stage_Name.toLowerCase()) : true
       );
     return filterResult;
   }, [stageList]);
@@ -108,7 +108,7 @@ const StageComponent = ({
         setLoading(false);
         if (err) return;
         setStageList(res);
-        setStageListByFather(_.cloneDeep(res));
+        setStageListByFather && setStageListByFather(res)
       })
     );
   };
@@ -150,11 +150,12 @@ const StageComponent = ({
       <CustomBox>
         <Grid
           container
-          justifyContent="flex-end"
+          justifyContent="flex-start"
           alignItems="flex-start"
+          columnSpacing={{ xs: 0, md: 2 }}
           rowSpacing={2}
         >
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             <Button
               disabled={loading}
               color="secondary"
@@ -162,9 +163,9 @@ const StageComponent = ({
               onClick={() => setOpenAddStageModal(true)}
               fullWidth
               endIcon={
-                <IconPlus
+                <IconCirclePlus
                   stroke={1.5}
-                  size="2rem"
+                  size="1.5rem"
                   style={{
                     marginTop: "auto",
                     marginBottom: "auto",

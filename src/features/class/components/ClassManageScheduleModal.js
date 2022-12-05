@@ -27,6 +27,7 @@ import { useDispatch } from "react-redux";
 import _ from "lodash";
 import {
   getScheduleByClassIdAction,
+  getStageByClassIdAction,
   setScheduleAction,
 } from "../../../redux/class/operators";
 import { addNotificationAction } from "../../../redux/utils/operators";
@@ -119,11 +120,7 @@ const ScheduleSetupButton = ({
   );
 };
 
-const ClassManageScheduleModal = ({
-  open,
-  handleClose,
-  classObject,
-}) => {
+const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -132,19 +129,23 @@ const ClassManageScheduleModal = ({
   const [stageList, setStageList] = useState([]);
 
   const setSchedule = (scheduleList) => {
+    const schedules = scheduleList.map(item => ({
+      stage_Id: item.stage_Id,
+      schedule_Date: new Date(moment(item.schedule_Date)),
+    }))
     setLoading(true);
     dispatch(
-      setScheduleAction(classObject?.class_Id, scheduleList, (res, err) => {
+      setScheduleAction(classObject?.class_Id, schedules, (res, err) => {
         setLoading(false);
         if (err) {
           return;
         }
-        getSchedule()
+        getScheduleData();
       })
     );
   };
 
-  const getSchedule = () => {
+  const getScheduleData = () => {
     setLoading(true);
     dispatch(
       getScheduleByClassIdAction(classObject?.class_Id, (res, err) => {
@@ -152,13 +153,27 @@ const ClassManageScheduleModal = ({
         if (err) {
           return;
         }
-        debugger
+        debugger;
         console.log("[getScheduleByClassIdAction]", res);
       })
     );
   };
 
+  const getStageData = () => {
+    setLoading(true);
+    dispatch(
+      getStageByClassIdAction(classObject?.class_Id, (res, err) => {
+        setLoading(false);
+        if (err) return;
+        setStageList(res);
+      })
+    );
+  };
+
   const handleChangeTab = (event, newValue) => {
+    if (loading) {
+      return;
+    }
     setTab(newValue);
   };
 
@@ -168,25 +183,27 @@ const ClassManageScheduleModal = ({
       stage_Id: stageId,
       stage_Name: stageName,
     };
-    //TODO: implement api
-    const newDateSchedule = [...dateScheduleList, scheduleObject];
-    //API
+    const newDateSchedule = [..._.cloneDeep(dateScheduleList), scheduleObject];
     setSchedule(newDateSchedule);
     setDateScheduleList(newDateSchedule);
   };
 
   const handleRemoveSchedule = (date) => {
-    setDateScheduleList(
-      [...dateScheduleList].filter((item) => item.schedule_Date !== date)
+    const newDateSchedule = _.cloneDeep(dateScheduleList).filter(
+      (item) => item.schedule_Date !== date
     );
+    setSchedule(newDateSchedule);
+    setDateScheduleList(newDateSchedule);
   };
+
+  
 
   useEffect(() => {
     if (!classObject?.class_Id) {
       return;
     }
-    setTab(0)
-    getSchedule();
+    getStageData();
+    getScheduleData();
   }, [classObject?.class_Id]);
 
   return (
@@ -198,21 +215,19 @@ const ClassManageScheduleModal = ({
       <Grid container p={2} justifyContent="center" alignItems="center">
         <Grid item xs={12} sx={{ padding: theme.spacing(1) }}>
           <Tabs value={tab} onChange={handleChangeTab}>
-            <Tab disabled={loading} icon={<IconChalkboard strokeWidth={2} size="2rem" />} />
-            <Tab disabled={loading} icon={<IconCalendar strokeWidth={2} size="2rem" />} />
+            <Tab icon={<IconChalkboard strokeWidth={2} size="2rem" />} />
+            <Tab icon={<IconCalendar strokeWidth={2} size="2rem" />} />
           </Tabs>
         </Grid>
         <Grid item xs={12}>
           {tab === 0 && (
             <StageComponent
               classObject={classObject}
-              setStageListByFather={setStageList}
             />
           )}
           {tab === 1 && (
             <CustomBox>
               <Calendar
-                view="month"
                 value={null}
                 tileContent={({ date }) => (
                   <ScheduleSetupButton

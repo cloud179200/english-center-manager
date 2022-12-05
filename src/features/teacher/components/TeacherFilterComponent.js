@@ -45,10 +45,10 @@ const TeacherFilterComponent = ({ filter, setFilter, teacherList }) => {
             setFilterInput({ ...filterInput, teacher_Id: newValue });
           }}
           value={filterInput.teacher_Id}
-          onInputChange={(event) => {
+          onInputChange={(event, newValue) => {
             setFilterInput({
               ...filterInput,
-              teacher_Id: event.target.value,
+              teacher_Id: newValue,
             });
           }}
           inputValue={filterInput.teacher_Id}
@@ -66,10 +66,10 @@ const TeacherFilterComponent = ({ filter, setFilter, teacherList }) => {
             setFilterInput({ ...filterInput, teacher_Name: newValue });
           }}
           value={filterInput.teacher_Name}
-          onInputChange={(event) => {
+          onInputChange={(event, newValue) => {
             setFilterInput({
               ...filterInput,
-              teacher_Name: event.target.value,
+              teacher_Name: newValue,
             });
           }}
           inputValue={filterInput.teacher_Name}

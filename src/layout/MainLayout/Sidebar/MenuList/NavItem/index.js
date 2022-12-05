@@ -92,7 +92,7 @@ const NavItem = ({ item, level }) => {
         py: level > 1 ? 1.25 : 1.5,
         pl: `${level * 24}px`,
       }}
-      selected={customization.isOpen.findIndex((id) => id === item.id) > -1}
+      selected={customization.isOpen.findIndex((id) => id === item.id) > -1 || document.location.pathname === item.url}
       onClick={() => itemHandler(item.id)}
     >
       <ListItemIcon sx={{ my: "auto", minWidth: !item?.icon ? 18 : 36 }}>

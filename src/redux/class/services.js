@@ -67,3 +67,20 @@ export const deleteStageService = async (body) => {
     throw error;
   }
 };
+
+
+export const getScheduleByClassIdService = async (body) => {
+  try {
+    return await getService(`/api/schedule/get-by-class-id?p_class_id=${body.class_Id}`, "update schedule fail", true);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const setScheduleService = async (body) => {
+  try {
+    return await postService(`/api/schedule/update`, body, "update schedule fail", true);
+  } catch (error) {
+    throw error;
+  }
+};

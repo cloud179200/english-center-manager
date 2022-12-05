@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import CustomBox from "../custom-box/CustomBox";
 import { IconX } from "@tabler/icons";
-import PerfectScrollbar from "react-perfect-scrollbar";
 
 const CustomModal = (props) => {
   const theme = useTheme();
@@ -46,9 +45,17 @@ const CustomModal = (props) => {
             mt: 2,
             width: "100%",
             maxWidth: matchDownSM ? "100%" : "1000px",
+            maxHeight: `calc(100vh - ${theme.spacing(4)})`,
+            overflow: "auto",
           }}
         >
-          <Toolbar sx={{ display: "flex", justifyContent: "space-between", padding: 1 }}>
+          <Toolbar
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              padding: 1,
+            }}
+          >
             <Typography variant="h4">{props.title}</Typography>
             <IconButton onClick={props.handleClose}>
               <IconX
@@ -59,9 +66,7 @@ const CustomModal = (props) => {
             </IconButton>
           </Toolbar>
           <Divider />
-          <PerfectScrollbar component="div">
-            {props.children}
-          </PerfectScrollbar>
+          {props.children}
         </CustomBox>
       </Box>
     </Modal>

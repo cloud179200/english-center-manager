@@ -1,8 +1,10 @@
 import {
   ADD_CLASS_ACTION,
   GET_CLASS_ACTION,
+  GET_SCHEDULE_BY_CLASS_ID_ACTION,
   GET_STAGE_BY_CLASS_ID_ACTION,
   SET_CLASS_ACTION,
+  SET_SCHEDULE_ACTION,
   SET_STAGE_ACTION,
 } from "./action";
 
@@ -17,6 +19,8 @@ import {
   setStageService,
   addStageService,
   deleteStageService,
+  setScheduleService,
+  getScheduleByClassIdService,
 } from "./services";
 
 export const getClassAction = (callback) => {
@@ -161,11 +165,7 @@ export const getStageByClassIdAction = (class_Id, callback) => {
   };
 };
 
-export const addStageAction = (
-  class_Id,
-  stage_Name,
-  callback
-) => {
+export const addStageAction = (class_Id, stage_Name, callback) => {
   return async (dispatch) => {
     dispatch({ type: SET_STAGE_ACTION });
     try {
@@ -190,17 +190,13 @@ export const addStageAction = (
   };
 };
 
-export const setStageAction = (
-  stage_Id,
-  stage_Name,
-  callback
-) => {
+export const setStageAction = (stage_Id, stage_Name, callback) => {
   return async (dispatch) => {
     dispatch({ type: SET_STAGE_ACTION });
     try {
       const res = await setStageService({
         stage_Id,
-        stage_Name
+        stage_Name,
       });
       if (res) {
         dispatch(addNotificationAction(API_MESSAGE.UPDATE_SUCCESS, false));
@@ -218,7 +214,6 @@ export const setStageAction = (
     }
   };
 };
-
 
 export const removeStageAction = (stage_Id, callback) => {
   return async (dispatch) => {
@@ -241,6 +236,52 @@ export const removeStageAction = (stage_Id, callback) => {
           true
         )
       );
+    }
+  };
+};
+
+export const getScheduleByClassIdAction = (class_Id, callback) => {
+  return async (dispatch) => {
+    dispatch({ type: GET_SCHEDULE_BY_CLASS_ID_ACTION });
+    try {
+      const res = await getScheduleByClassIdService({ class_Id });
+      if (res?.data) {
+        callback(res.data, null);
+        return;
+      }
+    } catch (error) {
+      dispatch(
+        addNotificationAction(
+          error?.data?.message || API_MESSAGE.SERVER_ERROR,
+          true
+        )
+      );
+      callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
+    }
+  };
+};
+
+export const setScheduleAction = (class_Id, schedules, callback) => {
+  return async (dispatch) => {
+    dispatch({ type: SET_SCHEDULE_ACTION });
+    try {
+      const res = await setScheduleService({
+        class_Id,
+        schedules,
+      });
+      if (res) {
+        dispatch(addNotificationAction(API_MESSAGE.UPDATE_SUCCESS, false));
+        callback(res, null);
+        return;
+      }
+    } catch (error) {
+      dispatch(
+        addNotificationAction(
+          error?.data?.message || API_MESSAGE.SERVER_ERROR,
+          true
+        )
+      );
+      callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
     }
   };
 };

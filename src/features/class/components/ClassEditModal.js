@@ -15,7 +15,7 @@ import {
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { useFormik } from "formik";
 import { addClassSchema } from "../schema";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setClassAction } from "../../../redux/class/operators";
 import AnimateButton from "../../../components/extended/AnimateButton";
 import _ from "lodash";
@@ -34,7 +34,7 @@ const ClassEditModal = ({
 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.common.loading);
+  const [loading, setLoading] = useState(false)
   const [teacherList, setTeacherList] = useState([]);
   const [studentList, setStudentList] = useState([]);
   const [studentChipValues, setStudentChipValues] = useState([]);
@@ -60,6 +60,7 @@ const ClassEditModal = ({
     },
     validationSchema: addClassSchema,
     onSubmit: (values) => {
+      setLoading(true)
       dispatch(
         setClassAction(
           values.class_Id,
@@ -74,6 +75,7 @@ const ClassEditModal = ({
   });
 
   const editClassCallback = (res, err) => {
+    setLoading(false)
     if (err) {
       return;
     }

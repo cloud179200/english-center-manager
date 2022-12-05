@@ -7,13 +7,12 @@ import _ from "lodash";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import LoadingComponent from "../../../utils/component/Loading";
 import StudentFilterComponent from "./StudentFilterComponent";
-import { getListStudentAction } from '../../../redux/student/operators';
+import { getListStudentAction } from "../../../redux/student/operators";
 
 export const initStudentFilter = {
   student_Id: "",
   student_Name: "",
 };
-
 
 const StudentComponent = () => {
   const dispatch = useDispatch();
@@ -82,20 +81,19 @@ const StudentComponent = () => {
   }, []);
 
   return (
-    <>
-      {loading ? (
-        <LoadingComponent />
-      ) : (
-        <>
-          <CustomBox>
-            <StudentFilterComponent
-              filter={filter}
-              setFilter={setFilter}
-              studentList={studentList}
-            />
-          </CustomBox>
-          <CustomBox>
-            <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
+      <>
+        <CustomBox>
+          <StudentFilterComponent
+            filter={filter}
+            setFilter={setFilter}
+            studentList={studentList}
+          />
+        </CustomBox>
+        <CustomBox>
+          <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
+            {loading ? (
+              <LoadingComponent />
+            ) : (
               <Grid item xs={12}>
                 <CustomTable
                   headers={["Id", "Tên Học Viên", "#"]}
@@ -103,11 +101,10 @@ const StudentComponent = () => {
                   title="Danh Sách Học Viên"
                 />
               </Grid>
-            </Grid>
-          </CustomBox>
-        </>
-      )}
-    </>
+            )}
+          </Grid>
+        </CustomBox>
+      </>
   );
 };
 

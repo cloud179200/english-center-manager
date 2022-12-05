@@ -151,7 +151,9 @@ const TransactionComponent = () => {
       );
       const isDisabled =
         isFullfiled ||
-        lastestLoadingConfirm.current.includes(`${item.student_Id} ${item.class_Id}`);
+        lastestLoadingConfirm.current.includes(
+          `${item.student_Id} ${item.class_Id}`
+        );
       return (
         <Grid container flexWrap="nowrap" columnGap={2}>
           <Grid item xs={12}>
@@ -243,20 +245,19 @@ const TransactionComponent = () => {
   }, [userDetail?.user_Type]);
 
   return (
-    <>
-      {loading ? (
-        <LoadingComponent />
-      ) : (
-        <>
-          <CustomBox>
-            <TransactionFilterComponent
-              filter={filter}
-              setFilter={setFilter}
-              transactionList={transactionList}
-            />
-          </CustomBox>
-          <CustomBox>
-            <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
+      <>
+        <CustomBox>
+          <TransactionFilterComponent
+            filter={filter}
+            setFilter={setFilter}
+            transactionList={transactionList}
+          />
+        </CustomBox>
+        <CustomBox>
+          <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
+            {loading ? (
+              <LoadingComponent />
+            ) : (
               <Grid item xs={12}>
                 <CustomTable
                   headers={headers}
@@ -264,11 +265,10 @@ const TransactionComponent = () => {
                   title="Danh Sách Giao Dịch"
                 />
               </Grid>
-            </Grid>
-          </CustomBox>
-        </>
-      )}
-    </>
+            )}
+          </Grid>
+        </CustomBox>
+      </>
   );
 };
 

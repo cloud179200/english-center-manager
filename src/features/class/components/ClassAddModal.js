@@ -54,6 +54,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
     },
     validationSchema: addClassSchema,
     onSubmit: (values) => {
+      setLoading(true)
       dispatch(
         addClassAction(
           values.class_Name,
@@ -67,6 +68,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
   });
 
   const addClassCallback = (res, err) => {
+    setLoading(false)
     if (err) {
       return;
     }
@@ -89,6 +91,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
     setLoading(true);
     dispatch(
       getListStudentAction((res, err) => {
+        setLoading(false);
         if (err) return;
         setStudentList(
           _.cloneDeep(
@@ -128,10 +131,10 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
 
   useEffect(() => {
     if (!open) {
-      resetForm();
-      setStudentChipValues([]);
       return;
     }
+    resetForm();
+    setStudentChipValues([]);
     initData();
   }, [open]);
 

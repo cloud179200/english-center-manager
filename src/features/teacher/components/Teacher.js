@@ -14,8 +14,6 @@ export const initTeacherFilter = {
   teacher_Name: "",
 };
 
-
-
 const TeacherComponent = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -83,20 +81,19 @@ const TeacherComponent = () => {
   }, []);
 
   return (
-    <>
-      {loading ? (
-        <LoadingComponent />
-      ) : (
-        <>
-          <CustomBox>
-            <TeacherFilterComponent
-              filter={filter}
-              setFilter={setFilter}
-              teacherList={teacherList}
-            />
-          </CustomBox>
-          <CustomBox>
-            <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
+      <>
+        <CustomBox>
+          <TeacherFilterComponent
+            filter={filter}
+            setFilter={setFilter}
+            teacherList={teacherList}
+          />
+        </CustomBox>
+        <CustomBox>
+          <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
+            {loading ? (
+              <LoadingComponent />
+            ) : (
               <Grid item xs={12}>
                 <CustomTable
                   headers={["Id", "Tên Giảng Viên", "#"]}
@@ -104,11 +101,10 @@ const TeacherComponent = () => {
                   title="Danh Sách Giảng Viên"
                 />
               </Grid>
-            </Grid>
-          </CustomBox>
-        </>
-      )}
-    </>
+            )}
+          </Grid>
+        </CustomBox>
+      </>
   );
 };
 

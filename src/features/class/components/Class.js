@@ -64,9 +64,9 @@ const ClassComponent = () => {
     setManageByStudentClassObject(null);
   };
 
-  const handleCloseManageScheduleClassModal = ()  => {
+  const handleCloseManageScheduleClassModal = () => {
     setScheduleClassObject(null);
-  }
+  };
   const getClassData = () => {
     setLoading(true);
     dispatch(
@@ -142,7 +142,9 @@ const ClassComponent = () => {
           columnGap={2}
         >
           <Grid item>
-            <IconButton onClick={() => setScheduleClassObject(_.cloneDeep(item))}>
+            <IconButton
+              onClick={() => setScheduleClassObject(_.cloneDeep(item))}
+            >
               <IconCalendar
                 strokeWidth={2}
                 size="1.5rem"
@@ -215,7 +217,6 @@ const ClassComponent = () => {
         classObject={scheduleClassObject}
         open={Boolean(scheduleClassObject)}
         handleClose={handleCloseManageScheduleClassModal}
-        reloadClassData={reloadClassData}
       />
       <ClassManageByStudentModal
         classObject={manageByStudentClassObject}
@@ -240,41 +241,42 @@ const ClassComponent = () => {
         handleClose={handleCloseAddClassModal}
         reloadClassData={reloadClassData}
       />
-      {loading ? (
-        <LoadingComponent />
-      ) : (
-        <>
-          <CustomBox>
-            <ClassFilterComponent
-              filter={filter}
-              setFilter={setFilter}
-              classList={classList}
-            />
-          </CustomBox>
-          <CustomBox>
-            <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
-              {isEnabledAddClass && (
-                <Grid item xs={12} md={2}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    size="small"
-                    endIcon={
-                      <IconPlus
-                        stroke={1.5}
-                        size="2rem"
-                        style={{ marginTop: "auto", marginBottom: "auto" }}
-                      />
-                    }
-                    onClick={handleOpenAddClassModal}
-                    sx={{
-                      width: "100%",
-                    }}
-                  >
-                    {NAME_TRANS_VN.CLASS_NEW}
-                  </Button>
-                </Grid>
-              )}
+
+      <>
+        <CustomBox>
+          <ClassFilterComponent
+            filter={filter}
+            setFilter={setFilter}
+            classList={classList}
+          />
+        </CustomBox>
+        <CustomBox>
+          <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
+            {isEnabledAddClass && (
+              <Grid item xs={12} md={2}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  endIcon={
+                    <IconPlus
+                      stroke={1.5}
+                      size="2rem"
+                      style={{ marginTop: "auto", marginBottom: "auto" }}
+                    />
+                  }
+                  onClick={handleOpenAddClassModal}
+                  sx={{
+                    width: "100%",
+                  }}
+                >
+                  {NAME_TRANS_VN.CLASS_NEW}
+                </Button>
+              </Grid>
+            )}
+            {loading ? (
+              <LoadingComponent />
+            ) : (
               <Grid item xs={12}>
                 <CustomTable
                   headers={[
@@ -289,10 +291,10 @@ const ClassComponent = () => {
                   title="Danh Sách Lớp"
                 />
               </Grid>
-            </Grid>
-          </CustomBox>
-        </>
-      )}
+            )}
+          </Grid>
+        </CustomBox>
+      </>
     </>
   );
 };

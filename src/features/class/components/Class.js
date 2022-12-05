@@ -1,6 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Grid, IconButton } from "@mui/material";
-import { IconPlus, IconTrash, IconEdit, IconChevronRight } from "@tabler/icons";
+import {
+  IconPlus,
+  IconTrash,
+  IconEdit,
+  IconChevronRight,
+  IconCalendar,
+} from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getClassAction } from "../../../redux/class/operators";
 import CustomBox from "../../../components/custom-box/CustomBox";
@@ -14,6 +20,7 @@ import { NAME_TRANS_VN } from "../../../config/constant";
 import ClassEditModal from "./ClassEditModal";
 import ClassDeleteModal from "./ClassDeleteModal";
 import ClassManageByStudentModal from "./ClassManageByStudentModal";
+import ClassManageScheduleModal from "./ClassManageScheduleModal";
 // const rows = _.cloneDeep(classMockData);
 
 export const initClassFilter = {
@@ -31,6 +38,7 @@ const ClassComponent = () => {
   const [classList, setClassList] = useState([]);
   const [openAddClassModal, setOpenAddClassModal] = useState(false);
   const [editClassObject, setEditClassObject] = useState(null);
+  const [scheduleClassObject, setScheduleClassObject] = useState(null);
   const [deleteClassObject, setDeleteClassObject] = useState(null);
   const [manageByStudentClassObject, setManageByStudentClassObject] =
     useState(null);
@@ -56,6 +64,9 @@ const ClassComponent = () => {
     setManageByStudentClassObject(null);
   };
 
+  const handleCloseManageScheduleClassModal = ()  => {
+    setScheduleClassObject(null);
+  }
   const getClassData = () => {
     setLoading(true);
     dispatch(
@@ -115,7 +126,7 @@ const ClassComponent = () => {
               <IconButton onClick={() => setManageByStudentClassObject(item)}>
                 <IconChevronRight
                   strokeWidth={2}
-                  size="1.3rem"
+                  size="2rem"
                   style={{ marginTop: "auto", marginBottom: "auto" }}
                 />
               </IconButton>
@@ -131,10 +142,19 @@ const ClassComponent = () => {
           columnGap={2}
         >
           <Grid item>
+            <IconButton onClick={() => setScheduleClassObject(_.cloneDeep(item))}>
+              <IconCalendar
+                strokeWidth={2}
+                size="1.5rem"
+                style={{ marginTop: "auto", marginBottom: "auto" }}
+              />
+            </IconButton>
+          </Grid>
+          <Grid item>
             <IconButton onClick={() => setEditClassObject(_.cloneDeep(item))}>
               <IconEdit
                 strokeWidth={2}
-                size="1.3rem"
+                size="1.5rem"
                 style={{ marginTop: "auto", marginBottom: "auto" }}
               />
             </IconButton>
@@ -146,7 +166,7 @@ const ClassComponent = () => {
             >
               <IconTrash
                 strokeWidth={2}
-                size="1.3rem"
+                size="1.5rem"
                 style={{ marginTop: "auto", marginBottom: "auto" }}
               />
             </IconButton>
@@ -191,6 +211,12 @@ const ClassComponent = () => {
 
   return (
     <>
+      <ClassManageScheduleModal
+        classObject={scheduleClassObject}
+        open={Boolean(scheduleClassObject)}
+        handleClose={handleCloseManageScheduleClassModal}
+        reloadClassData={reloadClassData}
+      />
       <ClassManageByStudentModal
         classObject={manageByStudentClassObject}
         open={Boolean(manageByStudentClassObject)}

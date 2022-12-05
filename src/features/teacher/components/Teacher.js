@@ -47,7 +47,7 @@ const TeacherComponent = () => {
           <IconButton color="primary">
             <IconInfoCircle
               strokeWidth={2}
-              size="1.3rem"
+              size="1.5rem"
               style={{ marginTop: "auto", marginBottom: "auto" }}
             />
           </IconButton>

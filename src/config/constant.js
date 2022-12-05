@@ -67,5 +67,6 @@ export const NAME_TRANS_VN = {
   CHANGE_PASSWORD: "Đổi Mật Khẩu",
   INFORMATION: "Thông Tin",
   DESCRIPTION: "Ghi Chú",
-  PAYMENT: "Nộp Tiền"
+  PAYMENT: "Nộp Tiền",
+  STAGE_ADD: "Thêm Lộ Trình"
 }

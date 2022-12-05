@@ -35,3 +35,35 @@ export const deleteClassService = async (body) => {
     throw error;
   }
 };
+
+export const getStageByClassIdService = async (body) => {
+  try {
+    return await getService(`/api/stage/get-by-class?p_class_id=${body.class_Id}`, "get stage fail", true);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addStageService = async (body) => {
+  try {
+    return await postService(`/api/stage/insert`, body, "add stage fail", true);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const setStageService = async (body) => {
+  try {
+    return await postService(`/api/stage/update`, body, "update stage fail", true);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteStageService = async (body) => {
+  try {
+    return await postService(`/api/stage/remove?p_stage_id=${body.stage_Id}`, body, "remove stage fail", true);
+  } catch (error) {
+    throw error;
+  }
+};

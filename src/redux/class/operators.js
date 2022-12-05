@@ -1,16 +1,23 @@
-import { ADD_CLASS_ACTION, GET_CLASS_ACTION, SET_CLASS_ACTION } from "./action";
+import {
+  ADD_CLASS_ACTION,
+  GET_CLASS_ACTION,
+  GET_STAGE_BY_CLASS_ID_ACTION,
+  SET_CLASS_ACTION,
+  SET_STAGE_ACTION,
+} from "./action";
 
-const { API_MESSAGE } = require("../../config/constant");
-const {
-  setLoadingAction,
-  addNotificationAction,
-} = require("../utils/operators");
-const {
+import { API_MESSAGE } from "../../config/constant";
+import { setLoadingAction, addNotificationAction } from "../utils/operators";
+import {
   getClassService,
   addClassService,
   setClassService,
   deleteClassService,
-} = require("./services");
+  getStageByClassIdService,
+  setStageService,
+  addStageService,
+  deleteStageService,
+} from "./services";
 
 export const getClassAction = (callback) => {
   return async (dispatch) => {
@@ -117,7 +124,108 @@ export const removeClassAction = (class_Id, email, callback) => {
     try {
       const res = await deleteClassService({
         class_Id,
-        email
+        email,
+      });
+      if (res) {
+        dispatch(addNotificationAction(API_MESSAGE.SUCCESS, false));
+        callback(res, null);
+        return;
+      }
+      callback(null, API_MESSAGE.SERVER_ERROR);
+    } catch (error) {
+      callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
+      dispatch(
+        addNotificationAction(
+          error?.data?.message || API_MESSAGE.SERVER_ERROR,
+          true
+        )
+      );
+    }
+  };
+};
+
+export const getStageByClassIdAction = (class_Id, callback) => {
+  return async (dispatch) => {
+    dispatch({ type: GET_STAGE_BY_CLASS_ID_ACTION });
+    try {
+      const res = await getStageByClassIdService({ class_Id });
+
+      if (res?.data) {
+        callback(res.data, null);
+        return;
+      }
+      callback(null, API_MESSAGE.SERVER_ERROR);
+    } catch (error) {
+      callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
+    }
+  };
+};
+
+export const addStageAction = (
+  class_Id,
+  stage_Name,
+  callback
+) => {
+  return async (dispatch) => {
+    dispatch({ type: SET_STAGE_ACTION });
+    try {
+      const res = await addStageService({
+        class_Id,
+        stage_Name,
+      });
+      if (res) {
+        dispatch(addNotificationAction(API_MESSAGE.UPDATE_SUCCESS, false));
+        callback(res, null);
+        return;
+      }
+    } catch (error) {
+      dispatch(
+        addNotificationAction(
+          error?.data?.message || API_MESSAGE.SERVER_ERROR,
+          true
+        )
+      );
+      callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
+    }
+  };
+};
+
+export const setStageAction = (
+  stage_Id,
+  stage_Name,
+  callback
+) => {
+  return async (dispatch) => {
+    dispatch({ type: SET_STAGE_ACTION });
+    try {
+      const res = await setStageService({
+        stage_Id,
+        stage_Name
+      });
+      if (res) {
+        dispatch(addNotificationAction(API_MESSAGE.UPDATE_SUCCESS, false));
+        callback(res, null);
+        return;
+      }
+    } catch (error) {
+      dispatch(
+        addNotificationAction(
+          error?.data?.message || API_MESSAGE.SERVER_ERROR,
+          true
+        )
+      );
+      callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
+    }
+  };
+};
+
+
+export const removeStageAction = (stage_Id, callback) => {
+  return async (dispatch) => {
+    dispatch({ type: ADD_CLASS_ACTION });
+    try {
+      const res = await deleteStageService({
+        stage_Id,
       });
       if (res) {
         dispatch(addNotificationAction(API_MESSAGE.SUCCESS, false));

@@ -46,7 +46,7 @@ const StudentComponent = () => {
           <IconButton color="primary">
             <IconInfoCircle
               strokeWidth={2}
-              size="1.3rem"
+              size="1.5rem"
               style={{ marginTop: "auto", marginBottom: "auto" }}
             />
           </IconButton>
@@ -55,7 +55,7 @@ const StudentComponent = () => {
     );
   }, []);
 
-  const teacherData = useMemo(() => {
+  const studentData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
     const cloneStudentList = _.cloneDeep(studentList).map((item) => ({
       student_Id: item.student_Id,
@@ -99,7 +99,7 @@ const StudentComponent = () => {
               <Grid item xs={12}>
                 <CustomTable
                   headers={["Id", "Tên Học Viên", "#"]}
-                  data={teacherData}
+                  data={studentData}
                   title="Danh Sách Học Viên"
                 />
               </Grid>

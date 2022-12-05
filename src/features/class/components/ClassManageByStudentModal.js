@@ -138,8 +138,8 @@ const ClassManageByStudentModal = ({
       <Grid container p={2}>
         <Grid item xs={12} sx={{ padding: theme.spacing(1) }}>
           <Tabs value={tab} onChange={handleChangeTab}>
-            <Tab icon={<CheckupList strokeWidth={2} size="1.3rem" />} />
-            <Tab icon={<Cash strokeWidth={2} size="1.3rem" />} />
+            <Tab icon={<CheckupList strokeWidth={2} size="1.5rem" />} />
+            <Tab icon={<Cash strokeWidth={2} size="1.5rem" />} />
           </Tabs>
         </Grid>
         <Grid item xs={12}>
@@ -158,7 +158,7 @@ const ClassManageByStudentModal = ({
                     {`Bằng cách nhấn vào ${NAME_TRANS_VN.PAYMENT} bạn đồng ý thanh toán tiền học phí ${classObject?.class_Fee}`}{" "}
                     <IconCurrencyDong
                       strokeWidth={2}
-                      size="1.3rem"
+                      size="1.5rem"
                       style={{
                         marginTop: "auto",
                         marginBottom: "auto",

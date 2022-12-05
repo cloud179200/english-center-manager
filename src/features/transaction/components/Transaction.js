@@ -124,7 +124,7 @@ const TransactionComponent = () => {
             <IconButton color="success">
               <IconInfoCircle
                 strokeWidth={2}
-                size="1.3rem"
+                size="1.5rem"
                 style={{ marginTop: "auto", marginBottom: "auto" }}
               />
             </IconButton>
@@ -134,7 +134,7 @@ const TransactionComponent = () => {
             <IconButton color="primary">
               <IconClockHour3
                 strokeWidth={2}
-                size="1.3rem"
+                size="1.5rem"
                 style={{ marginTop: "auto", marginBottom: "auto" }}
               />
             </IconButton>
@@ -188,7 +188,7 @@ const TransactionComponent = () => {
                 {item.class_Fee}
                 <IconCurrencyDong
                   strokeWidth={2}
-                  size="1.3rem"
+                  size="1.5rem"
                   style={{
                     marginTop: "auto",
                     marginBottom: "auto",
@@ -210,7 +210,7 @@ const TransactionComponent = () => {
                 {item.class_Fee}
                 <IconCurrencyDong
                   strokeWidth={2}
-                  size="1.3rem"
+                  size="1.5rem"
                   style={{
                     marginTop: "auto",
                     marginBottom: "auto",

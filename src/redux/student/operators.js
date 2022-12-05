@@ -13,7 +13,6 @@ import {
   studentPaymentClassFeeService,
 } from "./services";
 import { addNotificationAction } from "./../utils/operators";
-import { sleep } from "../../utils";
 
 export const getListStudentAction = (callback) => {
   return async (dispatch) => {
@@ -123,7 +122,6 @@ export const confirmStudentTransactionAction = (
   return async (dispatch) => {
     dispatch({ type: GET_STUDENT_TRANSACTIONS_ACTION });
     try {
-      await sleep(5000);
       const res = await confirmStudentTransactionService({
         student_Id,
         class_Id,

@@ -221,5 +221,15 @@ export default function componentStyleOverrides(theme) {
         },
       },
     },
+    MuiCssBaseLine: {
+      "@global": {
+        ".react-calendar *": {
+          fontFamily: theme?.customization?.fontFamily,
+        },
+        button: {
+          fontFamily: theme?.customization?.fontFamily,
+        },
+      },
+    },
   };
 }

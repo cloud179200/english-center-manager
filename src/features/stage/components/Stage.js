@@ -54,7 +54,10 @@ const StageComponent = ({
           columnGap={2}
         >
           <Grid item>
-            <IconButton disabled={loading}>
+            <IconButton
+              disabled={loading}
+              onClick={() => setEditStageObject(_.cloneDeep(item))}
+            >
               <IconEdit
                 strokeWidth={2}
                 size="1.5rem"
@@ -93,13 +96,19 @@ const StageComponent = ({
     }
     let filterResult = cloneStageList
       .filter((item) =>
-        filter.stage_Id ? item.class_Id.toString().includes(filter.stage_Id) : true
+        filter.stage_Id
+          ? item.class_Id.toString().includes(filter.stage_Id)
+          : true
       )
       .filter((item) =>
-        filter.stage_Name ? item.stage_Name.toLowerCase().includes(filter.stage_Name.toLowerCase()) : true
+        filter.stage_Name
+          ? item.stage_Name
+              .toLowerCase()
+              .includes(filter.stage_Name.toLowerCase())
+          : true
       );
     return filterResult;
-  }, [stageList]);
+  }, [stageList, filter]);
 
   const getStageData = () => {
     setLoading(true);
@@ -108,7 +117,7 @@ const StageComponent = ({
         setLoading(false);
         if (err) return;
         setStageList(res);
-        setStageListByFather && setStageListByFather(res)
+        setStageListByFather && setStageListByFather(res);
       })
     );
   };

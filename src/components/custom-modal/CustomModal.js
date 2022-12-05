@@ -9,6 +9,7 @@ import {
   IconButton,
   Divider,
   Typography,
+  CssBaseline,
 } from "@mui/material";
 import CustomBox from "../custom-box/CustomBox";
 import { IconX } from "@tabler/icons";
@@ -46,7 +47,6 @@ const CustomModal = (props) => {
             width: "100%",
             maxWidth: matchDownSM ? "100%" : "1000px",
             maxHeight: `calc(100vh - ${theme.spacing(4)})`,
-            overflow: "auto",
           }}
         >
           <Toolbar
@@ -66,7 +66,16 @@ const CustomModal = (props) => {
             </IconButton>
           </Toolbar>
           <Divider />
-          {props.children}
+          <Box
+            sx={{
+              width: "100%",
+              maxHeight: "70vh",
+              overflow: "auto",
+            }}
+          >
+            <CssBaseline />
+            {props.children}
+          </Box>
         </CustomBox>
       </Box>
     </Modal>

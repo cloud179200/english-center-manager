@@ -223,6 +223,7 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
           {tab === 0 && (
             <StageComponent
               classObject={classObject}
+              setStageListByFather={setStageList}
             />
           )}
           {tab === 1 && (

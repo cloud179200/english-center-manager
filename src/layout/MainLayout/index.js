@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { styled, useTheme } from "@mui/material/styles";
 import {
   AppBar,
+  Backdrop,
   Box,
+  CircularProgress,
   CssBaseline,
   Toolbar,
   useMediaQuery,
@@ -58,6 +60,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
 // ==============================|| MAIN LAYOUT ||============================== //
 
 const MainLayout = (props) => {
+  const loadingCommon = useSelector((state) => state?.common?.loadingCommon);
   const theme = useTheme();
   const matchDownMd = useMediaQuery(theme.breakpoints.down("lg"));
 
@@ -104,8 +107,17 @@ const MainLayout = (props) => {
       <Main
         theme={theme}
         open={leftDrawerOpened}
-        style={{ marginLeft: leftDrawerOpened ? "20px" : null, overflow: "auto" }}
+        style={{
+          marginLeft: leftDrawerOpened ? "20px" : null,
+          overflow: "auto",
+        }}
       >
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={Boolean(loadingCommon)}
+        >
+          <CircularProgress color="secondary" size={40} />
+        </Backdrop>
         {props.children}
       </Main>
     </Box>

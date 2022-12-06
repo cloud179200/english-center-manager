@@ -2,7 +2,8 @@ import * as actionTypes from "./actions";
 import _ from "lodash";
 export const initialState = {
   notifications: [],
-  loading: false
+  loading: false,
+  loadingCommon: false,
 };
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
@@ -12,17 +13,21 @@ const utilsReducer = (state = _.cloneDeep(initialState), action) => {
     case actionTypes.ADD_NOTIFICATION_ACTION:
       return {
         ...state,
-        notifications: [...state.notifications, { ...action}],
+        notifications: [...state.notifications, { ...action }],
       };
     case actionTypes.REMOVE_NOTIFICATION_ACTION:
       return {
         ...state,
-        notifications: state.notifications.filter((item) => item.id !== action.id),
+        notifications: state.notifications.filter(
+          (item) => item.id !== action.id
+        ),
       };
     case actionTypes.SET_LOADING_ACTION:
-      return {...state, loading: action.state};
+      return { ...state, loading: action.state };
+    case actionTypes.SET_LOADING_COMMON_ACTION:
+      return { ...state, loadingCommon: action.state };
     case actionTypes.RESET_UTILS_REDUCER_ACTION:
-      return _.cloneDeep(initialState)
+      return _.cloneDeep(initialState);
     default:
       return state;
   }

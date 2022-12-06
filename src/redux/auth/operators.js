@@ -5,6 +5,7 @@ import {
   addNotificationAction,
   resetUtilsReducerAction,
   setLoadingAction,
+  setLoadingSignoutAction as setLoadingCommonAction,
 } from "../utils/operators";
 import { SIGN_IN_ACTION, SIGN_OUT_ACTION } from "./action";
 import { signUpService, signInService, signOutService } from "./services";
@@ -81,7 +82,7 @@ export const signInAction = (email, password, callback) => {
 export const signOutAction = (email = null, callback = null) => {
   return async (dispatch) => {
     dispatch({ type: SIGN_OUT_ACTION });
-    dispatch(setLoadingAction(true));
+    dispatch(setLoadingCommonAction(true));
     try {
       if (email) {
         const res = await signOutService({
@@ -101,7 +102,7 @@ export const signOutAction = (email = null, callback = null) => {
       dispatch(resetCustomizationReducerAction());
       dispatch(resetUserReducerAction());
       dispatch(resetUtilsReducerAction());
-      dispatch(setLoadingAction(false));
+      dispatch(setLoadingCommonAction(false));
       localStorage.clear();
       sessionStorage.clear();
       callback && callback(true, null);

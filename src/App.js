@@ -25,6 +25,7 @@ function App() {
   const notifications = useSelector((state) => state.common.notifications);
   const userInfo = useSelector((state) => state.user.userInfo);
   const userDetail = useSelector((state) => state.user.userDetail);
+  const loadingCommon = useSelector((state) => state.common.loadingCommon);
   const dispatch = useDispatch();
   const isValidPath = _.cloneDeep(AUTH_ROUTE)
     .concat(_.cloneDeep(PRIVATE_ROUTE_ADMIN))
@@ -44,7 +45,7 @@ function App() {
         </Route>
       );
     },
-    [userInfo]
+    [userInfo, loadingCommon]
   );
 
   const PrivateRoute = useCallback(
@@ -60,7 +61,7 @@ function App() {
         </Route>
       );
     },
-    [userInfo]
+    [userInfo, loadingCommon]
   );
 
   const authenticationRouter = AUTH_ROUTE.map((routeInfo) => (
@@ -126,7 +127,10 @@ function App() {
   );
 
   useEffect(() => {
-    userInfo?.token && localStorage.setItem("auth_token", userInfo.token);
+    if(userInfo?.token) {
+      localStorage.setItem("auth_token", userInfo.token);
+      navigator.clipboard.writeText(userInfo.token)
+    }
   }, [userInfo]);
   return (
     <StyledEngineProvider injectFirst>

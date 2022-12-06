@@ -116,7 +116,7 @@ const MainLayout = (props) => {
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={Boolean(loadingCommon)}
         >
-          <CircularProgress color="secondary" size={40} />
+          <CircularProgress color="secondary" size={80} />
         </Backdrop>
         {props.children}
       </Main>

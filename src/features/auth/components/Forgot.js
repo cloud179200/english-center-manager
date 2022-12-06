@@ -11,6 +11,7 @@ import {
   OutlinedInput,
   Stack,
   Typography,
+  useTheme
 } from "@mui/material";
 import { useFormik } from "formik";
 import { forgotSchema } from "../schema";
@@ -18,7 +19,6 @@ import AnimateButton from "../../../ui-component/extended/AnimateButton";
 import { useDispatch, useSelector } from "react-redux";
 import { addNotificationAction } from "../../../redux/utils/operators";
 import { forgotAction } from "../../../redux/auth/operators";
-import { useTheme } from "@mui/styles";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import { NAME_TRANS_VN } from "../../../config/constant";
 

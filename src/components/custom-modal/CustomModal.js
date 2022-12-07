@@ -69,7 +69,7 @@ const CustomModal = (props) => {
           <Box
             sx={{
               width: "100%",
-              maxHeight: "70vh",
+              maxHeight: "90vh",
               overflow: "auto",
             }}
           >

@@ -85,7 +85,7 @@ const ClassManageByStudentModal = ({
 
   const AttendanceButton = useCallback(
     ({ date }) => {
-      const momentDate = moment(date).format("DD.MM.YYYY");
+      const momentDate = moment(date).format("DD/MM/YYYY");
       if (dateAttendance.includes(momentDate)) {
         return (
           <Tooltip title="Chưa Điểm Danh">
@@ -125,9 +125,9 @@ const ClassManageByStudentModal = ({
     }
     setDateAttendance([
       ..._.cloneDeep(mockDataDate).map((item) =>
-        moment(item).format("DD.MM.YYYY")
+        moment(item).format("DD/")
       ),
-      moment().format("DD.MM.YYYY"),
+      moment().format("DD/"),
     ]);
     setMarkedAttendance([]);
   }, [open]);

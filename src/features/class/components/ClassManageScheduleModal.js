@@ -44,7 +44,7 @@ const ScheduleSetupButton = ({
   const dispatch = useDispatch();
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
-  const momentDate = moment(date).format("DD.MM.YYYY");
+  const momentDate = moment(_.cloneDeep(date)).format("YYYY-MM-DD");
   const dateScheduleObject = _.cloneDeep(dateScheduleList).find(
     (item) => item.schedule_Date === momentDate
   );
@@ -59,7 +59,7 @@ const ScheduleSetupButton = ({
     return (
       <Fade in={true} style={{ transitionDelay: `100ms` }}>
         <Tooltip
-          title={`Xóa Lộ Trình Đã Gán: ${dateScheduleObject?.stage_Name} - ${dateScheduleObject?.stage_Id}`}
+          title={`Xóa Buổi Học Đã Gán: ${dateScheduleObject?.stage_Name} - ${dateScheduleObject?.stage_Id}`}
         >
           <IconButton
             disabled={disabled}
@@ -76,13 +76,13 @@ const ScheduleSetupButton = ({
   }
   return (
     <>
-      <Tooltip title="Chọn Lộ Trình">
+      <Tooltip title="Chọn Buổi Học">
         <IconButton
           disabled={disabled}
           onClick={(e) => {
             if (!stageList.length) {
               dispatch(
-                addNotificationAction("Lớp Không Tồn Tại Lộ Trình", true)
+                addNotificationAction("Lớp Không Tồn Tại Buổi Học", true)
               );
               return;
             }
@@ -101,7 +101,7 @@ const ScheduleSetupButton = ({
         open={openMenu}
         PaperProps={{
           style: {
-            maxHeight: "50vh",
+            maxHeight: "70vh",
             width: "fit-content",
           },
         }}
@@ -128,11 +128,11 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
   const [dateScheduleList, setDateScheduleList] = useState([]);
   const [stageList, setStageList] = useState([]);
 
-  const setSchedule = (scheduleList) => {
-    const schedules = scheduleList.map(item => ({
+  const setClassSchedule = (scheduleList) => {
+    const schedules = scheduleList.map((item) => ({
       stage_Id: item.stage_Id,
-      schedule_Date: new Date(moment(item.schedule_Date)),
-    }))
+      schedule_Date: moment(item.schedule_Date).add('days', 1).toDate().toISOString(),
+    }));
     setLoading(true);
     dispatch(
       setScheduleAction(classObject?.class_Id, schedules, (res, err) => {
@@ -153,8 +153,13 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
         if (err) {
           return;
         }
-        debugger;
-        console.log("[getScheduleByClassIdAction]", res);
+        const newData = (res?.schedules || []).map((item) => ({
+          stage_Id: item.stage_Id,
+          stage_Name: item.stage_Name,
+          schedule_Date: moment(item.schedule_Date).format("YYYY-MM-DD"),
+        }));
+        console.log("[newData]", newData);
+        setDateScheduleList(newData);
       })
     );
   };
@@ -184,19 +189,15 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
       stage_Name: stageName,
     };
     const newDateSchedule = [..._.cloneDeep(dateScheduleList), scheduleObject];
-    setSchedule(newDateSchedule);
-    setDateScheduleList(newDateSchedule);
+    setClassSchedule(_.cloneDeep(newDateSchedule));
   };
 
   const handleRemoveSchedule = (date) => {
     const newDateSchedule = _.cloneDeep(dateScheduleList).filter(
       (item) => item.schedule_Date !== date
     );
-    setSchedule(newDateSchedule);
-    setDateScheduleList(newDateSchedule);
+    setClassSchedule(_.cloneDeep(newDateSchedule));
   };
-
-  
 
   useEffect(() => {
     if (!classObject?.class_Id) {

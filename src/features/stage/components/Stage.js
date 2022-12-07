@@ -190,9 +190,9 @@ const StageComponent = ({
           ) : (
             <Grid item xs={12}>
               <CustomTable
-                headers={["Id", "Tên Lộ Trình", "#"]}
+                headers={["Id", "Tên Buổi Học", "#"]}
                 data={stageData}
-                title="Danh Sách Lộ Trình"
+                title="Danh Sách Buổi Học"
               />
             </Grid>
           )}

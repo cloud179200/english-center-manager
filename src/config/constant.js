@@ -68,8 +68,8 @@ export const NAME_TRANS_VN = {
   INFORMATION: "Thông Tin",
   DESCRIPTION: "Ghi Chú",
   PAYMENT: "Nộp Tiền",
-  STAGE_ADD: "Thêm Lộ Trình",
-  STAGE_EDIT: "Sửa Lộ Trình",
-  STAGE_NAME: "Tên Lộ Trình",
-  STAGE_DELETE: "Xóa Lộ Trình"
+  STAGE_ADD: "Thêm Buổi Học",
+  STAGE_EDIT: "Sửa Buổi Học",
+  STAGE_NAME: "Tên Buổi Học",
+  STAGE_DELETE: "Xóa Buổi Học"
 }

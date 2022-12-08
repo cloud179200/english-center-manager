@@ -133,7 +133,7 @@ const ClassComponent = () => {
                 <IconChevronRight
                   color="primary"
                   strokeWidth={2}
-                  size="2rem"
+                  size="1.5rem"
                   style={{ marginTop: "auto", marginBottom: "auto" }}
                 />
               </IconButton>
@@ -156,7 +156,7 @@ const ClassComponent = () => {
               >
                 <IconChevronRight
                   strokeWidth={2}
-                  size="2rem"
+                  size="1.5rem"
                   style={{ marginTop: "auto", marginBottom: "auto" }}
                 />
               </IconButton>
@@ -173,24 +173,22 @@ const ClassComponent = () => {
         >
           <Grid item>
             <IconButton
-              color="secondary"
               onClick={() => setScheduleClassObject(_.cloneDeep(item))}
             >
               <IconCalendar
                 strokeWidth={2}
-                size="2rem"
+                size="1.5rem"
                 style={{ marginTop: "auto", marginBottom: "auto" }}
               />
             </IconButton>
           </Grid>
           <Grid item>
             <IconButton
-              color="primary"
               onClick={() => setEditClassObject(_.cloneDeep(item))}
             >
               <IconEdit
                 strokeWidth={2}
-                size="2rem"
+                size="1.5rem"
                 style={{ marginTop: "auto", marginBottom: "auto" }}
               />
             </IconButton>
@@ -202,7 +200,7 @@ const ClassComponent = () => {
             >
               <IconTrash
                 strokeWidth={2}
-                size="2rem"
+                size="1.5rem"
                 style={{ marginTop: "auto", marginBottom: "auto" }}
               />
             </IconButton>

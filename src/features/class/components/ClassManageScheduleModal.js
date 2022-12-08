@@ -35,7 +35,6 @@ import {
 import { addNotificationAction } from "../../../redux/utils/operators";
 import StageComponent from "../../stage/components/Stage";
 import Attendance from "../../attendance/component/Attendance";
-import isEqual from "react-fast-compare";
 const ScheduleSetupButton = ({
   disabled,
   date,
@@ -250,7 +249,7 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
                     color="secondary"
                     variant="contained"
                     disabled={
-                      isEqual(defaultDateScheduleList, dateScheduleList) ||
+                      _.isEqual(defaultDateScheduleList, dateScheduleList) ||
                       loading
                     }
                     onClick={() => handleSetClassSchedule(dateScheduleList)}

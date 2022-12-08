@@ -15,7 +15,7 @@ import {
   IconClockHour3,
 } from "@tabler/icons";
 import moment from "moment";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Calendar } from "react-calendar";
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +25,6 @@ import {
 } from "../../../redux/class/operators";
 import LoadingComponent from "../../../utils/component/Loading";
 import CustomTable from "../../../components/custom-table/CustomTable";
-import isEqual from "react-fast-compare";
 import { NAME_TRANS_VN } from "../../../config/constant";
 const Attendance = (props) => {
   const { classObject, dateScheduleList } = props;
@@ -214,9 +213,7 @@ const Attendance = (props) => {
       return;
     }
     getAttendanceData();
-  }, []);
-
-  if (loading) return <LoadingComponent isModal />;
+  }, [classObject?.class_Id]);
 
   return (
     <>
@@ -237,7 +234,7 @@ const Attendance = (props) => {
               color="secondary"
               variant="contained"
               disabled={
-                isEqual(defaultAttendanceStudentList, attendanceStudentList) ||
+                _.isEqual(defaultAttendanceStudentList, attendanceStudentList) ||
                 loading
               }
               onClick={() => handleSetAttendanceList(attendanceStudentList)}
@@ -245,23 +242,33 @@ const Attendance = (props) => {
               {NAME_TRANS_VN.SAVE}
             </Button>
           </Grid>
-          <Grid item xs={12}>
-            <CustomTable
-              headers={["Id", "Tên Học Viên", "#"]}
-              data={attendanceTableData}
-              title={`Danh Sách Điểm Danh Ngày "${selectedDate?.schedule_Date}" Buổi Học: ${selectedDate?.stage_Name}`}
-            />
-          </Grid>
+          {loading ? (
+            <LoadingComponent isModal />
+          ) : (
+            <Grid item xs={12}>
+              <CustomTable
+                headers={["Id", "Tên Học Viên", "#"]}
+                data={attendanceTableData}
+                title={`Danh Sách Điểm Danh Ngày "${selectedDate?.schedule_Date}" Buổi Học: ${selectedDate?.stage_Name}`}
+              />
+            </Grid>
+          )}
         </Grid>
       ) : (
-        <Calendar
-          view={calendarView}
-          value={null}
-          tileContent={({ date }) => <SelectDateButton date={date} />}
-        />
+        <>
+          {loading ? (
+            <LoadingComponent isModal />
+          ) : (
+            <Calendar
+              view={calendarView}
+              value={null}
+              tileContent={({ date }) => <SelectDateButton date={date} />}
+            />
+          )}
+        </>
       )}
     </>
   );
 };
 
-export default Attendance;
+export default memo(Attendance, _.isEqual);

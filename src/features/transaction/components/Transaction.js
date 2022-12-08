@@ -23,7 +23,6 @@ import {
   getStudentTransactionsAction,
   confirmStudentTransactionAction,
 } from "../../../redux/student/operators";
-import isEqual from "react-fast-compare";
 export const initTransactionFilter = {
   class_Name: "",
   student_Name: "",
@@ -70,7 +69,7 @@ const TransactionComponent = () => {
         userInfo.email,
         (res, err) => {
           setLoadingConfirm(
-            [...loadingConfirm].filter((i) => isEqual(i, _.cloneDeep(item)))
+            [...loadingConfirm].filter((i) => _.isEqual(i, _.cloneDeep(item)))
           );
           if (err) {
             return;
@@ -146,8 +145,8 @@ const TransactionComponent = () => {
       const isFullfiled = Boolean(
         item?.paid_Ammount === item?.class_Fee && item?.paid_Ammount
       );
-      const isDisabled = isFullfiled || loadingConfirm.some(i => isEqual(i, item))
-      const isLoading = loadingConfirm.some(i => isEqual(i, item))
+      const isDisabled = isFullfiled || loadingConfirm.some(i => _.isEqual(i, item))
+      const isLoading = loadingConfirm.some(i => _.isEqual(i, item))
       return (
         <Grid container flexWrap="nowrap" columnGap={2}>
           <Grid item xs={12}>

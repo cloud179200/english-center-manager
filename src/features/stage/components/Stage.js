@@ -164,7 +164,7 @@ const StageComponent = ({
           columnSpacing={{ xs: 0, md: 2 }}
           rowSpacing={2}
         >
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             <Button
               disabled={loading}
               color="secondary"

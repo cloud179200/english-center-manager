@@ -26,6 +26,8 @@ import {
 import LoadingComponent from "../../../utils/component/Loading";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import { NAME_TRANS_VN } from "../../../config/constant";
+import { sortStudentFunc } from "../../../utils";
+import AnimateButton from "../../../components/extended/AnimateButton";
 const Attendance = (props) => {
   const { classObject, dateScheduleList } = props;
   const dispatch = useDispatch();
@@ -194,11 +196,13 @@ const Attendance = (props) => {
       return [];
     }
 
-    return _.cloneDeep(classObject.list_Student).map((item) => ({
-      student_Id: item.student_Id,
-      student_Name: item.student_Name,
-      utility: <Utility item={item} />,
-    }));
+    return _.cloneDeep(classObject.list_Student)
+      .sort(sortStudentFunc)
+      .map((item) => ({
+        student_Id: item.student_Id,
+        student_Name: item.student_Name,
+        utility: <Utility item={item} />,
+      }));
   }, [classObject?.list_Student, loading, attendanceStudentList]);
 
   useEffect(() => {
@@ -220,13 +224,15 @@ const Attendance = (props) => {
       {selectedDate ? (
         <Grid container justifyContent="flex-end" rowSpacing={2}>
           <Grid item xs={12} md={6}>
-            <IconButton
-              color="secondary"
-              sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
-              onClick={() => setSelectedDate(null)}
-            >
-              <IconChevronLeft strokeWidth={2} size="2rem" />
-            </IconButton>
+            <AnimateButton>
+              <IconButton
+                color="secondary"
+                sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
+                onClick={() => setSelectedDate(null)}
+              >
+                <IconChevronLeft strokeWidth={2} size="2rem" />
+              </IconButton>
+            </AnimateButton>
           </Grid>
           <Grid item xs={12} md={6}>
             <Button
@@ -234,8 +240,10 @@ const Attendance = (props) => {
               color="secondary"
               variant="contained"
               disabled={
-                _.isEqual(defaultAttendanceStudentList, attendanceStudentList) ||
-                loading
+                _.isEqual(
+                  defaultAttendanceStudentList,
+                  attendanceStudentList
+                ) || loading
               }
               onClick={() => handleSetAttendanceList(attendanceStudentList)}
             >

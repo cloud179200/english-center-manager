@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Button,
   CircularProgress,
   Grid,
@@ -16,22 +13,32 @@ import {
 } from "@mui/material";
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { NAME_TRANS_VN } from "../../../config/constant";
-import { Calendar } from "react-calendar";
 import "../../../assets/scss/_custom-calendar.scss";
-import mockDataDate from "../../../config/data/date-mock-data.json";
 import _ from "lodash";
-import moment from "moment";
 import CustomBox from "./../../../components/custom-box/CustomBox";
 import {
-  IconChevronDown,
-  IconCircleCheck,
   IconCurrencyDong,
   IconCash,
   IconClockHour3,
   IconChecklist,
+  IconChecks,
+  IconBan,
+  IconHourglass,
+  IconChevronLeft,
+  IconChevronRight,
 } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { studentPaymentClassFeeAction } from "../../../redux/student/operators";
+import {
+  getAttendanceByClassIdAction,
+  getStageByClassIdAction,
+} from "../../../redux/class/operators";
+import CustomTable from "../../../components/custom-table/CustomTable";
+import attendanceStudentsMockData from "../../../config/data/attendance-student-mock-data.json";
+import moment from "moment";
+import LoadingComponent from "../../../utils/component/Loading";
+import AnimateButton from "../../../components/extended/AnimateButton";
+
 const ClassManageByStudentModal = ({
   open,
   handleClose,
@@ -42,22 +49,16 @@ const ClassManageByStudentModal = ({
   const dispatch = useDispatch();
   const userDetail = useSelector((state) => state.user.userDetail);
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
-  const calendarView = useSelector((state) => state.customization.calendarView);
-  const [dateAttendance, setDateAttendance] = useState([]);
-  const [markedAttendance, setMarkedAttendance] = useState([]);
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
-  const [expanded, setExpanded] = useState(false);
-
+  const [stageList, setStageList] = useState([]);
+  const [selectedStage, setSelectedStage] = useState(null);
+  const [attendanceTableData, setAttendanceTableData] = useState({});
   const handleChangeTab = (event, newValue) => {
     if (loading) {
       return;
     }
     setTab(newValue);
-  };
-
-  const handleChangeExpand = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
   };
 
   const handlePaymentClassFee = () => {
@@ -76,24 +77,28 @@ const ClassManageByStudentModal = ({
       )
     );
   };
-  const handleAttendance = (date) => {
-    return;
-    setDateAttendance(
-      _.cloneDeep(dateAttendance).filter((item) => item !== date)
-    );
-    setMarkedAttendance([...markedAttendance, date]);
-  };
 
-  const AttendanceButton = useCallback(
-    ({ date }) => {
-      const momentDate = moment(date).format("DD/MM/YYYY");
-      if (dateAttendance.includes(momentDate)) {
+  const AttendanceStatus = useCallback(
+    ({ item }) => {
+      if (item?.attendance_Status === 1) {
         return (
-          <Tooltip title="Chưa Điểm Danh">
+          <Tooltip title="Có Mặt">
             <IconButton
-              disabled={loading}
-              onClick={() => handleAttendance(momentDate)}
-              color="primary"
+              color="secondary"
+              size="large"
+              sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
+            >
+              <IconChecks strokeWidth={2} size="2rem" />
+            </IconButton>
+          </Tooltip>
+        );
+      }
+
+      if (item?.attendance_Status === 2) {
+        return (
+          <Tooltip title="Muộn">
+            <IconButton
+              color="warning"
               size="large"
               sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
             >
@@ -102,34 +107,81 @@ const ClassManageByStudentModal = ({
           </Tooltip>
         );
       }
-      if (markedAttendance.includes(momentDate)) {
+
+      if (item?.attendance_Status === 3) {
         return (
-          <Tooltip title="Đã Điểm Danh">
+          <Tooltip title="Vắng">
             <IconButton
-              color="success"
+              color="error"
               size="large"
               sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
             >
-              <IconCircleCheck strokeWidth={2} size="2rem" />
+              <IconBan strokeWidth={2} size="2rem" />
             </IconButton>
           </Tooltip>
         );
       }
-      return null;
+
+      return (
+        <Tooltip title="Chưa Điểm Danh">
+          <IconButton
+            size="large"
+            sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
+          >
+            <IconHourglass strokeWidth={2} size="2rem" />
+          </IconButton>
+        </Tooltip>
+      );
     },
-    [dateAttendance, markedAttendance, matchDownSM, loading]
+    [matchDownSM]
   );
+
+  const getStageData = () => {
+    setLoading(true);
+    dispatch(
+      getStageByClassIdAction(classObject?.class_Id, (res, err) => {
+        setLoading(false);
+        if (err) return;
+        setStageList(res);
+      })
+    );
+  };
+
+  const getAttendanceDataByStage = (stage_Id) => {
+    setLoading(true);
+    dispatch(
+      getAttendanceByClassIdAction(classObject?.class_Id, (res, err) => {
+        //TODO: binding data here
+        setLoading(false);
+        const newAttendanceTableData = _.cloneDeep(attendanceTableData);
+        newAttendanceTableData[stage_Id] = _.cloneDeep(
+          attendanceStudentsMockData
+        ).map((item) => ({
+          student_Id: item.student_Id,
+          student_Name: item.student_Name,
+          stage_Date: moment(item.stage_Date).toJSON(),
+          last_Update: moment(item.last_Update).toJSON(),
+          utility: <AttendanceStatus item={item} />,
+        }));
+        setAttendanceTableData(newAttendanceTableData);
+        if (err) return;
+      })
+    );
+  };
 
   useEffect(() => {
     if (!open) {
       return;
     }
-    setDateAttendance([
-      ..._.cloneDeep(mockDataDate).map((item) => moment(item).format("DD/")),
-      moment().format("DD/"),
-    ]);
-    setMarkedAttendance([]);
+    getStageData();
   }, [open]);
+
+  useEffect(() => {
+    if (!selectedStage?.stage_Id) {
+      return;
+    }
+    getAttendanceDataByStage(selectedStage.stage_Id);
+  }, [selectedStage]);
 
   return (
     <CustomModal
@@ -147,44 +199,66 @@ const ClassManageByStudentModal = ({
         <Grid item xs={12}>
           <CustomBox
             sx={{
-              maxHeight: "60vh",
+              maxHeight: "80vh",
               overflow: "auto",
             }}
           >
             {tab === 0 && (
               <>
-                {dateAttendance
-                  .slice(0, 20)
-                  .map((item, dateAttendanceIndex) => (
-                    <Accordion
-                      key={item + "-" + dateAttendanceIndex}
-                      expanded={expanded === item + "-" + dateAttendanceIndex}
-                      onChange={handleChangeExpand(
-                        item + "-" + dateAttendanceIndex
-                      )}
-                    >
-                      <AccordionSummary
-                        expandIcon={
-                          <IconChevronDown strokeWidth={2} size="2rem" />
-                        }
-                        aria-controls="panel1bh-content"
-                        id="panel1bh-header"
-                      >
-                        <Typography variant="h5">
-                          {NAME_TRANS_VN.STAGE_NAME}
-                        </Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <Calendar
-                          view={calendarView}
-                          value={null}
-                          tileContent={({ date }) => (
-                            <AttendanceButton date={date} />
-                          )}
-                        />
-                      </AccordionDetails>
-                    </Accordion>
-                  ))}
+                <Grid container rowSpacing={2}>
+                  {!selectedStage &&
+                    stageList.map((item, stageIndex) => (
+                      <Grid item xs={12} key={item.stage_Id + "-" + stageIndex}>
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          color="secondary"
+                          sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
+                          onClick={() => setSelectedStage(_.cloneDeep(item))}
+                          endIcon={
+                            <IconChevronRight strokeWidth={2} size="2rem" />
+                          }
+                        >
+                          {item.stage_Name}
+                        </Button>
+                      </Grid>
+                    ))}
+
+                  {selectedStage && (
+                    <>
+                      <Grid item xs={12}>
+                        <AnimateButton type="slide">
+                          <IconButton
+                            color="secondary"
+                            sx={{
+                              padding: matchDownSM ? 0 : theme.spacing(1),
+                            }}
+                            onClick={() => setSelectedStage(null)}
+                          >
+                            <IconChevronLeft strokeWidth={2} size="2rem" />
+                          </IconButton>
+                        </AnimateButton>
+                      </Grid>
+                      <Grid item xs={12}>
+                        {loading ? (
+                          <LoadingComponent isModal />
+                        ) : (
+                          <CustomTable
+                            headers={[
+                              "Id",
+                              "Tên Học Viên",
+                              "Thời Gian Diễn Ra Buổi Học",
+                              "Ngày Cập Nhật",
+                              "#",
+                            ]}
+                            data={attendanceTableData[selectedStage?.stage_Id]}
+                            title={`Buổi Học: ${selectedStage?.stage_Name}`}
+                          />
+                        )}
+                      </Grid>
+                    </>
+                  )}
+                </Grid>
               </>
             )}
             {tab === 1 && (

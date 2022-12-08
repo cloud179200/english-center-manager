@@ -129,9 +129,8 @@ const ClassComponent = () => {
             columnGap={2}
           >
             <Grid item>
-              <IconButton onClick={() => setManageByStudentClassObject(item)}>
+              <IconButton color="primary" onClick={() => setManageByStudentClassObject(item)}>
                 <IconChevronRight
-                  color="primary"
                   strokeWidth={2}
                   size="1.5rem"
                   style={{ marginTop: "auto", marginBottom: "auto" }}

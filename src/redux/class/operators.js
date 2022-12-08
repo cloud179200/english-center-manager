@@ -1,8 +1,10 @@
 import {
   ADD_CLASS_ACTION,
+  GET_ATTENDANCE_BY_CLASS_ID_ACTION,
   GET_CLASS_ACTION,
   GET_SCHEDULE_BY_CLASS_ID_ACTION,
   GET_STAGE_BY_CLASS_ID_ACTION,
+  SET_ATTENDANCE_ACTION,
   SET_CLASS_ACTION,
   SET_SCHEDULE_ACTION,
   SET_STAGE_ACTION,
@@ -21,6 +23,8 @@ import {
   deleteStageService,
   setScheduleService,
   getScheduleByClassIdService,
+  getAttendanceByClassIdService,
+  setAttendanceService,
 } from "./services";
 
 export const getClassAction = (callback) => {
@@ -272,6 +276,49 @@ export const setScheduleAction = (class_Id, schedules, callback) => {
       if (res) {
         dispatch(addNotificationAction(API_MESSAGE.UPDATE_SUCCESS, false));
         callback(res, null);
+        return;
+      }
+    } catch (error) {
+      dispatch(
+        addNotificationAction(
+          error?.data?.message || API_MESSAGE.SERVER_ERROR,
+          true
+        )
+      );
+      callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
+    }
+  };
+};
+
+export const getAttendanceByClassIdAction = (class_Id, callback) => {
+  return async (dispatch) => {
+    dispatch({ type: GET_ATTENDANCE_BY_CLASS_ID_ACTION });
+    try {
+      const res = await getAttendanceByClassIdService({ class_Id });
+      debugger
+      if (res?.data) {
+        callback(res.data, null);
+        return;
+      }
+    } catch (error) {
+      dispatch(
+        addNotificationAction(
+          error?.data?.message || API_MESSAGE.SERVER_ERROR,
+          true
+        )
+      );
+      callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
+    }
+  };
+};
+
+export const setAttendanceAction = (class_Id, stage_Id, students, callback) => {
+  return async (dispatch) => {
+    dispatch({ type: SET_ATTENDANCE_ACTION });
+    try {
+      const res = await setAttendanceService({ class_Id, stage_Id, students });
+      if (res?.data) {
+        callback(res.data, null);
         return;
       }
     } catch (error) {

@@ -20,6 +20,7 @@ import ClassEditModal from "./ClassEditModal";
 import ClassDeleteModal from "./ClassDeleteModal";
 import ClassManageByStudentModal from "./ClassManageByStudentModal";
 import ClassManageScheduleModal from "./ClassManageScheduleModal";
+import ClassManageByTeacherModal from "./ClassManageByTeacherModal";
 
 export const initClassFilter = {
   class_Id: "",
@@ -39,6 +40,9 @@ const ClassComponent = () => {
   const [scheduleClassObject, setScheduleClassObject] = useState(null);
   const [deleteClassObject, setDeleteClassObject] = useState(null);
   const [manageByStudentClassObject, setManageByStudentClassObject] =
+    useState(null);
+
+  const [manageByTeacherClassObject, setManageByTeacherClassObject] =
     useState(null);
   const isEnabledAddClass = userDetail?.user_Type === 1;
 
@@ -60,6 +64,10 @@ const ClassComponent = () => {
 
   const handleCloseManagaByStudentClassModal = () => {
     setManageByStudentClassObject(null);
+  };
+
+  const handleCloseManagaByTeacherClassModal = () => {
+    setManageByTeacherClassObject(null);
   };
 
   const handleCloseManageScheduleClassModal = () => {
@@ -123,6 +131,30 @@ const ClassComponent = () => {
             <Grid item>
               <IconButton onClick={() => setManageByStudentClassObject(item)}>
                 <IconChevronRight
+                  color="primary"
+                  strokeWidth={2}
+                  size="2rem"
+                  style={{ marginTop: "auto", marginBottom: "auto" }}
+                />
+              </IconButton>
+            </Grid>
+          </Grid>
+        );
+      }
+      if (userDetail?.user_Type === 3) {
+        return (
+          <Grid
+            container
+            justifyContent="flex-end"
+            flexWrap="nowrap"
+            columnGap={2}
+          >
+            <Grid item>
+              <IconButton
+                color="primary"
+                onClick={() => setManageByTeacherClassObject(item)}
+              >
+                <IconChevronRight
                   strokeWidth={2}
                   size="2rem"
                   style={{ marginTop: "auto", marginBottom: "auto" }}
@@ -141,20 +173,24 @@ const ClassComponent = () => {
         >
           <Grid item>
             <IconButton
+              color="secondary"
               onClick={() => setScheduleClassObject(_.cloneDeep(item))}
             >
               <IconCalendar
                 strokeWidth={2}
-                size="1.5rem"
+                size="2rem"
                 style={{ marginTop: "auto", marginBottom: "auto" }}
               />
             </IconButton>
           </Grid>
           <Grid item>
-            <IconButton onClick={() => setEditClassObject(_.cloneDeep(item))}>
+            <IconButton
+              color="primary"
+              onClick={() => setEditClassObject(_.cloneDeep(item))}
+            >
               <IconEdit
                 strokeWidth={2}
-                size="1.5rem"
+                size="2rem"
                 style={{ marginTop: "auto", marginBottom: "auto" }}
               />
             </IconButton>
@@ -166,7 +202,7 @@ const ClassComponent = () => {
             >
               <IconTrash
                 strokeWidth={2}
-                size="1.5rem"
+                size="2rem"
                 style={{ marginTop: "auto", marginBottom: "auto" }}
               />
             </IconButton>
@@ -192,14 +228,22 @@ const ClassComponent = () => {
     }
     let filterResult = cloneClassList
       .filter((item) =>
-        filter.class_Id ? item.class_Id.toString().includes(filter.class_Id) : true
+        filter.class_Id
+          ? item.class_Id.toString().includes(filter.class_Id)
+          : true
       )
       .filter((item) =>
-        filter.class_Name ? item.class_Name.toLowerCase().includes(filter.class_Name.toLowerCase()) : true
+        filter.class_Name
+          ? item.class_Name
+              .toLowerCase()
+              .includes(filter.class_Name.toLowerCase())
+          : true
       )
       .filter((item) =>
         filter.teacher_Name
-          ? item.teacher_Name.toLowerCase().includes(filter.teacher_Name.toLowerCase())
+          ? item.teacher_Name
+              .toLowerCase()
+              .includes(filter.teacher_Name.toLowerCase())
           : true
       );
     return filterResult;
@@ -215,6 +259,11 @@ const ClassComponent = () => {
         classObject={scheduleClassObject}
         open={Boolean(scheduleClassObject)}
         handleClose={handleCloseManageScheduleClassModal}
+      />
+      <ClassManageByTeacherModal
+        classObject={manageByTeacherClassObject}
+        open={Boolean(manageByTeacherClassObject)}
+        handleClose={handleCloseManagaByTeacherClassModal}
       />
       <ClassManageByStudentModal
         classObject={manageByStudentClassObject}

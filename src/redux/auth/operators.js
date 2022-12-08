@@ -3,9 +3,9 @@ import { resetCustomizationReducerAction } from "../customization/operators";
 import { resetUserReducerAction } from "../user/operators";
 import {
   addNotificationAction,
-  resetUtilsReducerAction,
+  // resetUtilsReducerAction,
   setLoadingAction,
-  setLoadingSignoutAction as setLoadingCommonAction,
+  setLoadingCommonAction as setLoadingCommonAction,
 } from "../utils/operators";
 import { SIGN_IN_ACTION, SIGN_OUT_ACTION } from "./action";
 import { signUpService, signInService, signOutService } from "./services";
@@ -101,11 +101,12 @@ export const signOutAction = (email = null, callback = null) => {
     } finally {
       dispatch(resetCustomizationReducerAction());
       dispatch(resetUserReducerAction());
-      dispatch(resetUtilsReducerAction());
+      // dispatch(resetUtilsReducerAction());
       dispatch(setLoadingCommonAction(false));
       localStorage.clear();
       sessionStorage.clear();
       callback && callback(true, null);
+      window.location.replace("/signin");
     }
   };
 };

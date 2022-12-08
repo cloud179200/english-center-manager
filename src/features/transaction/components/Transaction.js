@@ -23,7 +23,7 @@ import {
   getStudentTransactionsAction,
   confirmStudentTransactionAction,
 } from "../../../redux/student/operators";
-import { useLatest } from "react-use";
+import isEqual from "react-fast-compare";
 export const initTransactionFilter = {
   class_Name: "",
   student_Name: "",
@@ -36,7 +36,6 @@ const TransactionComponent = () => {
   const userDetail = useSelector((state) => state.user.userDetail);
   const [loading, setLoading] = useState(false);
   const [loadingConfirm, setLoadingConfirm] = useState([]);
-  const lastestLoadingConfirm = useLatest(loadingConfirm);
   const [filter, setFilter] = useState(_.cloneDeep(initTransactionFilter));
   const [transactionList, setTranactionList] = useState([]);
   const headers = useMemo(() => {
@@ -61,8 +60,8 @@ const TransactionComponent = () => {
 
   const handleConfirmTransaction = (item) => {
     setLoadingConfirm([
-      ...lastestLoadingConfirm.current,
-      `${item.student_Id} ${item.class_Id}`,
+      ...loadingConfirm,
+      _.cloneDeep(item),
     ]);
     dispatch(
       confirmStudentTransactionAction(
@@ -71,9 +70,7 @@ const TransactionComponent = () => {
         userInfo.email,
         (res, err) => {
           setLoadingConfirm(
-            [...lastestLoadingConfirm.current].filter(
-              (i) => i !== `${item.student_Id} ${item.class_Id}`
-            )
+            [...loadingConfirm].filter((i) => isEqual(i, _.cloneDeep(item)))
           );
           if (err) {
             return;
@@ -149,11 +146,8 @@ const TransactionComponent = () => {
       const isFullfiled = Boolean(
         item?.paid_Ammount === item?.class_Fee && item?.paid_Ammount
       );
-      const isDisabled =
-        isFullfiled ||
-        lastestLoadingConfirm.current.includes(
-          `${item.student_Id} ${item.class_Id}`
-        );
+      const isDisabled = isFullfiled || loadingConfirm.some(i => isEqual(i, item))
+      const isLoading = loadingConfirm.some(i => isEqual(i, item))
       return (
         <Grid container flexWrap="nowrap" columnGap={2}>
           <Grid item xs={12}>
@@ -163,9 +157,7 @@ const TransactionComponent = () => {
               color="secondary"
               onClick={() => handleConfirmTransaction(item)}
               endIcon={
-                lastestLoadingConfirm.current.includes(
-                  `${item.student_Id} ${item.class_Id}`
-                ) && <CircularProgress color="secondary" size={20} />
+                isLoading && <CircularProgress color="secondary" size={20} />
               }
             >
               Xác Nhận
@@ -174,7 +166,7 @@ const TransactionComponent = () => {
         </Grid>
       );
     },
-    [lastestLoadingConfirm.current]
+    [loadingConfirm]
   );
 
   const transactionData = useMemo(() => {
@@ -238,7 +230,7 @@ const TransactionComponent = () => {
           : true
       );
     return filterResult;
-  }, [filter, transactionList, lastestLoadingConfirm.current]);
+  }, [filter, transactionList, loadingConfirm]);
 
   useEffect(() => {
     getTransactionData();

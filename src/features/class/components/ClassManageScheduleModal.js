@@ -10,6 +10,7 @@ import {
   useMediaQuery,
   useTheme,
   Menu,
+  Button,
 } from "@mui/material";
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { NAME_TRANS_VN } from "../../../config/constant";
@@ -22,6 +23,7 @@ import {
   IconBackspace,
   IconChalkboard,
   IconChevronDown,
+  IconChecklist,
 } from "@tabler/icons";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
@@ -32,7 +34,8 @@ import {
 } from "../../../redux/class/operators";
 import { addNotificationAction } from "../../../redux/utils/operators";
 import StageComponent from "../../stage/components/Stage";
-
+import Attendance from "../../attendance/component/Attendance";
+import isEqual from "react-fast-compare";
 const ScheduleSetupButton = ({
   disabled,
   date,
@@ -126,12 +129,16 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
   const [dateScheduleList, setDateScheduleList] = useState([]);
+  const [defaultDateScheduleList, setDefaultDateScheduleList] = useState([]);
   const [stageList, setStageList] = useState([]);
 
-  const setClassSchedule = (scheduleList) => {
+  const handleSetClassSchedule = (scheduleList) => {
     const schedules = scheduleList.map((item) => ({
       stage_Id: item.stage_Id,
-      schedule_Date: moment(item.schedule_Date).add('days', 1).toDate().toISOString(),
+      schedule_Date: moment(item.schedule_Date)
+        .add("days", 1)
+        .toDate()
+        .toISOString(),
     }));
     setLoading(true);
     dispatch(
@@ -158,8 +165,8 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
           stage_Name: item.stage_Name,
           schedule_Date: moment(item.schedule_Date).format("YYYY-MM-DD"),
         }));
-        console.log("[newData]", newData);
-        setDateScheduleList(newData);
+        setDateScheduleList(_.cloneDeep(newData));
+        setDefaultDateScheduleList(_.cloneDeep(newData));
       })
     );
   };
@@ -189,14 +196,14 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
       stage_Name: stageName,
     };
     const newDateSchedule = [..._.cloneDeep(dateScheduleList), scheduleObject];
-    setClassSchedule(_.cloneDeep(newDateSchedule));
+    setDateScheduleList(newDateSchedule);
   };
 
   const handleRemoveSchedule = (date) => {
     const newDateSchedule = _.cloneDeep(dateScheduleList).filter(
       (item) => item.schedule_Date !== date
     );
-    setClassSchedule(_.cloneDeep(newDateSchedule));
+    setDateScheduleList(newDateSchedule);
   };
 
   useEffect(() => {
@@ -218,6 +225,7 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
           <Tabs value={tab} onChange={handleChangeTab}>
             <Tab icon={<IconChalkboard strokeWidth={2} size="2rem" />} />
             <Tab icon={<IconCalendar strokeWidth={2} size="2rem" />} />
+            <Tab icon={<IconChecklist strokeWidth={2} size="2rem" />} />
           </Tabs>
         </Grid>
         <Grid item xs={12}>
@@ -229,19 +237,48 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
           )}
           {tab === 1 && (
             <CustomBox>
-              <Calendar
-                value={null}
-                tileContent={({ date }) => (
-                  <ScheduleSetupButton
-                    disabled={loading}
-                    date={date}
-                    stageList={stageList}
-                    dateScheduleList={dateScheduleList}
-                    handleSetSchedule={handleSetSchedule}
-                    handleRemoveSchedule={handleRemoveSchedule}
+              <Grid
+                container
+                justifyContent="flex-end"
+                alignItems="flex-start"
+                rowSpacing={2}
+              >
+                <Grid item xs={12} md={6}>
+                  <Button
+                    fullWidth
+                    color="secondary"
+                    variant="contained"
+                    disabled={
+                      isEqual(defaultDateScheduleList, dateScheduleList) ||
+                      loading
+                    }
+                    onClick={() => handleSetClassSchedule(dateScheduleList)}
+                  >
+                    {NAME_TRANS_VN.SAVE}
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Calendar
+                    view="month"
+                    value={null}
+                    tileContent={({ date }) => (
+                      <ScheduleSetupButton
+                        disabled={loading}
+                        date={date}
+                        stageList={stageList}
+                        dateScheduleList={dateScheduleList}
+                        handleSetSchedule={handleSetSchedule}
+                        handleRemoveSchedule={handleRemoveSchedule}
+                      />
+                    )}
                   />
-                )}
-              />
+                </Grid>
+              </Grid>
+            </CustomBox>
+          )}
+          {tab === 2 && (
+            <CustomBox>
+              <Attendance classObject={classObject} dateScheduleList={dateScheduleList}/>
             </CustomBox>
           )}
         </Grid>

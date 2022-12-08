@@ -159,12 +159,12 @@ const StageComponent = ({
       <CustomBox>
         <Grid
           container
-          justifyContent="flex-start"
+          justifyContent="flex-end"
           alignItems="flex-start"
           columnSpacing={{ xs: 0, md: 2 }}
           rowSpacing={2}
         >
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={4}>
             <Button
               disabled={loading}
               color="secondary"

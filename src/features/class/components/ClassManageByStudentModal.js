@@ -27,8 +27,8 @@ import {
   IconCircleCheck,
   IconCurrencyDong,
   IconCash,
-  IconCheckupList,
   IconClockHour3,
+  IconChecklist,
 } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { studentPaymentClassFeeAction } from "../../../redux/student/operators";
@@ -124,9 +124,7 @@ const ClassManageByStudentModal = ({
       return;
     }
     setDateAttendance([
-      ..._.cloneDeep(mockDataDate).map((item) =>
-        moment(item).format("DD/")
-      ),
+      ..._.cloneDeep(mockDataDate).map((item) => moment(item).format("DD/")),
       moment().format("DD/"),
     ]);
     setMarkedAttendance([]);
@@ -141,46 +139,51 @@ const ClassManageByStudentModal = ({
       <Grid container p={2}>
         <Grid item xs={12} sx={{ padding: theme.spacing(1) }}>
           <Tabs value={tab} onChange={handleChangeTab}>
-            <Tab icon={<IconCheckupList strokeWidth={2} size="1.5rem" />} />
+            <Tab icon={<IconChecklist strokeWidth={2} size="1.5rem" />} />
             <Tab icon={<IconCash strokeWidth={2} size="1.5rem" />} />
           </Tabs>
         </Grid>
         <Grid item xs={12}>
-          <CustomBox sx={{
-            maxHeight: "60vh",
-            overflow: "auto"
-          }}>
+          <CustomBox
+            sx={{
+              maxHeight: "60vh",
+              overflow: "auto",
+            }}
+          >
             {tab === 0 && (
               <>
-                {dateAttendance.slice(0, 20).map((item, dateAttendanceIndex) => (
-                  <Accordion
-                    key={item + "-" + dateAttendanceIndex}
-                    expanded={expanded === item + "-" + dateAttendanceIndex}
-                    onChange={handleChangeExpand(
-                      item + "-" + dateAttendanceIndex
-                    )}
-                  >
-                    <AccordionSummary
-                      expandIcon={
-                        <IconChevronDown strokeWidth={2} size="2rem" />
-                      }
-                      aria-controls="panel1bh-content"
-                      id="panel1bh-header"
+                {dateAttendance
+                  .slice(0, 20)
+                  .map((item, dateAttendanceIndex) => (
+                    <Accordion
+                      key={item + "-" + dateAttendanceIndex}
+                      expanded={expanded === item + "-" + dateAttendanceIndex}
+                      onChange={handleChangeExpand(
+                        item + "-" + dateAttendanceIndex
+                      )}
                     >
-                      <Typography variant="h5">
-                        {NAME_TRANS_VN.STAGE_NAME}
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Calendar
-                        value={null}
-                        tileContent={({ date }) => (
-                          <AttendanceButton date={date} />
-                        )}
-                      />
-                    </AccordionDetails>
-                  </Accordion>
-                ))}
+                      <AccordionSummary
+                        expandIcon={
+                          <IconChevronDown strokeWidth={2} size="2rem" />
+                        }
+                        aria-controls="panel1bh-content"
+                        id="panel1bh-header"
+                      >
+                        <Typography variant="h5">
+                          {NAME_TRANS_VN.STAGE_NAME}
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Calendar
+                          view="month"
+                          value={null}
+                          tileContent={({ date }) => (
+                            <AttendanceButton date={date} />
+                          )}
+                        />
+                      </AccordionDetails>
+                    </Accordion>
+                  ))}
               </>
             )}
             {tab === 1 && (

@@ -71,5 +71,6 @@ export const NAME_TRANS_VN = {
   STAGE_ADD: "Thêm Buổi Học",
   STAGE_EDIT: "Sửa Buổi Học",
   STAGE_NAME: "Tên Buổi Học",
-  STAGE_DELETE: "Xóa Buổi Học"
+  STAGE_DELETE: "Xóa Buổi Học",
+  SAVE: "Lưu"
 }

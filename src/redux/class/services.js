@@ -79,7 +79,24 @@ export const getScheduleByClassIdService = async (body) => {
 
 export const setScheduleService = async (body) => {
   try {
-    return await postService(`/api/schedule/update`, body, "update schedule fail", true);
+    return await postService(`/api/schedule/update`, body, "set schedule fail", true);
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export const getAttendanceByClassIdService = async (body) => {
+  try {
+    return await getService(`/api/attendance/get-by-class-id?p_class_id=${body.class_Id}`, "get attendance fail", true);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const setAttendanceService = async (body) => {
+  try {
+    return await postService(`/api/attendance/update`, body, "update attendance fail", true);
   } catch (error) {
     throw error;
   }

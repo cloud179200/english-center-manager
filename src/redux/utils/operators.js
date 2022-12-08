@@ -25,7 +25,7 @@ export const setLoadingAction = (state = false) => {
   }
 }
 
-export const setLoadingSignoutAction = (state = false) => {
+export const setLoadingCommonAction = (state = false) => {
   return {
     type: SET_LOADING_COMMON_ACTION,
     state

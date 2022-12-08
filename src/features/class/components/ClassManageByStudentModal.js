@@ -197,106 +197,114 @@ const ClassManageByStudentModal = ({
           </Tabs>
         </Grid>
         <Grid item xs={12}>
-          <CustomBox
-            sx={{
-              maxHeight: "80vh",
-              overflow: "auto",
-            }}
-          >
-            {tab === 0 && (
-              <>
-                <Grid container rowSpacing={2}>
-                  {!selectedStage &&
-                    stageList.map((item, stageIndex) => (
-                      <Grid item xs={12} key={item.stage_Id + "-" + stageIndex}>
-                        <Button
-                          fullWidth
-                          variant="contained"
-                          color="secondary"
-                          sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
-                          onClick={() => setSelectedStage(_.cloneDeep(item))}
-                          endIcon={
-                            <IconChevronRight strokeWidth={2} size="2rem" />
-                          }
+          {stageList.length && (
+            <CustomBox
+              sx={{
+                maxHeight: "80vh",
+                overflow: "auto",
+              }}
+            >
+              {tab === 0 && (
+                <>
+                  <Grid container rowSpacing={2}>
+                    {!selectedStage &&
+                      stageList.map((item, stageIndex) => (
+                        <Grid
+                          item
+                          xs={12}
+                          key={item.stage_Id + "-" + stageIndex}
                         >
-                          {item.stage_Name}
-                        </Button>
-                      </Grid>
-                    ))}
-
-                  {selectedStage && (
-                    <>
-                      <Grid item xs={12}>
-                        <AnimateButton type="slide">
-                          <IconButton
+                          <Button
+                            fullWidth
+                            variant="contained"
                             color="secondary"
-                            sx={{
-                              padding: matchDownSM ? 0 : theme.spacing(1),
-                            }}
-                            onClick={() => setSelectedStage(null)}
+                            sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
+                            onClick={() => setSelectedStage(_.cloneDeep(item))}
+                            endIcon={
+                              <IconChevronRight strokeWidth={2} size="2rem" />
+                            }
                           >
-                            <IconChevronLeft strokeWidth={2} size="2rem" />
-                          </IconButton>
-                        </AnimateButton>
-                      </Grid>
-                      <Grid item xs={12}>
-                        {loading ? (
-                          <LoadingComponent isModal />
-                        ) : (
-                          <CustomTable
-                            headers={[
-                              "Id",
-                              "Tên Học Viên",
-                              "Thời Gian Diễn Ra Buổi Học",
-                              "Ngày Cập Nhật",
-                              "#",
-                            ]}
-                            data={attendanceTableData[selectedStage?.stage_Id]}
-                            title={`Buổi Học: ${selectedStage?.stage_Name}`}
-                          />
-                        )}
-                      </Grid>
-                    </>
-                  )}
+                            {item.stage_Name}
+                          </Button>
+                        </Grid>
+                      ))}
+
+                    {selectedStage && (
+                      <>
+                        <Grid item xs={12}>
+                          <AnimateButton type="slide">
+                            <IconButton
+                              color="secondary"
+                              sx={{
+                                padding: matchDownSM ? 0 : theme.spacing(1),
+                              }}
+                              onClick={() => setSelectedStage(null)}
+                            >
+                              <IconChevronLeft strokeWidth={2} size="2rem" />
+                            </IconButton>
+                          </AnimateButton>
+                        </Grid>
+                        <Grid item xs={12}>
+                          {loading ? (
+                            <LoadingComponent isModal />
+                          ) : (
+                            <CustomTable
+                              headers={[
+                                "Id",
+                                "Tên Học Viên",
+                                "Thời Gian Diễn Ra Buổi Học",
+                                "Ngày Cập Nhật",
+                                "#",
+                              ]}
+                              data={
+                                attendanceTableData[selectedStage?.stage_Id]
+                              }
+                              title={`Buổi Học: ${selectedStage?.stage_Name}`}
+                            />
+                          )}
+                        </Grid>
+                      </>
+                    )}
+                  </Grid>
+                </>
+              )}
+              {tab === 1 && (
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography variant="body1">
+                      {`Bằng cách nhấn vào ${NAME_TRANS_VN.PAYMENT} bạn đồng ý thanh toán tiền học phí ${classObject?.class_Fee}`}{" "}
+                      <IconCurrencyDong
+                        strokeWidth={2}
+                        size="1.5rem"
+                        style={{
+                          marginTop: "auto",
+                          marginBottom: "auto",
+                          position: "relative",
+                          top: theme.spacing(1),
+                        }}
+                      />
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Button
+                      disabled={loading}
+                      color="secondary"
+                      variant="contained"
+                      onClick={handlePaymentClassFee}
+                      fullWidth
+                      endIcon={
+                        loading ? (
+                          <CircularProgress color="secondary" size={20} />
+                        ) : null
+                      }
+                    >
+                      {NAME_TRANS_VN.PAYMENT}
+                    </Button>
+                  </Grid>
                 </Grid>
-              </>
-            )}
-            {tab === 1 && (
-              <Grid container>
-                <Grid item xs={6}>
-                  <Typography variant="body1">
-                    {`Bằng cách nhấn vào ${NAME_TRANS_VN.PAYMENT} bạn đồng ý thanh toán tiền học phí ${classObject?.class_Fee}`}{" "}
-                    <IconCurrencyDong
-                      strokeWidth={2}
-                      size="1.5rem"
-                      style={{
-                        marginTop: "auto",
-                        marginBottom: "auto",
-                        position: "relative",
-                        top: theme.spacing(1),
-                      }}
-                    />
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Button
-                    disabled={loading}
-                    color="secondary"
-                    variant="contained"
-                    onClick={handlePaymentClassFee}
-                    fullWidth
-                    endIcon={
-                      loading ? (
-                        <CircularProgress color="secondary" size={20} />
-                      ) : null
-                    }
-                  >
-                    {NAME_TRANS_VN.PAYMENT}
-                  </Button>
-                </Grid>
-              </Grid>
-            )}
-          </CustomBox>
+              )}
+            </CustomBox>
+          )}
         </Grid>
       </Grid>
     </CustomModal>

@@ -23,6 +23,7 @@ import {
   getStudentTransactionsAction,
   confirmStudentTransactionAction,
 } from "../../../redux/student/operators";
+import AnimateButton from "../../../components/extended/AnimateButton";
 export const initTransactionFilter = {
   class_Name: "",
   student_Name: "",
@@ -58,10 +59,7 @@ const TransactionComponent = () => {
   }, [userDetail?.user_Type]);
 
   const handleConfirmTransaction = (item) => {
-    setLoadingConfirm([
-      ...loadingConfirm,
-      _.cloneDeep(item),
-    ]);
+    setLoadingConfirm([...loadingConfirm, _.cloneDeep(item)]);
     dispatch(
       confirmStudentTransactionAction(
         item.student_Id,
@@ -145,22 +143,25 @@ const TransactionComponent = () => {
       const isFullfiled = Boolean(
         item?.paid_Ammount === item?.class_Fee && item?.paid_Ammount
       );
-      const isDisabled = isFullfiled || loadingConfirm.some(i => _.isEqual(i, item))
-      const isLoading = loadingConfirm.some(i => _.isEqual(i, item))
+      const isDisabled =
+        isFullfiled || loadingConfirm.some((i) => _.isEqual(i, item));
+      const isLoading = loadingConfirm.some((i) => _.isEqual(i, item));
       return (
         <Grid container flexWrap="nowrap" columnGap={2}>
           <Grid item xs={12}>
-            <Button
-              disabled={isDisabled}
-              variant="contained"
-              color="secondary"
-              onClick={() => handleConfirmTransaction(item)}
-              endIcon={
-                isLoading && <CircularProgress color="secondary" size={20} />
-              }
-            >
-              Xác Nhận
-            </Button>
+            <AnimateButton>
+              <Button
+                disabled={isDisabled}
+                variant="contained"
+                color="secondary"
+                onClick={() => handleConfirmTransaction(item)}
+                endIcon={
+                  isLoading && <CircularProgress color="secondary" size={20} />
+                }
+              >
+                Xác Nhận
+              </Button>
+            </AnimateButton>
           </Grid>
         </Grid>
       );
@@ -221,11 +222,17 @@ const TransactionComponent = () => {
     }
     let filterResult = cloneTransactionList
       .filter((item) =>
-        filter.class_Name ? item.class_Name.toLowerCase().includes(filter.class_Name.toLowerCase()) : true
+        filter.class_Name
+          ? item.class_Name
+              .toLowerCase()
+              .includes(filter.class_Name.toLowerCase())
+          : true
       )
       .filter((item) =>
         filter.student_Name
-          ? item.student_Name.toLowerCase().includes(filter.student_Name.toLowerCase())
+          ? item.student_Name
+              .toLowerCase()
+              .includes(filter.student_Name.toLowerCase())
           : true
       );
     return filterResult;
@@ -236,30 +243,30 @@ const TransactionComponent = () => {
   }, [userDetail?.user_Type]);
 
   return (
-      <>
-        <CustomBox>
-          <TransactionFilterComponent
-            filter={filter}
-            setFilter={setFilter}
-            transactionList={transactionList}
-          />
-        </CustomBox>
-        <CustomBox>
-          <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
-            {loading ? (
-              <LoadingComponent />
-            ) : (
-              <Grid item xs={12}>
-                <CustomTable
-                  headers={headers}
-                  data={transactionData}
-                  title="Danh Sách Giao Dịch"
-                />
-              </Grid>
-            )}
-          </Grid>
-        </CustomBox>
-      </>
+    <>
+      <CustomBox>
+        <TransactionFilterComponent
+          filter={filter}
+          setFilter={setFilter}
+          transactionList={transactionList}
+        />
+      </CustomBox>
+      <CustomBox>
+        <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
+          {loading ? (
+            <LoadingComponent />
+          ) : (
+            <Grid item xs={12}>
+              <CustomTable
+                headers={headers}
+                data={transactionData}
+                title="Danh Sách Giao Dịch"
+              />
+            </Grid>
+          )}
+        </Grid>
+      </CustomBox>
+    </>
   );
 };
 

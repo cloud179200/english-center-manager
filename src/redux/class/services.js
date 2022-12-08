@@ -94,6 +94,14 @@ export const getAttendanceByClassIdService = async (body) => {
   }
 };
 
+export const getAttendanceByStudentIdService = async (body) => {
+  try {
+    return await getService(`/api/attendance/get-by-student-id?p_student_id=${body.class_Id}`, "get attendance fail", true);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const setAttendanceService = async (body) => {
   try {
     return await postService(`/api/attendance/update`, body, "update attendance fail", true);

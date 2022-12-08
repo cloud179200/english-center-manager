@@ -25,6 +25,7 @@ import {
   getScheduleByClassIdService,
   getAttendanceByClassIdService,
   setAttendanceService,
+  getAttendanceByStudentIdService,
 } from "./services";
 
 export const getClassAction = (callback) => {
@@ -295,7 +296,27 @@ export const getAttendanceByClassIdAction = (class_Id, callback) => {
     dispatch({ type: GET_ATTENDANCE_BY_CLASS_ID_ACTION });
     try {
       const res = await getAttendanceByClassIdService({ class_Id });
-      debugger
+      if (res?.data) {
+        callback(res.data, null);
+        return;
+      }
+    } catch (error) {
+      dispatch(
+        addNotificationAction(
+          error?.data?.message || API_MESSAGE.SERVER_ERROR,
+          true
+        )
+      );
+      callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
+    }
+  };
+};
+
+export const getAttendanceByStudentIdAction = (student_Id, callback) => {
+  return async (dispatch) => {
+    dispatch({ type: GET_ATTENDANCE_BY_CLASS_ID_ACTION });
+    try {
+      const res = await getAttendanceByStudentIdService({ student_Id });
       if (res?.data) {
         callback(res.data, null);
         return;
@@ -317,8 +338,12 @@ export const setAttendanceAction = (class_Id, stage_Id, students, callback) => {
     dispatch({ type: SET_ATTENDANCE_ACTION });
     try {
       const res = await setAttendanceService({ class_Id, stage_Id, students });
-      if (res?.data) {
-        callback(res.data, null);
+      if (res) {
+        addNotificationAction(
+          res?.message || API_MESSAGE.SUCCESS,
+          false
+        )
+        callback(res, null);
         return;
       }
     } catch (error) {

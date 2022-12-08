@@ -200,7 +200,7 @@ const ClassManageByStudentModal = ({
           {Boolean(stageList.length) && (
             <CustomBox
               sx={{
-                maxHeight: "80vh",
+                maxHeight: "60vh",
                 overflow: "auto",
               }}
             >

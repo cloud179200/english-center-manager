@@ -98,27 +98,17 @@ const Attendance = (props) => {
     dispatch(
       getAttendanceByClassIdAction(classObject.class_Id, (res, err) => {
         setLoading(false);
-        //TODO:TESTING
-        setAttendanceStudentsList(
-          _.cloneDeep(classObject.list_Student).map((item) => ({
-            student_Id: item.student_Id,
-            attendance_Status: 0,
-          }))
-        );
-        setDefaultAttendanceStudentList(
-          _.cloneDeep(classObject.list_Student).map((item) => ({
-            student_Id: item.student_Id,
-            attendance_Status: 0,
-          }))
-        );
-        return;
         if (err) {
           return;
         }
-        console.log("[getAttendanceByClassIdAction]", res);
-        return;
-        setAttendanceStudentsList(_.cloneDeep(res));
-        setDefaultAttendanceStudentList(_.cloneDeep(res));
+
+        const newAttendanceList = _.cloneDeep(res.students).map((item) => ({
+          student_Id: item.student_Id,
+          attendance_Status: item.attendance_Status,
+        }))
+
+        setAttendanceStudentsList(_.cloneDeep(newAttendanceList));
+        setDefaultAttendanceStudentList(_.cloneDeep(newAttendanceList));
       })
     );
   };

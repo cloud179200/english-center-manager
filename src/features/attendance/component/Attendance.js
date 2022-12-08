@@ -33,6 +33,8 @@ const Attendance = (props) => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
   const userDetail = useSelector((state) => state.user.userDetail);
+  const calendarView = useSelector((state) => state.customization.calendarView);
+
   const momentDateNow = moment().format("YYYY-MM-DD");
   const [selectedDate, setSelectedDate] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -253,7 +255,7 @@ const Attendance = (props) => {
         </Grid>
       ) : (
         <Calendar
-          view="month"
+          view={calendarView}
           value={null}
           tileContent={({ date }) => <SelectDateButton date={date} />}
         />

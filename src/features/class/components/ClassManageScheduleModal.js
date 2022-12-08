@@ -25,7 +25,7 @@ import {
   IconChevronDown,
   IconChecklist,
 } from "@tabler/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 import {
   getScheduleByClassIdAction,
@@ -126,6 +126,7 @@ const ScheduleSetupButton = ({
 const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const calendarView = useSelector((state) => state.customization.calendarView);
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
   const [dateScheduleList, setDateScheduleList] = useState([]);
@@ -259,7 +260,7 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
                 </Grid>
                 <Grid item xs={12}>
                   <Calendar
-                    view="month"
+                    view={calendarView}
                     value={null}
                     tileContent={({ date }) => (
                       <ScheduleSetupButton
@@ -278,7 +279,10 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
           )}
           {tab === 2 && (
             <CustomBox>
-              <Attendance classObject={classObject} dateScheduleList={dateScheduleList}/>
+              <Attendance
+                classObject={classObject}
+                dateScheduleList={dateScheduleList}
+              />
             </CustomBox>
           )}
         </Grid>

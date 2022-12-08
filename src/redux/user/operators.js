@@ -1,3 +1,4 @@
+import { store } from "..";
 import { API_MESSAGE } from "../../config/constant";
 import { addNotificationAction, setLoadingAction } from "../utils/operators";
 import {
@@ -11,6 +12,10 @@ import { getUserService } from "./services";
 export const getUserDetailAction = (email, callback = null) => {
   return async (dispatch) => {
     dispatch({ type: GET_USER_DETAIL_ACTION });
+    const loadingCommon = store.getState().common.loadingCommon;
+    if(loadingCommon){
+      return
+    }
     dispatch(setLoadingAction(true));
     try {
       const res = await getUserService(email);

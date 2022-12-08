@@ -104,12 +104,14 @@
   background-color: #e6e6e6;
 }
 .react-calendar__tile--now {
-  // background: $secondaryMain;
+  font-size: 1.5rem;
+  font-weight: bold;
+  // background: $primaryMain;
   // color: $paper;
 }
 .react-calendar__tile--now:enabled:hover,
 .react-calendar__tile--now:enabled:focus {
-  // background: $secondaryDark;
+  // background: $primaryDark;
 }
 .react-calendar__tile--hasActive {
   background: #76baff;

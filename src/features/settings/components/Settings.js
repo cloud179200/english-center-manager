@@ -73,11 +73,11 @@ const Settings = () => {
     isSubmitting,
   } = formik;
 
-  const initData = () => {
-    dispatch(getUserDetailAction(userInfo.email));
-  };
   useEffect(() => {
-    initData();
+    if (!userInfo?.token || !userInfo?.email) {
+      return 
+    }
+    dispatch(getUserDetailAction(userInfo.email));
   }, []);
 
   return (

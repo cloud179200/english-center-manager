@@ -5,6 +5,7 @@ export const initialState = {
   isOpen: [], // for active default menu
   fontFamily: `'Quicksand', sans-serif`,
   borderRadius: 14,
+  calendarView: "month",
   opened: true,
 };
 

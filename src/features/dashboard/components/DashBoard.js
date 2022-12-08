@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingComponent from "../../../utils/component/Loading";
 import { getUserDetailAction } from "../../../redux/user/operators";
@@ -16,8 +16,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import faker from "faker";
-import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import { sleep } from "../../../utils";
+import { Grid, useTheme } from "@mui/material";
 
 ChartJS.register(
   CategoryScale,
@@ -29,27 +28,13 @@ ChartJS.register(
   Legend
 );
 
-export function App() {
-  return;
-}
-
 const DashBoard = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
 
   const userInfo = useSelector((state) => state.user.userInfo);
-  const commonLoading = useSelector((state) => state.common.loading);
-  const [loading, setLoading] = useState(false);
+  const loading = useSelector((state) => state.common.loading);
 
-  const loadData = async () => {
-    if (userInfo?.token && userInfo?.email) {
-      dispatch(getUserDetailAction(userInfo?.email));
-    }
-    setLoading(true);
-    await sleep(1000);
-    setLoading(false);
-  };
   const labels = useMemo(
     () => [
       "Tháng 1",
@@ -126,12 +111,15 @@ const DashBoard = () => {
   );
 
   useEffect(() => {
-    loadData();
-  }, [userInfo, matchDownSM]);
+    if (!userInfo?.token || !userInfo?.email) {
+      return 
+    }
+    dispatch(getUserDetailAction(userInfo.email));
+  }, []);
 
   return (
     <>
-      {loading || commonLoading ? (
+      {loading ? (
         <LoadingComponent />
       ) : (
         <>

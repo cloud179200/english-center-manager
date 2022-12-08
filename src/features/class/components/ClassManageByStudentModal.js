@@ -42,6 +42,7 @@ const ClassManageByStudentModal = ({
   const dispatch = useDispatch();
   const userDetail = useSelector((state) => state.user.userDetail);
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
+  const calendarView = useSelector((state) => state.customization.calendarView);
   const [dateAttendance, setDateAttendance] = useState([]);
   const [markedAttendance, setMarkedAttendance] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -175,7 +176,7 @@ const ClassManageByStudentModal = ({
                       </AccordionSummary>
                       <AccordionDetails>
                         <Calendar
-                          view="month"
+                          view={calendarView}
                           value={null}
                           tileContent={({ date }) => (
                             <AttendanceButton date={date} />

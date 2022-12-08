@@ -1,11 +1,11 @@
 import { API_MESSAGE } from "../../config/constant";
-import { resetCustomizationReducerAction } from "../customization/operators";
 import { resetUserReducerAction } from "../user/operators";
 import {
   addNotificationAction,
+  resetUtilsReducerAction,
   // resetUtilsReducerAction,
   setLoadingAction,
-  setLoadingCommonAction as setLoadingCommonAction,
+  setLoadingCommonAction,
 } from "../utils/operators";
 import { SIGN_IN_ACTION, SIGN_OUT_ACTION } from "./action";
 import { signUpService, signInService, signOutService } from "./services";
@@ -99,14 +99,14 @@ export const signOutAction = (email = null, callback = null) => {
       callback &&
         callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
     } finally {
-      dispatch(resetCustomizationReducerAction());
-      dispatch(resetUserReducerAction());
-      // dispatch(resetUtilsReducerAction());
       dispatch(setLoadingCommonAction(false));
+      // dispatch(resetCustomizationReducerAction());
+      dispatch(resetUtilsReducerAction());
       localStorage.clear();
       sessionStorage.clear();
       callback && callback(true, null);
       window.location.replace("/signin");
+      dispatch(resetUserReducerAction());
     }
   };
 };

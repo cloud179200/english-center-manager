@@ -192,12 +192,12 @@ const ClassManageByStudentModal = ({
       <Grid container p={2}>
         <Grid item xs={12} sx={{ padding: theme.spacing(1) }}>
           <Tabs value={tab} onChange={handleChangeTab}>
-            <Tab icon={<IconChecklist strokeWidth={2} size="1.5rem" />} />
-            <Tab icon={<IconCash strokeWidth={2} size="1.5rem" />} />
+            <Tab disabled={loading} icon={<IconChecklist strokeWidth={2} size="1.5rem" />} />
+            <Tab disabled={loading} icon={<IconCash strokeWidth={2} size="1.5rem" />} />
           </Tabs>
         </Grid>
         <Grid item xs={12}>
-          {stageList.length && (
+          {Boolean(stageList.length) && (
             <CustomBox
               sx={{
                 maxHeight: "80vh",

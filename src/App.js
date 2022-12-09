@@ -12,13 +12,19 @@ import { useDispatch, useSelector } from "react-redux";
 // defaultTheme
 import themes from "./themes";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import { AUTH_ROUTE, PRIVATE_ROUTE_ADMIN, PRIVATE_ROUTE } from "./config/route";
+import {
+  AUTH_ROUTE,
+  PRIVATE_ROUTE_ADMIN,
+  PRIVATE_ROUTE,
+  PUBLIC_ROUTE,
+} from "./config/route";
 import MinimalLayout from "./layout/MinimalLayout";
 import MainLayout from "./layout/MainLayout";
 import { removeNotificationAction } from "./redux/utils/operators";
 import NotFoundComponent from "./utils/component/NotFound";
 import _ from "lodash";
 import ErrorBoundary from "./utils/component/ErrorBoundary";
+import PublicLayout from "./layout/PublicLayout";
 
 function App() {
   const customization = useSelector((state) => state.customization);
@@ -28,9 +34,17 @@ function App() {
   const loadingCommon = useSelector((state) => state.common.loadingCommon);
   const dispatch = useDispatch();
   const isValidPath = _.cloneDeep(AUTH_ROUTE)
-    .concat(_.cloneDeep(PRIVATE_ROUTE_ADMIN))
+    .concat(_.cloneDeep(PRIVATE_ROUTE_ADMIN)).concat(_.cloneDeep(PUBLIC_ROUTE))
     .some((route) => route.path === window.location.pathname);
-  `  `;
+
+  const PublicRoute = useCallback(({ routeInfo }) => {
+    const { exact, path, component } = routeInfo;
+    return (
+      <Route exact={exact} path={path}>
+        <PublicLayout>{component}</PublicLayout>
+      </Route>
+    );
+  }, []);
 
   const AuthRoute = useCallback(
     ({ routeInfo }) => {
@@ -64,6 +78,10 @@ function App() {
     [userInfo, loadingCommon]
   );
 
+  const publicRouter = PUBLIC_ROUTE.map((routeInfo) => (
+    <PublicRoute key={routeInfo.path} routeInfo={routeInfo} />
+  ));
+
   const authenticationRouter = AUTH_ROUTE.map((routeInfo) => (
     <AuthRoute key={routeInfo.path} routeInfo={routeInfo} />
   ));
@@ -76,12 +94,11 @@ function App() {
 
   const router = (
     <>
+      {publicRouter}
       {privateRouter}
       {authenticationRouter}
       {!isValidPath && (
-        <MinimalLayout>
-          <Route component={NotFoundComponent} />
-        </MinimalLayout>
+          <Route component={<MinimalLayout>{NotFoundComponent}</MinimalLayout>} />
       )}
     </>
   );
@@ -115,7 +132,7 @@ function App() {
             <Alert
               sx={{ width: "fit-content" }}
               variant="filled"
-              severity={notification.error ? "error" : "primary" }
+              severity={notification.error ? "error" : "primary"}
               onClose={handleCloseNotification}
             >
               {notification.message}
@@ -127,9 +144,9 @@ function App() {
   );
 
   useEffect(() => {
-    if(userInfo?.token) {
+    if (userInfo?.token) {
       localStorage.setItem("auth_token", userInfo.token);
-      navigator.clipboard.writeText(userInfo.token)
+      navigator.clipboard.writeText(userInfo.token);
     }
   }, [userInfo]);
   return (

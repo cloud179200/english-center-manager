@@ -6,6 +6,8 @@ import SignUpComponent from "../features/auth/components/SignUp";
 import VerifyEmailComponent from "../features/auth/components/VerifyEmail";
 import ClassComponent from "../features/class/components/Class";
 import DashBoard from "../features/dashboard/components/DashBoard";
+import LandingComponent from "../features/landing/component/Landing";
+import LandingManageComponent from "../features/landing/component/LandingManage";
 import Settings from "../features/settings/components/Settings";
 import StudentComponent from "../features/student/components/Student";
 import TeacherComponent from "../features/teacher/components/Teacher";
@@ -38,6 +40,7 @@ export const PRIVATE_ROUTE_ADMIN = [
     exact: true,
     component: <TransactionComponent />,
   },
+  { path: "/landing/manage", exact: true, component: <LandingManageComponent /> },
   {
     path: "/settings",
     exact: true,
@@ -60,6 +63,7 @@ export const PRIVATE_ROUTE = [
     exact: true,
     component: <TransactionComponent />,
   },
+
   {
     path: "/settings",
     exact: true,
@@ -67,11 +71,6 @@ export const PRIVATE_ROUTE = [
   },
 ];
 export const AUTH_ROUTE = [
-  {
-    path: "/",
-    exact: true,
-    component: <Redirect to={"/signin"} />,
-  },
   {
     path: "/signin",
     exact: true,
@@ -91,5 +90,18 @@ export const AUTH_ROUTE = [
     path: "/forgot",
     exact: true,
     component: <ForgotComponent />,
+  },
+];
+
+export const PUBLIC_ROUTE = [
+  {
+    path: "/",
+    exact: true,
+    component: <Redirect to={"/welcome"} />,
+  },
+  {
+    path: "/welcome",
+    exact: true,
+    component: <LandingComponent />,
   },
 ];

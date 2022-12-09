@@ -128,6 +128,7 @@ export default function componentStyleOverrides(theme) {
             },
           },
         },
+        
         inputAdornedStart: {
           paddingLeft: 4,
         },

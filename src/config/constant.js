@@ -40,6 +40,7 @@ export const NAME_TRANS_VN = {
   PASSWORD: "Mật Khẩu",
   NEW_PASSWORD: "Mật Khẩu Mới",
   SEND_EMAIL: "Gửi Email",
+  SEND: "Gửi",
   CONFIRM_PASSWORD: "Xác Nhận Mật Khẩu",
   ALREADY_HAVE_ACCOUNT: "Đã Có Tài Khoản",
   DONT_HAVE_ACCOUNT: "Không Có Tài Khoản",
@@ -77,5 +78,8 @@ export const NAME_TRANS_VN = {
   STAGE_EDIT: "Sửa Buổi Học",
   STAGE_NAME: "Tên Buổi Học",
   STAGE_DELETE: "Xóa Buổi Học",
-  SAVE: "Lưu"
+  SAVE: "Lưu",
+  ADD: "Thêm",
+  NAME: "Tên",
+  LANDING_PAGE: "Trang Quảng Cảo"
 }

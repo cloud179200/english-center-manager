@@ -76,7 +76,7 @@ export default function themeTypography(theme) {
                     top: 5
                 }
             },
-            '& > div > input, & > div > div > div > input': {
+            '& > div > input, & > div > div > div > input, & > div > textarea': {
                 padding: '30.5px 14px 11.5px !important'
             },
             '& legend': {

@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export const getLocalStorageUserinfo = async () => {
   let userInfo = null;
@@ -17,8 +17,8 @@ export const sleep = (ms) => {
 };
 
 export const uniqueKey = () => {
-  return uuidv4()
-}
+  return uuidv4();
+};
 
 export const sortStudentFunc = (a, b) =>
   a.student_Name > b.student_Name
@@ -36,3 +36,11 @@ export const sortTeacherFunc = (a, b) =>
 
 export const sortClassFunc = (a, b) =>
   a.class_Name > b.class_Name ? 1 : a.class_Name < b.class_Name ? -1 : 0;
+
+export const fileToBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });

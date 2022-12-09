@@ -81,6 +81,14 @@ const listMenuItemsAdmin = {
       icon: icons.IconHistory,
       breadcrumbs: false,
     },
+    {
+      id: NAME_TRANS_VN.LANDING_PAGE,
+      title: NAME_TRANS_VN.LANDING_PAGE,
+      type: "item",
+      url: "/landing/manage",
+      icon: icons.IconAd,
+      breadcrumbs: false,
+    },
   ],
 };
 

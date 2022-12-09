@@ -48,10 +48,10 @@ const TeacherInfoModal = ({ open, handleClose, teacherObject }) => {
             <CardActionArea>
               <CardContent>
                 <Typography gutterBottom variant="h4" component="div">
-                  Id: {cloneTeacherObject?.student_Id}
+                  Id: {cloneTeacherObject?.teacher_Id}
                 </Typography>
                 <Typography gutterBottom variant="h4" component="div">
-                  Tên Giảng Viên: {cloneTeacherObject?.student_Name}
+                  Tên Giảng Viên: {cloneTeacherObject?.teacher_Name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Ngày Tạo: {cloneTeacherObject?.created_Date}

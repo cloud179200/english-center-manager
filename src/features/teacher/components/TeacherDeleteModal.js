@@ -72,10 +72,10 @@ const TeacherDeleteModal = ({
             <CardActionArea>
               <CardContent>
                 <Typography gutterBottom variant="h4" component="div">
-                  Id: {teacherObject?.student_Id}
+                  Id: {teacherObject?.teacher_Id}
                 </Typography>
                 <Typography gutterBottom variant="h4" component="div">
-                  Tên Giảng Viên: {teacherObject?.student_Name}
+                  Tên Giảng Viên: {teacherObject?.teacher_Name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Ngày Tạo: {teacherObject?.created_Date}

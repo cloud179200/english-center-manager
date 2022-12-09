@@ -105,7 +105,7 @@ const Attendance = (props) => {
         const newAttendanceList = _.cloneDeep(res.students).map((item) => ({
           student_Id: item.student_Id,
           attendance_Status: item.attendance_Status,
-        }))
+        }));
 
         setAttendanceStudentsList(_.cloneDeep(newAttendanceList));
         setDefaultAttendanceStudentList(_.cloneDeep(newAttendanceList));
@@ -115,15 +115,24 @@ const Attendance = (props) => {
 
   const handleChangeAttendanceStatus = useCallback(
     (student_Id, attendance_Status) => {
-      const newAttendanceList = _.cloneDeep(attendanceStudentList).map(
-        (item) => ({
+      let newAttendanceList = _.cloneDeep(attendanceStudentList);
+      const isHaveAttendanceData = newAttendanceList.some(
+        (item) => item.student_Id === student_Id
+      );
+      if (isHaveAttendanceData) {
+        newAttendanceList = newAttendanceList.map((item) => ({
           ...item,
           attendance_Status:
             item.student_Id === student_Id
               ? attendance_Status
               : item.attendance_Status,
-        })
-      );
+        }));
+      } else {
+        newAttendanceList.push({
+          student_Id,
+          attendance_Status,
+        });
+      }
       setAttendanceStudentsList(newAttendanceList);
     },
     [attendanceStudentList]

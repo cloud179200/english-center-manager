@@ -266,7 +266,6 @@ const ClassComponent = () => {
         classObject={manageByStudentClassObject}
         open={Boolean(manageByStudentClassObject)}
         handleClose={handleCloseManagaByStudentClassModal}
-        reloadClassData={reloadClassData}
       />
       <ClassDeleteModal
         classObject={deleteClassObject}

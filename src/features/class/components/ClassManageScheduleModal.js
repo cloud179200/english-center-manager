@@ -223,9 +223,9 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
       <Grid container p={2} justifyContent="center" alignItems="center">
         <Grid item xs={12} sx={{ padding: theme.spacing(1) }}>
           <Tabs value={tab} onChange={handleChangeTab}>
-            <Tab icon={<IconChalkboard strokeWidth={2} size="2rem" />} />
-            <Tab icon={<IconCalendar strokeWidth={2} size="2rem" />} />
-            <Tab icon={<IconChecklist strokeWidth={2} size="2rem" />} />
+            <Tab icon={<IconChalkboard strokeWidth={2} size="1.5rem" />} />
+            <Tab icon={<IconCalendar strokeWidth={2} size="1.5rem" />} />
+            <Tab icon={<IconChecklist strokeWidth={2} size="1.5rem" />} />
           </Tabs>
         </Grid>
         <Grid item xs={12}>

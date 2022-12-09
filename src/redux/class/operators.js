@@ -26,7 +26,6 @@ import {
   getScheduleByClassIdService,
   getAttendanceByClassIdService,
   setAttendanceService,
-  getAttendanceByStudentIdService,
 } from "./services";
 
 export const getClassAction = (callback) => {
@@ -297,6 +296,7 @@ export const getAttendanceByClassIdAction = (class_Id, callback) => {
     dispatch({ type: GET_ATTENDANCE_BY_CLASS_ID_ACTION });
     try {
       const res = await getAttendanceByClassIdService({ class_Id });
+      debugger
       if (res?.data) {
         callback(res.data, null);
         return;
@@ -317,7 +317,8 @@ export const getAttendanceByStudentIdAction = (student_Id, callback) => {
   return async (dispatch) => {
     dispatch({ type: GET_ATTENDANCE_BY_CLASS_ID_ACTION });
     try {
-      const res = await getAttendanceByStudentIdService({ student_Id });
+      const res = await getAttendanceByClassIdService({ student_Id });
+      debugger
       if (res?.data) {
         callback(res.data, null);
         return;

@@ -1,13 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
-  CircularProgress,
   Grid,
   IconButton,
   Tab,
   Tabs,
   Tooltip,
-  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -17,8 +15,6 @@ import "../../../assets/scss/_custom-calendar.scss";
 import _ from "lodash";
 import CustomBox from "./../../../components/custom-box/CustomBox";
 import {
-  IconCurrencyDong,
-  IconCash,
   IconClockHour3,
   IconChecklist,
   IconChecks,
@@ -26,56 +22,38 @@ import {
   IconHourglass,
   IconChevronLeft,
   IconChevronRight,
+  IconBookmark,
+  IconCalendar,
 } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { studentPaymentClassFeeAction } from "../../../redux/student/operators";
 import {
   getAttendanceByClassIdAction,
   getStageByClassIdAction,
+  getScheduleByClassIdAction,
 } from "../../../redux/class/operators";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import attendanceStudentsMockData from "../../../config/data/attendance-student-mock-data.json";
 import moment from "moment";
 import LoadingComponent from "../../../utils/component/Loading";
 import AnimateButton from "../../../components/extended/AnimateButton";
+import { Calendar } from "react-calendar";
 
-const ClassManageByStudentModal = ({
-  open,
-  handleClose,
-  classObject,
-  reloadClassData,
-}) => {
+const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const userDetail = useSelector((state) => state.user.userDetail);
+  const calendarView = useSelector((state) => state.customization.calendarView);
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
   const [stageList, setStageList] = useState([]);
   const [selectedStage, setSelectedStage] = useState(null);
   const [attendanceTableData, setAttendanceTableData] = useState({});
+  const [dateScheduleList, setDateScheduleList] = useState([]);
   const handleChangeTab = (event, newValue) => {
     if (loading) {
       return;
     }
     setTab(newValue);
-  };
-
-  const handlePaymentClassFee = () => {
-    setLoading(true);
-    dispatch(
-      studentPaymentClassFeeAction(
-        userDetail?.reference_Id,
-        classObject.class_Id,
-        (res, err) => {
-          setLoading(false);
-          if (err) {
-            return;
-          }
-          reloadClassData();
-        }
-      )
-    );
   };
 
   const AttendanceStatus = useCallback(
@@ -136,6 +114,29 @@ const ClassManageByStudentModal = ({
     [matchDownSM]
   );
 
+  const PreviewStage = useCallback(
+    ({ date }) => {
+      const momentDate = moment(_.cloneDeep(date)).format("YYYY-MM-DD");
+      const dateScheduleObject = dateScheduleList.find(
+        (item) => item.schedule_Date === momentDate
+      );
+      if (dateScheduleObject) {
+        return (
+          <Tooltip title={`Ngày Này Có Buổi Học: ${dateScheduleObject?.stage_Name} - ${dateScheduleObject?.stage_Id}`}>
+            <IconButton
+              color="primary"
+              sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
+            >
+              <IconBookmark strokeWidth={2} size="2rem" />
+            </IconButton>
+          </Tooltip>
+        );
+      }
+      return null;
+    },
+    [dateScheduleList]
+  );
+
   const getStageData = () => {
     setLoading(true);
     dispatch(
@@ -169,12 +170,31 @@ const ClassManageByStudentModal = ({
     );
   };
 
+  const getScheduleData = () => {
+    setLoading(true);
+    dispatch(
+      getScheduleByClassIdAction(classObject?.class_Id, (res, err) => {
+        setLoading(false);
+        if (err) {
+          return;
+        }
+        const newData = (res?.schedules || []).map((item) => ({
+          stage_Id: item.stage_Id,
+          stage_Name: item.stage_Name,
+          schedule_Date: moment(item.schedule_Date).format("YYYY-MM-DD"),
+        }));
+        setDateScheduleList(_.cloneDeep(newData));
+      })
+    );
+  };
+
   useEffect(() => {
-    if (!open) {
+    if (!classObject?.class_Id) {
       return;
     }
     getStageData();
-  }, [open]);
+    getScheduleData();
+  }, [classObject?.class_Id]);
 
   useEffect(() => {
     if (!selectedStage?.stage_Id) {
@@ -194,11 +214,11 @@ const ClassManageByStudentModal = ({
           <Tabs value={tab} onChange={handleChangeTab}>
             <Tab
               disabled={loading}
-              icon={<IconChecklist strokeWidth={2} size="1.5rem" />}
+              icon={<IconCalendar strokeWidth={2} size="1.5rem" />}
             />
             <Tab
               disabled={loading}
-              icon={<IconCash strokeWidth={2} size="1.5rem" />}
+              icon={<IconChecklist strokeWidth={2} size="1.5rem" />}
             />
           </Tabs>
         </Grid>
@@ -211,6 +231,21 @@ const ClassManageByStudentModal = ({
               }}
             >
               {tab === 0 && (
+                <Grid container rowSpacing={2}>
+                  <Grid item xs={12}>
+                    {loading ? (
+                      <LoadingComponent isModal />
+                    ) : (
+                      <Calendar
+                        view={calendarView}
+                        value={null}
+                        tileContent={({ date }) => <PreviewStage date={date} />}
+                      />
+                    )}
+                  </Grid>
+                </Grid>
+              )}
+              {tab === 1 && (
                 <>
                   <Grid container rowSpacing={2}>
                     {!selectedStage &&
@@ -273,41 +308,6 @@ const ClassManageByStudentModal = ({
                     )}
                   </Grid>
                 </>
-              )}
-              {tab === 1 && (
-                <Grid container>
-                  <Grid item xs={6}>
-                    <Typography variant="body1">
-                      {`Bằng cách nhấn vào ${NAME_TRANS_VN.PAYMENT} bạn đồng ý thanh toán tiền học phí ${classObject?.class_Fee}`}{" "}
-                      <IconCurrencyDong
-                        strokeWidth={2}
-                        size="1.5rem"
-                        style={{
-                          marginTop: "auto",
-                          marginBottom: "auto",
-                          position: "relative",
-                          top: theme.spacing(1),
-                        }}
-                      />
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Button
-                      disabled={loading}
-                      color="secondary"
-                      variant="contained"
-                      onClick={handlePaymentClassFee}
-                      fullWidth
-                      endIcon={
-                        loading ? (
-                          <CircularProgress color="secondary" size={20} />
-                        ) : null
-                      }
-                    >
-                      {NAME_TRANS_VN.PAYMENT}
-                    </Button>
-                  </Grid>
-                </Grid>
               )}
             </CustomBox>
           )}

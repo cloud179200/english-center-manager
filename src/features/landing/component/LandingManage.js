@@ -98,10 +98,9 @@ const LandingManageComponent = () => {
   } = formik;
 
   useEffect(() => {
-    localStorage.setItem("landingData", JSON.stringify(landingData));
+    if (landingData.length)
+      localStorage.setItem("landingData", JSON.stringify(landingData));
   }, [landingData]);
-
-  console.log("[values]", values);
 
   useEffect(() => {
     setLandingData(JSON.parse(localStorage.getItem("landingData") || "[]"));
@@ -141,7 +140,6 @@ const LandingManageComponent = () => {
                             src={item.base64String}
                             alt="wang ping"
                             sx={{
-                              height: "40vh",
                               width: "auto",
                             }}
                           />
@@ -149,6 +147,7 @@ const LandingManageComponent = () => {
                             <Typography
                               gutterBottom
                               variant="h4"
+                              color="text.primary"
                               component="div"
                             >
                               Tên Lớp Học: {item?.class_Name}
@@ -156,11 +155,17 @@ const LandingManageComponent = () => {
                             <Typography
                               gutterBottom
                               variant="h4"
+                              color="text.primary"
                               component="div"
                             >
                               Giá: {item?.class_Fee}
                             </Typography>
-                            <Typography variant="body2">
+                            <Typography
+                              gutterBottom
+                              variant="h4"
+                              color="text.primary"
+                              component="div"
+                            >
                               Ghi Chú: {item?.description}
                             </Typography>
                           </CardContent>

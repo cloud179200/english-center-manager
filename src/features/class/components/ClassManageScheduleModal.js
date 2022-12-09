@@ -35,6 +35,7 @@ import {
 import { addNotificationAction } from "../../../redux/utils/operators";
 import StageComponent from "../../stage/components/Stage";
 import Attendance from "../../attendance/component/Attendance";
+
 const ScheduleSetupButton = ({
   disabled,
   date,
@@ -132,6 +133,13 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
   const [defaultDateScheduleList, setDefaultDateScheduleList] = useState([]);
   const [stageList, setStageList] = useState([]);
 
+  const handleChangeTab = (event, newValue) => {
+    if (loading) {
+      return;
+    }
+    setTab(newValue);
+  };
+
   const handleSetClassSchedule = (scheduleList) => {
     const schedules = scheduleList.map((item) => ({
       stage_Id: item.stage_Id,
@@ -180,13 +188,6 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
         setStageList(res);
       })
     );
-  };
-
-  const handleChangeTab = (event, newValue) => {
-    if (loading) {
-      return;
-    }
-    setTab(newValue);
   };
 
   const handleSetSchedule = (date, stageId, stageName) => {

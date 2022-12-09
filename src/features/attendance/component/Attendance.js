@@ -119,6 +119,7 @@ const Attendance = (props) => {
       const isHaveAttendanceData = newAttendanceList.some(
         (item) => item.student_Id === student_Id
       );
+
       if (isHaveAttendanceData) {
         newAttendanceList = newAttendanceList.map((item) => ({
           ...item,
@@ -208,15 +209,8 @@ const Attendance = (props) => {
     if (!selectedDate) {
       return;
     }
-    //TODO: binding attendace data
-  }, [selectedDate]);
-
-  useEffect(() => {
-    if (!classObject?.class_Id) {
-      return;
-    }
     getAttendanceData();
-  }, [classObject?.class_Id]);
+  }, [selectedDate]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from "react";
 import {
   Card,
   CardActionArea,
@@ -14,6 +14,8 @@ import { NAME_TRANS_VN } from "../../../config/constant";
 import _ from "lodash";
 const StudentInfoModal = ({ open, handleClose, studentObject }) => {
   const cloneStudentObject = _.cloneDeep(studentObject);
+  
+  const imageSrc = useMemo(() => _.sampleSize([StudentMale, StudentFemale]), [studentObject?.student_Id])
 
   return (
     <CustomModal
@@ -27,7 +29,7 @@ const StudentInfoModal = ({ open, handleClose, studentObject }) => {
             <CardActionArea sx={{ display: "flex" }}>
               <CardMedia
                 component="img"
-                src={_.sampleSize([StudentMale, StudentFemale])}
+                src={imageSrc}
                 alt="wang ping"
                 sx={{
                   height: "40vh",

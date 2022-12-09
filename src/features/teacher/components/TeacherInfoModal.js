@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Card,
   CardActionArea,
@@ -15,7 +15,12 @@ import _ from "lodash";
 
 const TeacherInfoModal = ({ open, handleClose, teacherObject }) => {
   const cloneTeacherObject = _.cloneDeep(teacherObject);
-  console.log("[cloneTeacherObject]", cloneTeacherObject);
+
+  const imageSrc = useMemo(
+    () => _.sampleSize([Professor, Teacher]),
+    [teacherObject?.teacher_Id]
+  );
+
   return (
     <CustomModal
       open={open}
@@ -28,7 +33,7 @@ const TeacherInfoModal = ({ open, handleClose, teacherObject }) => {
             <CardActionArea sx={{ display: "flex" }}>
               <CardMedia
                 component="img"
-                src={_.sampleSize([Professor, Teacher])}
+                src={imageSrc}
                 alt="wang ping"
                 sx={{
                   height: "40vh",
@@ -43,13 +48,13 @@ const TeacherInfoModal = ({ open, handleClose, teacherObject }) => {
             <CardActionArea>
               <CardContent>
                 <Typography gutterBottom variant="h4" component="div">
-                  Id: {teacherObject?.student_Id}
+                  Id: {cloneTeacherObject?.student_Id}
                 </Typography>
                 <Typography gutterBottom variant="h4" component="div">
-                  Tên Giảng Viên: {teacherObject?.student_Name}
+                  Tên Giảng Viên: {cloneTeacherObject?.student_Name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Ngày Tạo: {teacherObject?.created_Date}
+                  Ngày Tạo: {cloneTeacherObject?.created_Date}
                 </Typography>
               </CardContent>
             </CardActionArea>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Grid,
   Box,
@@ -41,6 +41,8 @@ const StudentDeleteModal = ({
     reloadStudentData();
   };
 
+  const imageSrc = useMemo(() => _.sampleSize([StudentMale, StudentFemale]), [studentObject?.student_Id])
+   
   return (
     <CustomModal
       open={open}
@@ -53,7 +55,7 @@ const StudentDeleteModal = ({
             <CardActionArea sx={{ display: "flex" }}>
               <CardMedia
                 component="img"
-                src={_.sampleSize([StudentMale, StudentFemale])}
+                src={imageSrc}
                 alt="wang ping"
                 sx={{
                   height: "40vh",

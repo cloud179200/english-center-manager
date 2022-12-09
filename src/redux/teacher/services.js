@@ -11,9 +11,9 @@ export const getListTeacherService = async () => {
 export const removeTeacherService = async (body) => {
   try {
     return await postService(
-      `/api/students/remove?p_teacher_id=${body.teacher_Id}`,
+      `/api/teachers/remove?p_teacher_id=${body.teacher_Id}`,
       {},
-      "remove students fail",
+      "remove teachers fail",
       true
     );
   } catch (error) {

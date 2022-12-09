@@ -8,6 +8,14 @@ export const getListStudentService = async () => {
   }
 };
 
+export const removeStudentService = async (body) => {
+  try {
+    return await postService(`/api/students/remove?p_student_id=${body.student_Id}`,{},  "remove students fail", true);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const studentPaymentClassFeeService = async (body) => {
   try {
     return await postService(`/api/students/`, body, "Sign up fail", false);

@@ -4,6 +4,7 @@ import {
   GET_CLASS_ACTION,
   GET_SCHEDULE_BY_CLASS_ID_ACTION,
   GET_STAGE_BY_CLASS_ID_ACTION,
+  REMOVE_CLASS_ACTION,
   SET_ATTENDANCE_ACTION,
   SET_CLASS_ACTION,
   SET_SCHEDULE_ACTION,
@@ -16,11 +17,11 @@ import {
   getClassService,
   addClassService,
   setClassService,
-  deleteClassService,
+  removeClassService,
   getStageByClassIdService,
   setStageService,
   addStageService,
-  deleteStageService,
+  removeStageService,
   setScheduleService,
   getScheduleByClassIdService,
   getAttendanceByClassIdService,
@@ -129,9 +130,9 @@ export const setClassAction = (
 
 export const removeClassAction = (class_Id, email, callback) => {
   return async (dispatch) => {
-    dispatch({ type: ADD_CLASS_ACTION });
+    dispatch({ type: REMOVE_CLASS_ACTION });
     try {
-      const res = await deleteClassService({
+      const res = await removeClassService({
         class_Id,
         email,
       });
@@ -224,7 +225,7 @@ export const removeStageAction = (stage_Id, callback) => {
   return async (dispatch) => {
     dispatch({ type: ADD_CLASS_ACTION });
     try {
-      const res = await deleteStageService({
+      const res = await removeStageService({
         stage_Id,
       });
       if (res) {

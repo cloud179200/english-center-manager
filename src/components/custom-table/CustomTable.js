@@ -15,7 +15,12 @@ import {
 import React, { useEffect, useState } from "react";
 import CustomRow from "./CustomRow";
 
-const CustomTable = ({ data = [], headers = [], title = "" }) => {
+const CustomTable = ({
+  data = [],
+  headers = [],
+  title = "",
+  reloadPageWhenDataChange = true,
+}) => {
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
   const totalPage =
@@ -27,6 +32,9 @@ const CustomTable = ({ data = [], headers = [], title = "" }) => {
   };
 
   useEffect(() => {
+    if (!reloadPageWhenDataChange) {
+      return;
+    }
     setPage(1);
   }, [data]);
 

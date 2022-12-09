@@ -28,7 +28,7 @@ export const setClassService = async (body) => {
   }
 };
 
-export const deleteClassService = async (body) => {
+export const removeClassService = async (body) => {
   try {
     return await postService(`/api/class/remove?p_class_id=${body.class_Id}&p_modified_by=${"cloud179200@gmail.com"}`, body, "remove class fail", true);
   } catch (error) {
@@ -60,7 +60,7 @@ export const setStageService = async (body) => {
   }
 };
 
-export const deleteStageService = async (body) => {
+export const removeStageService = async (body) => {
   try {
     return await postService(`/api/stage/remove?p_stage_id=${body.stage_Id}`, body, "remove stage fail", true);
   } catch (error) {

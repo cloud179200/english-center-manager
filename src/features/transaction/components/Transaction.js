@@ -10,7 +10,7 @@ import {
 import {
   IconClockHour3,
   IconCurrencyDong,
-  IconInfoCircle,
+  IconDiscountCheck,
 } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
 import CustomBox from "../../../components/custom-box/CustomBox";
@@ -58,20 +58,31 @@ const TransactionComponent = () => {
     ];
   }, [userDetail?.user_Type]);
 
-  const handleConfirmTransaction = (item) => {
-    setLoadingConfirm([...loadingConfirm, _.cloneDeep(item)]);
+  const handleConfirmTransaction = (itemTransaction) => {
+    setLoadingConfirm([...loadingConfirm, _.cloneDeep(itemTransaction)]);
     dispatch(
       confirmStudentTransactionAction(
-        item.student_Id,
-        item.class_Id,
+        itemTransaction.student_Id,
+        itemTransaction.class_Id,
         userInfo.email,
         (res, err) => {
           setLoadingConfirm(
-            [...loadingConfirm].filter((i) => _.isEqual(i, _.cloneDeep(item)))
+            [...loadingConfirm].filter((i) =>
+              _.isEqual(i, _.cloneDeep(itemTransaction))
+            )
           );
           if (err) {
             return;
           }
+
+          setTranactionList((prevList) => {
+            const indexTransactionTarget = prevList.findIndex((item) =>
+              _.isEqual(item, itemTransaction)
+            );
+            prevList[indexTransactionTarget].paid_Ammount =
+              prevList[indexTransactionTarget].class_Fee;
+            return prevList;
+          });
         }
       )
     );
@@ -116,7 +127,7 @@ const TransactionComponent = () => {
         {isFullfiled ? (
           <Tooltip title="Trung Tâm Đã Nhận Được Tiền">
             <IconButton color="success">
-              <IconInfoCircle
+              <IconDiscountCheck
                 strokeWidth={2}
                 size="1.5rem"
                 style={{ marginTop: "auto", marginBottom: "auto" }}
@@ -261,6 +272,7 @@ const TransactionComponent = () => {
                 headers={headers}
                 data={transactionData}
                 title="Danh Sách Giao Dịch"
+                reloadPageWhenDataChange={false}
               />
             </Grid>
           )}

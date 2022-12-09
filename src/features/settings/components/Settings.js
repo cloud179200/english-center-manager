@@ -75,7 +75,7 @@ const Settings = () => {
 
   useEffect(() => {
     if (!userInfo?.token || !userInfo?.email) {
-      return 
+      return;
     }
     dispatch(getUserDetailAction(userInfo.email));
   }, []);
@@ -129,10 +129,16 @@ const Settings = () => {
                       >
                         <CardMedia
                           component="img"
-                          height="300"
                           src={WangBinh}
                           alt="wang ping"
-                          sx={chilling || {}}
+                          sx={
+                            chilling
+                              ? { ...chilling, height: "40vh", width: "auto" }
+                              : {
+                                  height: "40vh",
+                                  width: "auto",
+                                }
+                          }
                         />
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">

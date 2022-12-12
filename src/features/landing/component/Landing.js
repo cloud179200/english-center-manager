@@ -21,7 +21,6 @@ import LandingPage1 from "../../../assets/images/landing-page-1.png";
 import { landingSchema } from "../schema";
 import clsx from "clsx";
 import { makeStyles } from "@mui/styles";
-import { Animated } from "react-animated-css";
 const useStyles = makeStyles((theme) => ({
   root: {
     background: `linear-gradient(90deg, #00DBDE 0%, #FC00FF 100%)`,
@@ -133,176 +132,167 @@ const LandingComponent = () => {
           </Container>
         </Grid>
         {landingData.map((item, index) => (
-          <Animated
+          <Grid
             key={item.class_Name + "-" + item.Id}
-            animationIn={index % 2 === 0 ? "bounceInLeft" : "bounceInRight"}
-            isVisible={true}
+            sx={{
+              backgroundImage: `url("${item.base64String}")`,
+            }}
+            className={clsx([
+              classes.backgroundImage,
+              classes.courseItemBackground,
+            ])}
+            item
+            xs={12}
           >
-            <Grid
-              sx={{
-                backgroundImage: `url("${item.base64String}")`,
-              }}
-              className={clsx([
-                classes.backgroundImage,
-                classes.courseItemBackground,
-              ])}
-              item
-              xs={12}
-            >
-              <Container maxWidth="xl">
-                <Grid container>
-                  {index % 2 === 0 ? (
-                    <Grid item xs={12} md={6}>
-                      <CustomBox
-                        className={clsx([
-                          classes.courseItemInfo,
-                          classes.flexCenter,
-                        ])}
+            <Container maxWidth="xl">
+              <Grid container>
+                {index % 2 === 0 ? (
+                  <Grid item xs={12} md={6}>
+                    <CustomBox
+                      className={clsx([
+                        classes.courseItemInfo,
+                        classes.flexCenter,
+                      ])}
+                    >
+                      <Grid
+                        container
+                        rowSpacing={4}
+                        justifyContent="center"
+                        alignItems="center"
                       >
-                        <Grid
-                          container
-                          rowSpacing={4}
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <Grid item xs={12}>
-                            <Typography
-                              gutterBottom
-                              variant="h2"
-                              component="div"
-                              align="center"
-                              color="#fff"
-                            >
-                              Tên Lớp: {item.class_Name}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={12}>
-                            <Typography
-                              gutterBottom
-                              variant="h2"
-                              component="div"
-                              align="center"
-                              color="#fff"
-                            >
-                              Mô Tả: {item.description}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={12}>
-                            <Typography
-                              gutterBottom
-                              variant="h2"
-                              component="div"
-                              align="center"
-                              color="#fff"
-                            >
-                              Giá Tiền: {item.class_Fee}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={12} md={6}>
-                            <AnimateButton>
-                              <Button
-                                fullWidth
-                                variant="contained"
-                                onClick={() =>
-                                  handleClickCourse(item.class_Name)
-                                }
-                              >
-                                Đăng Ký {item.class_Name}
-                              </Button>
-                            </AnimateButton>
-                          </Grid>
+                        <Grid item xs={12}>
+                          <Typography
+                            gutterBottom
+                            variant="h2"
+                            component="div"
+                            align="center"
+                            color="#fff"
+                          >
+                            Tên Lớp: {item.class_Name}
+                          </Typography>
                         </Grid>
-                      </CustomBox>
-                    </Grid>
-                  ) : (
-                    <Grid item xs={12} md={6}>
-                      <CustomBox
-                        sx={{
-                          minHeight: "calc(100vh - 88px)",
-                          backgroundImage: `url("${item.base64String}")`,
-                        }}
-                        className={classes.backgroundImage}
-                      ></CustomBox>
-                    </Grid>
-                  )}
-                  {index % 2 !== 0 ? (
-                    <Grid item xs={12} md={6}>
-                      <CustomBox
-                        className={clsx([
-                          classes.courseItemInfo,
-                          classes.flexCenter,
-                        ])}
+                        <Grid item xs={12}>
+                          <Typography
+                            gutterBottom
+                            variant="h2"
+                            component="div"
+                            align="center"
+                            color="#fff"
+                          >
+                            Mô Tả: {item.description}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Typography
+                            gutterBottom
+                            variant="h2"
+                            component="div"
+                            align="center"
+                            color="#fff"
+                          >
+                            Giá Tiền: {item.class_Fee}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <AnimateButton>
+                            <Button
+                              fullWidth
+                              variant="contained"
+                              onClick={() => handleClickCourse(item.class_Name)}
+                            >
+                              Đăng Ký {item.class_Name}
+                            </Button>
+                          </AnimateButton>
+                        </Grid>
+                      </Grid>
+                    </CustomBox>
+                  </Grid>
+                ) : (
+                  <Grid item xs={12} md={6}>
+                    <CustomBox
+                      sx={{
+                        minHeight: "calc(100vh - 88px)",
+                        backgroundImage: `url("${item.base64String}")`,
+                      }}
+                      className={classes.backgroundImage}
+                    ></CustomBox>
+                  </Grid>
+                )}
+                {index % 2 !== 0 ? (
+                  <Grid item xs={12} md={6}>
+                    <CustomBox
+                      className={clsx([
+                        classes.courseItemInfo,
+                        classes.flexCenter,
+                      ])}
+                    >
+                      <Grid
+                        container
+                        rowSpacing={4}
+                        justifyContent="center"
+                        alignItems="center"
                       >
-                        <Grid
-                          container
-                          rowSpacing={4}
-                          justifyContent="center"
-                          alignItems="center"
-                        >
-                          <Grid item xs={12}>
-                            <Typography
-                              gutterBottom
-                              variant="h2"
-                              component="div"
-                              align="center"
-                              color="#fff"
-                            >
-                              Tên Lớp: {item.class_Name}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={12}>
-                            <Typography
-                              gutterBottom
-                              variant="h2"
-                              component="div"
-                              align="center"
-                              color="#fff"
-                            >
-                              Mô Tả: {item.description}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={12}>
-                            <Typography
-                              gutterBottom
-                              variant="h2"
-                              component="div"
-                              align="center"
-                              color="#fff"
-                            >
-                              Giá Tiền: {item.class_Fee}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={12} md={6}>
-                            <AnimateButton>
-                              <Button
-                                fullWidth
-                                variant="contained"
-                                onClick={() =>
-                                  handleClickCourse(item.class_Name)
-                                }
-                              >
-                                Đăng Ký {item.class_Name}
-                              </Button>
-                            </AnimateButton>
-                          </Grid>
+                        <Grid item xs={12}>
+                          <Typography
+                            gutterBottom
+                            variant="h2"
+                            component="div"
+                            align="center"
+                            color="#fff"
+                          >
+                            Tên Lớp: {item.class_Name}
+                          </Typography>
                         </Grid>
-                      </CustomBox>
-                    </Grid>
-                  ) : (
-                    <Grid item xs={12} md={6}>
-                      <CustomBox
-                        sx={{
-                          minHeight: "calc(100vh - 88px)",
-                          backgroundImage: `url("${item.base64String}")`,
-                        }}
-                        className={classes.backgroundImage}
-                      ></CustomBox>
-                    </Grid>
-                  )}
-                </Grid>
-              </Container>
-            </Grid>
-          </Animated>
+                        <Grid item xs={12}>
+                          <Typography
+                            gutterBottom
+                            variant="h2"
+                            component="div"
+                            align="center"
+                            color="#fff"
+                          >
+                            Mô Tả: {item.description}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Typography
+                            gutterBottom
+                            variant="h2"
+                            component="div"
+                            align="center"
+                            color="#fff"
+                          >
+                            Giá Tiền: {item.class_Fee}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                          <AnimateButton>
+                            <Button
+                              fullWidth
+                              variant="contained"
+                              onClick={() => handleClickCourse(item.class_Name)}
+                            >
+                              Đăng Ký {item.class_Name}
+                            </Button>
+                          </AnimateButton>
+                        </Grid>
+                      </Grid>
+                    </CustomBox>
+                  </Grid>
+                ) : (
+                  <Grid item xs={12} md={6}>
+                    <CustomBox
+                      sx={{
+                        minHeight: "calc(100vh - 88px)",
+                        backgroundImage: `url("${item.base64String}")`,
+                      }}
+                      className={classes.backgroundImage}
+                    ></CustomBox>
+                  </Grid>
+                )}
+              </Grid>
+            </Container>
+          </Grid>
         ))}
         <Grid item xs={12} ref={landingFormRef}>
           <Container maxWidth="xl">

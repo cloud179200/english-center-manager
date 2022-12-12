@@ -14,8 +14,9 @@ const CustomBox = (props) => {
         backgroundColor: "#fff",
         borderRadius: `${customization.borderRadius}px`,
         boxShadow: 4,
-        ...(props?.sx || {})
+        ...(props?.sx || {}),
       }}
+      className={props.className}
     >
       {props.children}
     </Box>

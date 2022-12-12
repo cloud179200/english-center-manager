@@ -161,7 +161,7 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
           student_Id: item.student_Id,
           student_Name: item.student_Name,
           stage_Date: moment(item.stage_Date).toJSON(),
-          last_Update: moment(item.last_Update).toJSON(),
+          modified_Date: moment(item.modified_Date).toJSON(),
           utility: <AttendanceStatus item={item} />,
         }));
         setAttendanceTableData(newAttendanceTableData);

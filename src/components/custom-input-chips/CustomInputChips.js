@@ -1,6 +1,6 @@
 import React from "react";
 import { MuiChipsInput } from "mui-chips-input";
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > .MuiInputBase-root > .MuiInputBase-input": {

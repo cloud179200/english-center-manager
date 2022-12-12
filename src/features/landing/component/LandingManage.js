@@ -4,16 +4,6 @@ import { useSelector } from "react-redux";
 import LoadingComponent from "../../../utils/component/Loading";
 import CustomBox from "../../../components/custom-box/CustomBox";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import {
   Button,
   Card,
   CardActionArea,
@@ -27,6 +17,7 @@ import {
   Typography,
   CircularProgress,
   CardContent,
+  IconButton,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { NAME_TRANS_VN } from "../../../config/constant";
@@ -34,15 +25,8 @@ import { landingManageSchema } from "../schema";
 import AnimateButton from "../../../components/extended/AnimateButton";
 import { uniqueKey, fileToBase64 } from "./../../../utils/index";
 import _ from "lodash";
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import { IconTrash } from "@tabler/icons";
+
 
 const LandingManageComponent = () => {
   const theme = useTheme();
@@ -75,6 +59,7 @@ const LandingManageComponent = () => {
   const handleRemoveLandingData = (item) => {
     setLandingData(_.cloneDeep(landingData).filter((i) => !_.isEqual(i, item)));
   };
+
   const handleSetBase64String = async (e) => {
     setSubmitting(true);
     const value = await fileToBase64(e?.target?.files[0]);
@@ -84,6 +69,7 @@ const LandingManageComponent = () => {
       setFieldValue("base64String", value || "");
     }
   };
+
   const {
     errors,
     handleBlur,
@@ -118,7 +104,9 @@ const LandingManageComponent = () => {
                 <Grid container columnSpacing={2} rowSpacing={2}>
                   {landingData.length === 0 && (
                     <Grid item xs={12} md={6}>
-                      <Typography variant="h4">Waiting...</Typography>
+                      <Typography variant="h4">
+                        Không Có Lớp Học Quảng Cáo...
+                      </Typography>
                     </Grid>
                   )}
                   {landingData.map((item) => (
@@ -129,17 +117,13 @@ const LandingManageComponent = () => {
                       key={item.class_Name + "-" + item.Id}
                     >
                       <Card>
-                        <CardActionArea
-                          sx={{ display: "flex" }}
-                          onClick={() =>
-                            handleRemoveLandingData(_.cloneDeep(item))
-                          }
-                        >
+                        <CardActionArea sx={{ display: "flex" }}>
                           <CardMedia
                             component="img"
                             src={item.base64String}
                             alt="wang ping"
                             sx={{
+                              height: "10vh",
                               width: "auto",
                             }}
                           />
@@ -169,6 +153,21 @@ const LandingManageComponent = () => {
                               Ghi Chú: {item?.description}
                             </Typography>
                           </CardContent>
+                          <IconButton
+                            onClick={() =>
+                              handleRemoveLandingData(_.cloneDeep(item))
+                            }
+                            color="error"
+                          >
+                            <IconTrash
+                              strokeWidth={2}
+                              size="1.5rem"
+                              style={{
+                                marginTop: "auto",
+                                marginBottom: "auto",
+                              }}
+                            />
+                          </IconButton>
                         </CardActionArea>
                       </Card>
                     </Grid>
@@ -248,7 +247,6 @@ const LandingManageComponent = () => {
                         name="base64String"
                         onBlur={handleBlur}
                         onChange={handleSetBase64String}
-                        label={"Ảnh Khóa Học"}
                         autoComplete="off"
                         type="file"
                       />

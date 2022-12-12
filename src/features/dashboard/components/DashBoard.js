@@ -13,6 +13,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  ArcElement,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import faker from "faker";
@@ -24,6 +25,7 @@ ChartJS.register(
   PointElement,
   LineElement,
   Title,
+  ArcElement,
   Tooltip,
   Legend
 );
@@ -33,8 +35,8 @@ const DashBoard = () => {
   const theme = useTheme();
 
   const userInfo = useSelector((state) => state.user.userInfo);
+  const userDetail = useSelector((state) => state.user.userDetail);
   const loading = useSelector((state) => state.common.loading);
-
   const labels = useMemo(
     () => [
       "Tháng 1",
@@ -112,7 +114,7 @@ const DashBoard = () => {
 
   useEffect(() => {
     if (!userInfo?.token || !userInfo?.email) {
-      return 
+      return;
     }
     dispatch(getUserDetailAction(userInfo.email));
   }, []);
@@ -124,10 +126,26 @@ const DashBoard = () => {
       ) : (
         <>
           <CustomBox>
-            <Grid container>
-              <Grid item xs={12}>
-                <Line options={options} data={data} />
-              </Grid>
+            <Grid container columnSpacing={4} rowSpacing={4}>
+              {userDetail?.user_Type === 1 && (
+                <>
+                  <Grid item xs={12}>
+                    <Line options={options} data={data} />
+                  </Grid>
+                </>
+              )}
+              {userDetail?.user_Type === 2 && (
+                <Grid item xs={12}>
+                  <Line options={options} data={data} />
+                </Grid>
+              )}
+              {userDetail?.user_Type === 3 && (
+                <>
+                  <Grid item xs={12}>
+                    <Line options={options} data={data} />
+                  </Grid>
+                </>
+              )}
             </Grid>
           </CustomBox>
         </>

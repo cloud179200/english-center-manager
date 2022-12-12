@@ -8,7 +8,7 @@
     scrollbar-color: $grey700;
     ::-webkit-scrollbar,
     *::-webkit-scrollbar {
-        background-color: none;
+        background-color: $grey100;
         width: 0.4rem;
         height: 0.4rem;
         border-radius: 0.4rem;
@@ -17,10 +17,9 @@
     ::-webkit-scrollbar-thumb,
     *::-webkit-scrollbar-thumb {
         border-radius: 8px;
-        background-color: $grey300;
+        background-color: $grey500;
         min-height: 24px;
         transition: all 0.5s ease;
-        display: none;
     }
 
     ::-webkit-scrollbar-thumb:focus,

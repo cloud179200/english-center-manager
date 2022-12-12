@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect } from "react-router";
+import { Redirect } from "react-router-dom";
 import ForgotComponent from "../features/auth/components/Forgot";
 import SignInComponent from "../features/auth/components/SignIn";
 import SignUpComponent from "../features/auth/components/SignUp";

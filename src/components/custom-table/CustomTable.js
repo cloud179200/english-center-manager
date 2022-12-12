@@ -23,10 +23,11 @@ const CustomTable = ({
 }) => {
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
+  const lengthData = data?.length || 0
   const totalPage =
-    Math.round(data.length / rowsPerPage) < data.length / rowsPerPage
-      ? Math.round(data.length / rowsPerPage) + 1
-      : Math.round(data.length / rowsPerPage);
+    Math.round(lengthData / rowsPerPage) < lengthData / rowsPerPage
+      ? Math.round(lengthData / rowsPerPage) + 1
+      : Math.round(lengthData / rowsPerPage);
   const handlePageChange = (_, p) => {
     setPage(p);
   };
@@ -38,7 +39,7 @@ const CustomTable = ({
     setPage(1);
   }, [data]);
 
-  if (!data.length) {
+  if (!lengthData) {
     return (
       <Grid container>
         <Grid item md={12}>
@@ -91,15 +92,17 @@ const CustomTable = ({
           </TableBody>
         </Table>
       </TableContainer>
-      <Box>
-        <Pagination
-          sx={{ marginTop: "1rem" }}
-          color="secondary"
-          count={totalPage}
-          page={page}
-          onChange={handlePageChange}
-        />
-      </Box>
+      {typeof lengthData === "number" && lengthData > rowsPerPage && (
+        <Box>
+          <Pagination
+            sx={{ marginTop: "1rem" }}
+            color="secondary"
+            count={totalPage}
+            page={page}
+            onChange={handlePageChange}
+          />
+        </Box>
+      )}
     </>
   );
 };

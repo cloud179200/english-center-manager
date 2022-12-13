@@ -24,6 +24,7 @@ import {
 
 // assets
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import Animate from "../../../../../components/extended/Animate";
 
 // ==============================|| SIDEBAR MENU LIST ITEMS ||============================== //
 
@@ -92,38 +93,44 @@ const NavItem = ({ item, level }) => {
         py: level > 1 ? 1.25 : 1.5,
         pl: `${level * 24}px`,
       }}
-      selected={customization.isOpen.findIndex((id) => id === item.id) > -1 || document.location.pathname === item.url}
+      selected={
+        customization.isOpen.findIndex((id) => id === item.id) > -1 ||
+        document.location.pathname === item.url
+      }
       onClick={() => itemHandler(item.id)}
     >
       <ListItemIcon sx={{ my: "auto", minWidth: !item?.icon ? 18 : 36 }}>
         {itemIcon}
       </ListItemIcon>
-      <ListItemText
-        primary={
-          <Typography
-            variant={
-              customization.isOpen.findIndex((id) => id === item.id) > -1
-                ? "h5"
-                : "body1"
-            }
-            color="inherit"
-          >
-            {item.title}
-          </Typography>
-        }
-        secondary={
-          item.caption && (
+      <Animate type="slide">
+        <ListItemText
+          primary={
             <Typography
-              variant="caption"
-              sx={{ ...theme.typography.subMenuCaption }}
-              display="block"
-              gutterBottom
+              variant={
+                customization.isOpen.findIndex((id) => id === item.id) > -1
+                  ? "h5"
+                  : "body1"
+              }
+              color="inherit"
             >
-              {item.caption}
+              {item.title}
             </Typography>
-          )
-        }
-      />
+          }
+          secondary={
+            item.caption && (
+              <Typography
+                variant="caption"
+                sx={{ ...theme.typography.subMenuCaption }}
+                display="block"
+                gutterBottom
+              >
+                {item.caption}
+              </Typography>
+            )
+          }
+        />
+      </Animate>
+
       {item.chip && (
         <Chip
           color={item.chip.color}

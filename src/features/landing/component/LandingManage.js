@@ -17,15 +17,15 @@ import {
   CircularProgress,
   CardContent,
   IconButton,
+  Fade,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import { landingManageSchema } from "../schema";
-import AnimateButton from "../../../components/extended/AnimateButton";
+import Animate from "../../../components/extended/Animate";
 import { uniqueKey, fileToBase64 } from "./../../../utils/index";
 import _ from "lodash";
 import { IconTrash } from "@tabler/icons";
-
 
 const LandingManageComponent = () => {
   const theme = useTheme();
@@ -109,67 +109,69 @@ const LandingManageComponent = () => {
                     </Grid>
                   )}
                   {landingData.map((item) => (
-                    <Grid
-                      item
-                      xs={12}
-                      md={6}
-                      key={item.class_Name + "-" + item.Id}
-                    >
-                      <Card>
-                        <CardActionArea sx={{ display: "flex" }}>
-                          <CardMedia
-                            component="img"
-                            src={item.base64String}
-                            alt="wang ping"
-                            sx={{
-                              height: "10vh",
-                              width: "auto",
-                            }}
-                          />
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h4"
-                              color="text.primary"
-                              component="div"
-                            >
-                              Tên Lớp Học: {item?.class_Name}
-                            </Typography>
-                            <Typography
-                              gutterBottom
-                              variant="h4"
-                              color="text.primary"
-                              component="div"
-                            >
-                              Giá: {item?.class_Fee}
-                            </Typography>
-                            <Typography
-                              gutterBottom
-                              variant="h4"
-                              color="text.primary"
-                              component="div"
-                            >
-                              Ghi Chú: {item?.description}
-                            </Typography>
-                          </CardContent>
-                          <IconButton
-                            onClick={() =>
-                              handleRemoveLandingData(_.cloneDeep(item))
-                            }
-                            color="error"
-                          >
-                            <IconTrash
-                              strokeWidth={2}
-                              size="1.5rem"
-                              style={{
-                                marginTop: "auto",
-                                marginBottom: "auto",
+                    <Fade in={true} key={item.class_Name + "-" + item.Id} style={{ transitionDelay: `100ms` }}>
+                      <Grid
+                        item
+                        xs={12}
+                        md={6}
+                        
+                      >
+                        <Card>
+                          <CardActionArea sx={{ display: "flex" }}>
+                            <CardMedia
+                              component="img"
+                              src={item.base64String}
+                              alt="wang ping"
+                              sx={{
+                                height: "10vh",
+                                width: "auto",
                               }}
                             />
-                          </IconButton>
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
+                            <CardContent>
+                              <Typography
+                                gutterBottom
+                                variant="h4"
+                                color="text.primary"
+                                component="div"
+                              >
+                                Tên Lớp Học: {item?.class_Name}
+                              </Typography>
+                              <Typography
+                                gutterBottom
+                                variant="h4"
+                                color="text.primary"
+                                component="div"
+                              >
+                                Giá: {item?.class_Fee}
+                              </Typography>
+                              <Typography
+                                gutterBottom
+                                variant="h4"
+                                color="text.primary"
+                                component="div"
+                              >
+                                Ghi Chú: {item?.description}
+                              </Typography>
+                            </CardContent>
+                            <IconButton
+                              onClick={() =>
+                                handleRemoveLandingData(_.cloneDeep(item))
+                              }
+                              color="error"
+                            >
+                              <IconTrash
+                                strokeWidth={2}
+                                size="1.5rem"
+                                style={{
+                                  marginTop: "auto",
+                                  marginBottom: "auto",
+                                }}
+                              />
+                            </IconButton>
+                          </CardActionArea>
+                        </Card>
+                      </Grid>
+                    </Fade>
                   ))}
                 </Grid>
               </Grid>
@@ -281,7 +283,7 @@ const LandingManageComponent = () => {
                     </FormControl>
                   </Grid>
                   <Grid item xs={6}>
-                    <AnimateButton>
+                    <Animate>
                       <Button
                         disableElevation
                         disabled={isSubmitting || !isValid}
@@ -298,7 +300,7 @@ const LandingManageComponent = () => {
                       >
                         {NAME_TRANS_VN.ADD}
                       </Button>
-                    </AnimateButton>
+                    </Animate>
                   </Grid>
                 </Grid>
               </Grid>

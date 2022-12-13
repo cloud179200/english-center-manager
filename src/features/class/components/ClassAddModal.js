@@ -17,7 +17,7 @@ import { useFormik } from "formik";
 import { addClassSchema } from "../schema";
 import { useDispatch } from "react-redux";
 import { addClassAction } from "../../../redux/class/operators";
-import AnimateButton from "../../../components/extended/AnimateButton";
+import Animate from "../../../components/extended/Animate";
 import _ from "lodash";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import CustomChipsInput from "../../../components/custom-input-chips/CustomInputChips";
@@ -311,7 +311,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
             </FormControl>
           </Grid>
           <Box sx={{ mt: 2 }}>
-            <AnimateButton>
+            <Animate>
               <Button
                 disableElevation
                 disabled={!isValid || loading}
@@ -328,7 +328,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
               >
                 {NAME_TRANS_VN.CLASS_ADD}
               </Button>
-            </AnimateButton>
+            </Animate>
           </Box>
         </Grid>
       </Grid>

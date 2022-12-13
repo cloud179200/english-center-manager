@@ -23,12 +23,12 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 
 // project imports
 import SubCard from "../../ui-component/cards/SubCard";
-import AnimateButton from "../../ui-component/extended/AnimateButton";
 import {
   SET_BORDER_RADIUS,
   SET_FONT_FAMILY,
 } from "../../redux/customization/actions";
 import { gridSpacing } from "../../redux/customization/constant";
+import Animate from "../../components/extended/Animate";
 
 // concat 'px'
 function valueText(value) {
@@ -119,11 +119,11 @@ const Customization = () => {
             zIndex: theme.zIndex.speedDial,
           }}
         >
-          <AnimateButton type="rotate">
+          <Animate type="rotate">
             <IconButton color="inherit" size="large" disableRipple>
               <IconSettings />
             </IconButton>
-          </AnimateButton>
+          </Animate>
         </Fab>
       </Tooltip>
 

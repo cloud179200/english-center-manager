@@ -20,7 +20,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useFormik } from "formik";
-import AnimateButton from "../../../components/extended/AnimateButton";
+import Animate from "../../../components/extended/Animate";
 import {
   strengthColor,
   strengthIndicator,
@@ -367,7 +367,7 @@ const SignUpComponent = ({ ...others }) => {
                 </Grid>
               </Grid>
               <Box sx={{ mt: 2 }}>
-                <AnimateButton>
+                <Animate>
                   <Button
                     disableElevation
                     disabled={loading || !isValid}
@@ -382,7 +382,7 @@ const SignUpComponent = ({ ...others }) => {
                   >
                     {NAME_TRANS_VN.SIGN_UP}
                   </Button>
-                </AnimateButton>
+                </Animate>
               </Box>
             </form>
           </Grid>

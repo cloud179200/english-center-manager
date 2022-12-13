@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomBox from "../../../components/custom-box/CustomBox";
-import AnimateButton from "../../../components/extended/AnimateButton";
+import Animate from "../../../components/extended/Animate";
 import LoadingComponent from "../../../utils/component/Loading";
 import {
   Button,
@@ -309,7 +309,7 @@ const Settings = () => {
                     </FormControl>
                   </Grid>
                   <Grid item xs={6}>
-                    <AnimateButton>
+                    <Animate>
                       <Button
                         disableElevation
                         disabled={isSubmitting || !isValid}
@@ -326,7 +326,7 @@ const Settings = () => {
                       >
                         {NAME_TRANS_VN.CHANGE_PASSWORD}
                       </Button>
-                    </AnimateButton>
+                    </Animate>
                   </Grid>
                 </Grid>
               </Grid>

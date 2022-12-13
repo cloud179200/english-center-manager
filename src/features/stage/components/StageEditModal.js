@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { NAME_TRANS_VN } from "../../../config/constant";
-import AnimateButton from "../../../components/extended/AnimateButton";
+import Animate from "../../../components/extended/Animate";
 import { useDispatch } from "react-redux";
 import { setStageAction } from "../../../redux/class/operators";
 import { useFormik } from "formik";
@@ -108,7 +108,7 @@ const StageEditModal = ({
         </Grid>
         <Grid item xs={12}>
           <Box sx={{ mt: 2 }}>
-            <AnimateButton>
+            <Animate>
               <Button
                 disableElevation
                 fullWidth
@@ -125,7 +125,7 @@ const StageEditModal = ({
               >
                 {NAME_TRANS_VN.STAGE_EDIT}
               </Button>
-            </AnimateButton>
+            </Animate>
           </Box>
         </Grid>
       </Grid>

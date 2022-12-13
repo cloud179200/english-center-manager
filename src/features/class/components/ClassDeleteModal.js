@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Grid, Box, Button, CircularProgress } from "@mui/material";
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { NAME_TRANS_VN } from "../../../config/constant";
-import AnimateButton from "../../../components/extended/AnimateButton";
+import Animate from "../../../components/extended/Animate";
 import { useDispatch, useSelector } from "react-redux";
 import { removeClassAction } from "../../../redux/class/operators";
 
@@ -37,7 +37,7 @@ const ClassDeleteModal = ({ open, handleClose, reloadClassData, classObject }) =
         </Grid>
         <Grid item xs={12}>
           <Box sx={{ mt: 2 }}>
-            <AnimateButton>
+            <Animate>
               <Button
                 disableElevation
                 fullWidth
@@ -52,7 +52,7 @@ const ClassDeleteModal = ({ open, handleClose, reloadClassData, classObject }) =
               >
                 {NAME_TRANS_VN.CLASS_DELETE}
               </Button>
-            </AnimateButton>
+            </Animate>
           </Box>
         </Grid>
       </Grid>

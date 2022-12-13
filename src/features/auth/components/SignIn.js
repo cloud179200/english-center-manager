@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
-import AnimateButton from "../../../components/extended/AnimateButton";
+import Animate from "../../../components/extended/Animate";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link } from "react-router-dom";
@@ -180,7 +180,7 @@ const SignInComponent = ({ ...others }) => {
                 </Typography>
               </Stack>
               <Box sx={{ mt: 2 }}>
-                <AnimateButton>
+                <Animate>
                   <Button
                     disableElevation
                     disabled={!isValid || loading}
@@ -195,7 +195,7 @@ const SignInComponent = ({ ...others }) => {
                   >
                     {NAME_TRANS_VN.SIGN_IN}
                   </Button>
-                </AnimateButton>
+                </Animate>
               </Box>
             </form>
           </Grid>

@@ -98,7 +98,7 @@ Animate.defaultProps = {
   direction: "right",
   scale: {
     hover: 1,
-    tap: 0.9,
+    tap: 0.8,
   },
 };
 

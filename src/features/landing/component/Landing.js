@@ -27,7 +27,7 @@ import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    background: `linear-gradient(90deg, #00DBDE 0%, #FC00FF 100%)`,
+    background: `linear-gradient(180deg, #00DBDE 0%, #FC00FF 100%)`,
   },
   flexCenter: {
     display: "flex",

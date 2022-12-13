@@ -41,7 +41,7 @@ const TeacherDeleteModal = ({
     reloadTeacherData();
   };
   const imageSrc = useMemo(
-    () => _.sampleSize([Professor, Teacher]),
+    () => _.sample([Professor, Teacher]),
     [teacherObject?.teacher_Id]
   );
 

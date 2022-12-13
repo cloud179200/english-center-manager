@@ -17,7 +17,7 @@ const TeacherInfoModal = ({ open, handleClose, teacherObject }) => {
   const cloneTeacherObject = _.cloneDeep(teacherObject);
 
   const imageSrc = useMemo(
-    () => _.sampleSize([Professor, Teacher]),
+    () => _.sample([Professor, Teacher]),
     [teacherObject?.teacher_Id]
   );
 

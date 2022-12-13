@@ -1,11 +1,9 @@
-/* eslint-disable import/no-unresolved */
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingComponent from "../../../utils/component/Loading";
 import { getUserDetailAction } from "../../../redux/user/operators";
-import CustomBox from "../../../components/custom-box/CustomBox";
 import {
-  Chart as ChartJS,
+  Chart,
   CategoryScale,
   LinearScale,
   PointElement,
@@ -13,19 +11,20 @@ import {
   Title,
   Tooltip,
   Legend,
-  ArcElement,
 } from "chart.js";
+// eslint-disable-next-line import/no-unresolved
 import { Line } from "react-chartjs-2";
 import faker from "faker";
 import { Grid, useTheme } from "@mui/material";
+import DashBoardStudent from "./DashBoardStudent";
+import CustomBox from "../../../components/custom-box/CustomBox";
 
-ChartJS.register(
+Chart.register(
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
   Title,
-  ArcElement,
   Tooltip,
   Legend
 );
@@ -36,7 +35,7 @@ const DashBoard = () => {
 
   const userInfo = useSelector((state) => state.user.userInfo);
   const userDetail = useSelector((state) => state.user.userDetail);
-  const loading = useSelector((state) => state.common.loading);
+  const [loading, setLoading] = useState(false);
   const labels = useMemo(
     () => [
       "Tháng 1",
@@ -116,7 +115,8 @@ const DashBoard = () => {
     if (!userInfo?.token || !userInfo?.email) {
       return;
     }
-    dispatch(getUserDetailAction(userInfo.email));
+    setLoading(true);
+    dispatch(getUserDetailAction(userInfo.email, () => setLoading(false)));
   }, []);
 
   return (
@@ -125,29 +125,29 @@ const DashBoard = () => {
         <LoadingComponent />
       ) : (
         <>
-          <CustomBox>
-            <Grid container columnSpacing={4} rowSpacing={4}>
-              {userDetail?.user_Type === 1 && (
-                <>
-                  <Grid item xs={12}>
-                    <Line options={options} data={data} />
-                  </Grid>
-                </>
-              )}
-              {userDetail?.user_Type === 2 && (
+          {userDetail?.user_Type === 1 && (
+            <>
+              <Grid container columnSpacing={4} rowSpacing={4}>
                 <Grid item xs={12}>
-                  <Line options={options} data={data} />
-                </Grid>
-              )}
-              {userDetail?.user_Type === 3 && (
-                <>
-                  <Grid item xs={12}>
+                  <CustomBox>
                     <Line options={options} data={data} />
-                  </Grid>
-                </>
-              )}
-            </Grid>
-          </CustomBox>
+                  </CustomBox>
+                </Grid>
+              </Grid>
+            </>
+          )}
+          {userDetail?.user_Type === 2 && <DashBoardStudent />}
+          {userDetail?.user_Type === 3 && (
+            <>
+              <Grid container columnSpacing={4} rowSpacing={4}>
+                <Grid item xs={12}>
+                  <CustomBox>
+                    <Line options={options} data={data} />
+                  </CustomBox>
+                </Grid>
+              </Grid>
+            </>
+          )}
         </>
       )}
     </>

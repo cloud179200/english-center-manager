@@ -15,7 +15,7 @@ import _ from "lodash";
 const StudentInfoModal = ({ open, handleClose, studentObject }) => {
   const cloneStudentObject = _.cloneDeep(studentObject);
   
-  const imageSrc = useMemo(() => _.sampleSize([StudentMale, StudentFemale]), [studentObject?.student_Id])
+  const imageSrc = useMemo(() => _.sample([StudentMale, StudentFemale]), [studentObject?.student_Id])
 
   return (
     <CustomModal

@@ -41,7 +41,7 @@ const StudentDeleteModal = ({
     reloadStudentData();
   };
 
-  const imageSrc = useMemo(() => _.sampleSize([StudentMale, StudentFemale]), [studentObject?.student_Id])
+  const imageSrc = useMemo(() => _.sample([StudentMale, StudentFemale]), [studentObject?.student_Id])
    
   return (
     <CustomModal

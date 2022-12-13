@@ -21,6 +21,8 @@ import LandingPage1 from "../../../assets/images/landing-page-1.png";
 import { landingSchema } from "../schema";
 import clsx from "clsx";
 import { makeStyles } from "@mui/styles";
+import { IconCurrencyDong } from "@tabler/icons";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     background: `linear-gradient(90deg, #00DBDE 0%, #FC00FF 100%)`,
@@ -190,7 +192,17 @@ const LandingComponent = () => {
                             align="center"
                             color="#fff"
                           >
-                            Giá Tiền: {item.class_Fee}
+                            Giá Tiền: {item.class_Fee}{" "}
+                            <IconCurrencyDong
+                              strokeWidth={2}
+                              size="1.5rem"
+                              style={{
+                                marginTop: "auto",
+                                marginBottom: "auto",
+                                position: "relative",
+                                top: theme.spacing(1),
+                              }}
+                            />
                           </Typography>
                         </Grid>
                         <Grid item xs={12} md={6}>

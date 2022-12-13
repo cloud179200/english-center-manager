@@ -122,7 +122,9 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
       );
       if (dateScheduleObject) {
         return (
-          <Tooltip title={`Ngày Này Có Buổi Học: ${dateScheduleObject?.stage_Name} - ${dateScheduleObject?.stage_Id}`}>
+          <Tooltip
+            title={`Ngày Này Có Buổi Học: ${dateScheduleObject?.stage_Name} - ${dateScheduleObject?.stage_Id}`}
+          >
             <IconButton
               color="primary"
               sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
@@ -223,14 +225,14 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
           </Tabs>
         </Grid>
         <Grid item xs={12}>
-          {Boolean(stageList.length) && (
-            <CustomBox
-              sx={{
-                maxHeight: "60vh",
-                overflow: "auto",
-              }}
-            >
-              {tab === 0 && (
+          <CustomBox
+            sx={{
+              maxHeight: "60vh",
+              overflow: "auto",
+            }}
+          >
+            {tab === 0 && (
+              <>
                 <Grid container rowSpacing={2}>
                   <Grid item xs={12}>
                     {loading ? (
@@ -244,73 +246,66 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
                     )}
                   </Grid>
                 </Grid>
-              )}
-              {tab === 1 && (
-                <>
-                  <Grid container rowSpacing={2}>
-                    {!selectedStage &&
-                      stageList.map((item, stageIndex) => (
-                        <Grid
-                          item
-                          xs={12}
-                          key={item.stage_Id + "-" + stageIndex}
+              </>
+            )}
+            {tab === 1 && (
+              <>
+                <Grid container rowSpacing={2}>
+                  {!selectedStage &&
+                    stageList.map((item, stageIndex) => (
+                      <Grid item xs={12} key={item.stage_Id + "-" + stageIndex}>
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          color="secondary"
+                          sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
+                          onClick={() => setSelectedStage(_.cloneDeep(item))}
+                          endIcon={
+                            <IconChevronRight strokeWidth={2} size="2rem" />
+                          }
                         >
-                          <Button
-                            fullWidth
-                            variant="contained"
+                          {item.stage_Name}
+                        </Button>
+                      </Grid>
+                    ))}
+                  {selectedStage && (
+                    <>
+                      <Grid item xs={12}>
+                        <AnimateButton type="slide">
+                          <IconButton
                             color="secondary"
-                            sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
-                            onClick={() => setSelectedStage(_.cloneDeep(item))}
-                            endIcon={
-                              <IconChevronRight strokeWidth={2} size="2rem" />
-                            }
+                            sx={{
+                              padding: matchDownSM ? 0 : theme.spacing(1),
+                            }}
+                            onClick={() => setSelectedStage(null)}
                           >
-                            {item.stage_Name}
-                          </Button>
-                        </Grid>
-                      ))}
-
-                    {selectedStage && (
-                      <>
-                        <Grid item xs={12}>
-                          <AnimateButton type="slide">
-                            <IconButton
-                              color="secondary"
-                              sx={{
-                                padding: matchDownSM ? 0 : theme.spacing(1),
-                              }}
-                              onClick={() => setSelectedStage(null)}
-                            >
-                              <IconChevronLeft strokeWidth={2} size="2rem" />
-                            </IconButton>
-                          </AnimateButton>
-                        </Grid>
-                        <Grid item xs={12}>
-                          {loading ? (
-                            <LoadingComponent isModal />
-                          ) : (
-                            <CustomTable
-                              headers={[
-                                "Id",
-                                "Tên Học Viên",
-                                "Thời Gian Diễn Ra Buổi Học",
-                                "Ngày Cập Nhật",
-                                "#",
-                              ]}
-                              data={
-                                attendanceTableData[selectedStage?.stage_Id]
-                              }
-                              title={`Buổi Học: ${selectedStage?.stage_Name}`}
-                            />
-                          )}
-                        </Grid>
-                      </>
-                    )}
-                  </Grid>
-                </>
-              )}
-            </CustomBox>
-          )}
+                            <IconChevronLeft strokeWidth={2} size="2rem" />
+                          </IconButton>
+                        </AnimateButton>
+                      </Grid>
+                      <Grid item xs={12}>
+                        {loading ? (
+                          <LoadingComponent isModal />
+                        ) : (
+                          <CustomTable
+                            headers={[
+                              "Id",
+                              "Tên Học Viên",
+                              "Thời Gian Diễn Ra Buổi Học",
+                              "Ngày Cập Nhật",
+                              "#",
+                            ]}
+                            data={attendanceTableData[selectedStage?.stage_Id]}
+                            title={`Buổi Học: ${selectedStage?.stage_Name}`}
+                          />
+                        )}
+                      </Grid>
+                    </>
+                  )}
+                </Grid>
+              </>
+            )}
+          </CustomBox>
         </Grid>
       </Grid>
     </CustomModal>

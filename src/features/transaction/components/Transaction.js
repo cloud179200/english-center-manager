@@ -4,6 +4,7 @@ import {
   CircularProgress,
   Grid,
   IconButton,
+  Switch,
   Tooltip,
   useTheme,
 } from "@mui/material";
@@ -32,12 +33,14 @@ export const initTransactionFilter = {
 const TransactionComponent = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const customization = useSelector((state) => state.customization);
   const userInfo = useSelector((state) => state.user.userInfo);
   const userDetail = useSelector((state) => state.user.userDetail);
   const [loading, setLoading] = useState(false);
   const [loadingConfirm, setLoadingConfirm] = useState([]);
   const [filter, setFilter] = useState(_.cloneDeep(initTransactionFilter));
   const [transactionList, setTranactionList] = useState([]);
+  const [filterConfirmed, setFilterConfirmed] = useState(false);
   const headers = useMemo(() => {
     if (userDetail?.user_Type === 2) {
       return [
@@ -182,52 +185,58 @@ const TransactionComponent = () => {
 
   const transactionData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
-    const cloneTransactionList = _.cloneDeep(transactionList).map((item) =>
-      userDetail?.user_Type === 1
-        ? {
-            class_Id: item.class_Id,
-            class_Name: item.class_Name,
-            student_Name: item.student_Name,
-            class_Fee: (
-              <>
-                {item.class_Fee}
-                <IconCurrencyDong
-                  strokeWidth={2}
-                  size="1.5rem"
-                  style={{
-                    marginTop: "auto",
-                    marginBottom: "auto",
-                    position: "relative",
-                    top: theme.spacing(1),
-                  }}
-                />
-              </>
-            ),
-            utility: <Utility item={item} />,
-            utilityAdmin: <UtilityAdmin item={item} />,
-          }
-        : {
-            class_Id: item.class_Id,
-            class_Name: item.class_Name,
-            student_Name: item.student_Name,
-            class_Fee: (
-              <>
-                {item.class_Fee}
-                <IconCurrencyDong
-                  strokeWidth={2}
-                  size="1.5rem"
-                  style={{
-                    marginTop: "auto",
-                    marginBottom: "auto",
-                    position: "relative",
-                    top: theme.spacing(1),
-                  }}
-                />
-              </>
-            ),
-            utility: <Utility item={item} />,
-          }
-    );
+    const cloneTransactionList = _.cloneDeep(transactionList)
+      .filter((item) =>
+        filterConfirmed
+          ? item?.paid_Ammount === item?.class_Fee
+          : item?.paid_Ammount !== item?.class_Fee
+      )
+      .map((item) =>
+        userDetail?.user_Type === 1
+          ? {
+              class_Id: item.class_Id,
+              class_Name: item.class_Name,
+              student_Name: item.student_Name,
+              class_Fee: (
+                <>
+                  {item.class_Fee}
+                  <IconCurrencyDong
+                    strokeWidth={2}
+                    size="1.5rem"
+                    style={{
+                      marginTop: "auto",
+                      marginBottom: "auto",
+                      position: "relative",
+                      top: theme.spacing(1),
+                    }}
+                  />
+                </>
+              ),
+              utility: <Utility item={item} />,
+              utilityAdmin: <UtilityAdmin item={item} />,
+            }
+          : {
+              class_Id: item.class_Id,
+              class_Name: item.class_Name,
+              student_Name: item.student_Name,
+              class_Fee: (
+                <>
+                  {item.class_Fee}
+                  <IconCurrencyDong
+                    strokeWidth={2}
+                    size="1.5rem"
+                    style={{
+                      marginTop: "auto",
+                      marginBottom: "auto",
+                      position: "relative",
+                      top: theme.spacing(1),
+                    }}
+                  />
+                </>
+              ),
+              utility: <Utility item={item} />,
+            }
+      );
     if (!isFilter) {
       return cloneTransactionList;
     }
@@ -247,7 +256,7 @@ const TransactionComponent = () => {
           : true
       );
     return filterResult;
-  }, [filter, transactionList, loadingConfirm]);
+  }, [filter, transactionList, loadingConfirm, filterConfirmed]);
 
   useEffect(() => {
     getTransactionData();
@@ -267,14 +276,62 @@ const TransactionComponent = () => {
           {loading ? (
             <LoadingComponent />
           ) : (
-            <Grid item xs={12}>
-              <CustomTable
-                headers={headers}
-                data={transactionData}
-                title="Danh Sách Giao Dịch"
-                reloadPageWhenDataChange={false}
-              />
-            </Grid>
+            <>
+              <Grid container item xs={12} justifyContent="flex-end">
+                <Switch
+                  icon={
+                    <IconClockHour3
+                      strokeWidth={2}
+                      size="1.5rem"
+                      style={{
+                        marginTop: "auto",
+                        marginBottom: "auto",
+                        borderRadius: `${customization.borderRadius}px`,
+                        border: "2px solid",
+                        position: "relative",
+                        bottom: 2,
+                        backgroundColor: theme.palette.background.default,
+                        color: theme.palette.primary.main,
+                      }}
+                    />
+                  }
+                  checkedIcon={
+                    <IconDiscountCheck
+                      strokeWidth={2}
+                      size="1.5rem"
+                      style={{
+                        marginTop: "auto",
+                        marginBottom: "auto",
+                        borderRadius: `${customization.borderRadius}px`,
+                        border: "2px solid",
+                        position: "relative",
+                        bottom: 2,
+                        backgroundColor: theme.palette.background.default,
+                      }}
+                    />
+                  }
+                  checked={filterConfirmed}
+                  color="success"
+                  onChange={() => setFilterConfirmed(!filterConfirmed)}
+                  size="medium"
+                  sx={{
+                    "& .MuiSwitch-track": {
+                      backgroundColor: !filterConfirmed
+                        ? theme.palette.primary.dark
+                        : theme.palette.success.dark,
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <CustomTable
+                  headers={headers}
+                  data={transactionData}
+                  title={"Danh Sách Giao Dịch"}
+                  // reloadPageWhenDataChange={false}
+                />
+              </Grid>
+            </>
           )}
         </Grid>
       </CustomBox>

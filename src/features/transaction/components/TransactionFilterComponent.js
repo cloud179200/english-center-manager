@@ -16,22 +16,21 @@ const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
     setFilter(_.cloneDeep(initTransactionFilter));
   };
 
-  const optionsTeacherId = [
+  const optionsTeacherName = [
     ...new Set(
-      _.cloneDeep(transactionList).map((option) => option.teacher_Name)
+      _.cloneDeep(transactionList).map((option) => `${option.class_Name}`)
     ),
   ];
 
-  const optionsTransactionDescription = [
+  const optionsStudentName = [
     ...new Set(
-      _.cloneDeep(transactionList).map((option) => option.student_Name)
+      _.cloneDeep(transactionList).map((option) => `${option.student_Name}`)
     ),
   ];
 
   useEffect(() => {
     setFilterInput(_.cloneDeep(filter));
   }, [filter]);
-
   return (
     <Grid
       container
@@ -44,18 +43,18 @@ const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
         <Autocomplete
           freeSolo
           disableClearable
-          options={optionsTeacherId}
+          options={optionsTeacherName}
           onChange={(event, newValue) => {
-            setFilterInput({ ...filterInput, teacher_Name: newValue });
+            setFilterInput({ ...filterInput, class_Name: newValue });
           }}
-          value={filterInput.teacher_Name}
+          value={filterInput.class_Name}
           onInputChange={(event, newValue) => {
             setFilterInput({
               ...filterInput,
-              teacher_Name: newValue,
+              class_Name: newValue,
             });
           }}
-          inputValue={filterInput.teacher_Name}
+          inputValue={filterInput.class_Name}
           renderInput={(params) => (
             <TextField {...params} label={NAME_TRANS_VN.CLASS_NAME} />
           )}
@@ -65,7 +64,7 @@ const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
         <Autocomplete
           freeSolo
           disableClearable
-          options={optionsTransactionDescription}
+          options={optionsStudentName}
           onChange={(event, newValue) => {
             setFilterInput({ ...filterInput, student_Name: newValue });
           }}

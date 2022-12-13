@@ -23,7 +23,7 @@ const CustomTable = ({
 }) => {
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
-  const lengthData = data?.length || 0
+  const lengthData = data?.length || 0;
   const totalPage =
     Math.round(lengthData / rowsPerPage) < lengthData / rowsPerPage
       ? Math.round(lengthData / rowsPerPage) + 1
@@ -39,17 +39,6 @@ const CustomTable = ({
     setPage(1);
   }, [data]);
 
-  if (!lengthData) {
-    return (
-      <Grid container>
-        <Grid item md={12}>
-          <Typography variant="h3" align="center" mb={2} mt={2}>
-            Không có dữ liệu để hiển thị
-          </Typography>
-        </Grid>
-      </Grid>
-    );
-  }
   return (
     <>
       {title && (
@@ -60,48 +49,60 @@ const CustomTable = ({
         </Toolbar>
       )}
       <Divider />
-      <TableContainer sx={{ maxHeight: "50vh" }}>
-        <Table
-          stickyHeader
-          sx={{
-            backgroundColor: "#ffff",
-          }}
-        >
-          <TableHead>
-            <TableRow>
-              {headers.map((item, index) => (
-                <TableCell
-                  key={item + index}
-                  align={index ? "right" : "inherit"}
-                  sx={{
-                    fontWeight: "bold",
-                    fontSize: "1.1rem",
-                  }}
-                >
-                  {item}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data
-              .slice(page * rowsPerPage - rowsPerPage, page * rowsPerPage)
-              .map((row, id) => (
-                <CustomRow key={row + page + id} rowData={row} index={id} />
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {typeof lengthData === "number" && lengthData > rowsPerPage && (
-        <Box>
-          <Pagination
-            sx={{ marginTop: "1rem" }}
-            color="secondary"
-            count={totalPage}
-            page={page}
-            onChange={handlePageChange}
-          />
-        </Box>
+      {!lengthData ? (
+        <Grid container>
+          <Grid item md={12}>
+            <Typography variant="h3" align="center" mb={2} mt={2}>
+              Không có dữ liệu để hiển thị
+            </Typography>
+          </Grid>
+        </Grid>
+      ) : (
+        <>
+          <TableContainer sx={{ maxHeight: "50vh" }}>
+            <Table
+              stickyHeader
+              sx={{
+                backgroundColor: "#ffff",
+              }}
+            >
+              <TableHead>
+                <TableRow>
+                  {headers.map((item, index) => (
+                    <TableCell
+                      key={item + index}
+                      align={index ? "right" : "inherit"}
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: "1.1rem",
+                      }}
+                    >
+                      {item}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data
+                  .slice(page * rowsPerPage - rowsPerPage, page * rowsPerPage)
+                  .map((row, id) => (
+                    <CustomRow key={row + page + id} rowData={row} index={id} />
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          {typeof lengthData === "number" && lengthData > rowsPerPage && (
+            <Box>
+              <Pagination
+                sx={{ marginTop: "1rem" }}
+                color="secondary"
+                count={totalPage}
+                page={page}
+                onChange={handlePageChange}
+              />
+            </Box>
+          )}
+        </>
       )}
     </>
   );

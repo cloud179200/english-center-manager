@@ -88,7 +88,7 @@ const LandingComponent = () => {
   } = formik;
 
   const handleClickCourse = (class_Name) => {
-    landingFormRef.current.scrollIntoView();
+    landingFormRef.current.scrollIntoView({ behavior: "smooth", block: "start"});
     setFieldValue("description", `Tôi muốn đăng ký khóa học ${class_Name}`);
   };
   const getCourseItemVariants = useCallback((even) => {

@@ -20,10 +20,10 @@ import Animate from "../../../components/extended/Animate";
 import LandingPage1 from "../../../assets/images/landing-page-1.png";
 import { landingSchema } from "../schema";
 import clsx from "clsx";
-import { makeStyles } from "@mui/styles";
 import { IconCurrencyDong } from "@tabler/icons";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,6 +38,13 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     boxShadow: "none",
     backgroundColor: "transparent",
+    "*.MuiTypography-root":{
+        padding: theme.spacing(1),
+        borderRadius: 14,
+        backgroundColor: theme.palette.background.default,
+        color: theme.palette.common.black,
+        boxShadow: 4
+    }
   },
   backgroundImage: {
     backgroundRepeat: "no-repeat",
@@ -88,9 +95,13 @@ const LandingComponent = () => {
   } = formik;
 
   const handleClickCourse = (class_Name) => {
-    landingFormRef.current.scrollIntoView({ behavior: "smooth", block: "start"});
+    landingFormRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
     setFieldValue("description", `Tôi muốn đăng ký khóa học ${class_Name}`);
   };
+
   const getCourseItemVariants = useCallback((even) => {
     return {
       offscreen: {
@@ -212,7 +223,7 @@ const LandingComponent = () => {
                                 variant="h2"
                                 component="div"
                                 align="center"
-                                color="#fff"
+                                
                               >
                                 Tên Lớp: {item.class_Name}
                               </Typography>
@@ -244,7 +255,7 @@ const LandingComponent = () => {
                                     marginTop: "auto",
                                     marginBottom: "auto",
                                     position: "relative",
-                                    top: theme.spacing(1),
+                                    top: theme.spacing(1) / 4,
                                   }}
                                 />
                               </Typography>
@@ -321,6 +332,17 @@ const LandingComponent = () => {
                                 color="#fff"
                               >
                                 Giá Tiền: {item.class_Fee}
+                                <IconCurrencyDong
+                                color="black"
+                                  strokeWidth={2}
+                                  size="1.5rem"
+                                  style={{
+                                    marginTop: "auto",
+                                    marginBottom: "auto",
+                                    position: "relative",
+                                    top: theme.spacing(1) / 4,
+                                  }}
+                                />
                               </Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>

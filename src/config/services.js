@@ -1,7 +1,7 @@
 import config from "./config";
 import { HTTP_RESPONSE_STATUS } from "./constant";
 import axios from "axios";
-import { sleep } from "../utils";
+// import { sleep } from "../utils";
 // import { getLocalStorageUserinfo } from "../utils";
 
 export const postService = async (
@@ -23,7 +23,7 @@ export const postService = async (
         "Bearer " + (localStorage.getItem("auth_token") || "");
       headers["Access-Control-Allow-Origin"] = "*";
     }
-    await sleep(2000)
+    // await sleep(2000)
     const response = await axios.post(
       `${config.HOST_API}${url}`,
       JSON.stringify(body),
@@ -89,7 +89,7 @@ export const getService = async (
         "Bearer " + (localStorage.getItem("auth_token") || "");
       headers["Access-Control-Allow-Origin"] = "*";
     }
-    await sleep(2000)
+    // await sleep(2000)
     const response = await axios.get(`${config.HOST_API}${url}`, {
       headers,
       timeout: 10000,

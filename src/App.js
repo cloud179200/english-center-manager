@@ -22,7 +22,7 @@ import MinimalLayout from "./layout/MinimalLayout";
 import MainLayout from "./layout/MainLayout";
 import { removeNotificationAction } from "./redux/utils/operators";
 import NotFoundComponent from "./utils/component/NotFound";
-// import _ from "lodash";
+import _ from "lodash";
 import ErrorBoundary from "./utils/component/ErrorBoundary";
 import PublicLayout from "./layout/PublicLayout";
 
@@ -31,11 +31,11 @@ function App() {
   const notifications = useSelector((state) => state.common.notifications);
   const userInfo = useSelector((state) => state.user.userInfo);
   const userDetail = useSelector((state) => state.user.userDetail);
-  const loadingCommon = useSelector((state) => state.common.loadingCommon);
+  // const loadingCommon = useSelector((state) => state.common.loadingCommon);
   const dispatch = useDispatch();
-  // const isValidPath = _.cloneDeep(AUTH_ROUTE)
-  //   .concat(_.cloneDeep(PRIVATE_ROUTE_ADMIN)).concat(_.cloneDeep(PUBLIC_ROUTE))
-  //   .some((route) => route.path === window.location.pathname);
+  const isValidPath = _.cloneDeep(AUTH_ROUTE)
+    .concat(_.cloneDeep(PRIVATE_ROUTE_ADMIN)).concat(_.cloneDeep(PUBLIC_ROUTE))
+    .some((route) => route.path === window.location.pathname);
 
   const PublicRoute = useCallback(({ routeInfo }) => {
     const { exact, path, component } = routeInfo;
@@ -59,7 +59,7 @@ function App() {
         </Route>
       );
     },
-    [userInfo, loadingCommon]
+    [userInfo]
   );
 
   const PrivateRoute = useCallback(
@@ -75,7 +75,7 @@ function App() {
         </Route>
       );
     },
-    [userInfo, loadingCommon]
+    [userInfo]
   );
 
   const publicRouter = PUBLIC_ROUTE.map((routeInfo) => (
@@ -97,9 +97,7 @@ function App() {
       {publicRouter}
       {privateRouter}
       {authenticationRouter}
-      <Route>
-        <MinimalLayout>{NotFoundComponent}</MinimalLayout>
-      </Route>
+      {!isValidPath && <Route render={() => <NotFoundComponent />} />}
     </>
   );
 
@@ -132,10 +130,10 @@ function App() {
             <Alert
               sx={{ width: "fit-content" }}
               variant="filled"
-              severity={notification.error ? "error" : "primary"}
+              severity={notification?.error ? "error" : "primary"}
               onClose={handleCloseNotification}
             >
-              {notification.message}
+              {notification?.message}
             </Alert>
           </Snackbar>
         );

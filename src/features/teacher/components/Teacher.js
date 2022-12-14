@@ -125,7 +125,7 @@ const TeacherComponent = () => {
         handleClose={handleCloseInfoTeacherModal}
       />
       <TeacherDeleteModal
-        studentObject={deleteTeacherObject}
+        teacherObject={deleteTeacherObject}
         open={Boolean(deleteTeacherObject)}
         handleClose={handleCloseDeleteTeacherModal}
         reloadTeacherData={reloadTeacherData}

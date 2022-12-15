@@ -24,7 +24,7 @@ import {
 // project imports
 import MainCard from "../../../../ui-component/cards/MainCard";
 import Transitions from "../../../../ui-component/extended/Transitions";
-import WangBinh from "../../../../assets/images/users/nguoiwangbinh.jpg";
+import WangBinh from "../../../../assets/images/users/gentleman.png";
 
 // assets
 import { IconLogout, IconSettings } from "@tabler/icons";

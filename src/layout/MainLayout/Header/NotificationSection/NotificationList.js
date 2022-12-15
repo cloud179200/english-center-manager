@@ -20,7 +20,7 @@ import {
 
 // assets
 import { IconBrandTelegram, IconBuildingStore, IconMailbox, IconPhoto } from '@tabler/icons';
-import WangBinh from '../../../../assets/images/users/nguoiwangbinh.jpg';
+import WangBinh from '../../../../assets/images/users/gentleman.png';
 
 // styles
 const ListItemWrapper = styled('div')(({ theme }) => ({

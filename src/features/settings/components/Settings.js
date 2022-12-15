@@ -26,7 +26,7 @@ import { changePasswordSchema } from "../schema";
 import { NAME_TRANS_VN } from "./../../../config/constant";
 import { getUserDetailAction } from "./../../../redux/user/operators";
 import { sleep } from "../../../utils";
-import WangBinh from "../../../assets/images/users/nguoiwangbinh.jpg";
+import WangBinh from "../../../assets/images/users/gentleman.png";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Settings = () => {

@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Chip, Fade, Grid, IconButton } from "@mui/material";
 import {
   IconInfoCircle,
-  IconBusinessplan,
   IconTrash,
   IconBackspace,
+  IconSelect,
 } from "@tabler/icons";
 import { useDispatch } from "react-redux";
 import CustomBox from "../../../components/custom-box/CustomBox";
@@ -169,7 +169,7 @@ const TeacherComponent = () => {
                   handleOpenSelectSalaryMenu(e, _.cloneDeep(item))
                 }
               >
-                <IconBusinessplan
+                <IconSelect
                   strokeWidth={2}
                   size="1.5rem"
                   style={{ marginTop: "auto", marginBottom: "auto" }}

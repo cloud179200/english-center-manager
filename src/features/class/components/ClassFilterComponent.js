@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import { initClassFilter } from "./Class";
 import { NAME_TRANS_VN } from "../../../config/constant";
-const ClassFilterComponent = ({ filter, setFilter, classList }) => {
+const ClassFilterComponent = ({ filter, setFilter, classes }) => {
   const [filterInput, setFilterInput] = useState(_.cloneDeep(initClassFilter));
 
   const handleApply = () => {
@@ -16,21 +16,21 @@ const ClassFilterComponent = ({ filter, setFilter, classList }) => {
 
   const optionsClassId = [
     ...new Set(
-      _.cloneDeep(classList)
+      _.cloneDeep(classes)
         .map((option) => option.class_Id)
     ),
   ];
 
   const optionsClassName = [
     ...new Set(
-      _.cloneDeep(classList)
+      _.cloneDeep(classes)
         .map((option) => option.class_Name)
     ),
   ];
 
   const optionsTeacher = [
     ...new Set(
-      _.cloneDeep(classList)
+      _.cloneDeep(classes)
         .map((option) => option.teacher_Name)
     ),
   ];

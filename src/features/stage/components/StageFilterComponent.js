@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import { initStageFilter } from "./Stage";
 import { NAME_TRANS_VN } from "../../../config/constant";
-const StageFilterComponent = ({ filter, setFilter, classList }) => {
+const StageFilterComponent = ({ filter, setFilter, stages }) => {
   const [filterInput, setFilterInput] = useState(_.cloneDeep(initStageFilter));
 
   const handleApply = () => {
@@ -15,11 +15,11 @@ const StageFilterComponent = ({ filter, setFilter, classList }) => {
   };
 
   const optionsStageId = [
-    ...new Set(_.cloneDeep(classList).map((option) => option.stage_Id)),
+    ...new Set(_.cloneDeep(stages).map((option) => option.stage_Id)),
   ];
 
   const optionsStageName = [
-    ...new Set(_.cloneDeep(classList).map((option) => option.stage_Name)),
+    ...new Set(_.cloneDeep(stages).map((option) => option.stage_Name)),
   ];
 
   useEffect(() => {

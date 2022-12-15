@@ -39,7 +39,7 @@ const TransactionComponent = () => {
   const [loading, setLoading] = useState(false);
   const [loadingConfirm, setLoadingConfirm] = useState([]);
   const [filter, setFilter] = useState(_.cloneDeep(initTransactionFilter));
-  const [transactionList, setTranactionList] = useState([]);
+  const [transactions, setTranactions] = useState([]);
   const [filterConfirmed, setFilterConfirmed] = useState(false);
   const headers = useMemo(() => {
     if (userDetail?.user_Type === 2) {
@@ -78,7 +78,7 @@ const TransactionComponent = () => {
             return;
           }
 
-          setTranactionList((prevList) => {
+          setTranactions((prevList) => {
             const indexTransactionTarget = prevList.findIndex((item) =>
               _.isEqual(item, itemTransaction)
             );
@@ -104,7 +104,7 @@ const TransactionComponent = () => {
             if (err) {
               return;
             }
-            setTranactionList(res);
+            setTranactions(res);
           }
         )
       );
@@ -116,7 +116,7 @@ const TransactionComponent = () => {
         if (err) {
           return;
         }
-        setTranactionList(res);
+        setTranactions(res);
       })
     );
   };
@@ -185,7 +185,7 @@ const TransactionComponent = () => {
 
   const transactionData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
-    const cloneTransactionList = _.cloneDeep(transactionList)
+    const cloneTransactionList = _.cloneDeep(transactions)
       .filter((item) =>
         filterConfirmed
           ? item?.paid_Ammount === item?.class_Fee
@@ -256,7 +256,7 @@ const TransactionComponent = () => {
           : true
       );
     return filterResult;
-  }, [filter, transactionList, loadingConfirm, filterConfirmed]);
+  }, [filter, transactions, loadingConfirm, filterConfirmed]);
 
   useEffect(() => {
     getTransactionData();
@@ -268,7 +268,7 @@ const TransactionComponent = () => {
         <TransactionFilterComponent
           filter={filter}
           setFilter={setFilter}
-          transactionList={transactionList}
+          transactionList={transactions}
         />
       </CustomBox>
       <CustomBox>

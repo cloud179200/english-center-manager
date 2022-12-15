@@ -20,7 +20,7 @@ const StudentComponent = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState(_.cloneDeep(initStudentFilter));
-  const [studentList, setStudentList] = useState([]);
+  const [students, setStudents] = useState([]);
   const [deleteStudentObject, setDeleteStudentObject] = useState(null);
   const [infoStudentObject, setInfoStudentObject] = useState(null);
 
@@ -44,7 +44,7 @@ const StudentComponent = () => {
         if (err) {
           return;
         }
-        setStudentList(
+        setStudents(
           res.map((item) => ({
             ...item,
             student_Id: item.student_Id,
@@ -89,7 +89,7 @@ const StudentComponent = () => {
 
   const studentData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
-    const cloneStudentList = _.cloneDeep(studentList).map((item) => ({
+    const cloneStudentList = _.cloneDeep(students).map((item) => ({
       student_Id: item.student_Id,
       student_Name: item.student_Name,
       created_Date: item.created_Date,
@@ -112,7 +112,7 @@ const StudentComponent = () => {
           : true
       );
     return filterResult;
-  }, [filter, studentList]);
+  }, [filter, students]);
 
   useEffect(() => {
     getStudentData();
@@ -135,7 +135,7 @@ const StudentComponent = () => {
         <StudentFilterComponent
           filter={filter}
           setFilter={setFilter}
-          studentList={studentList}
+          studentList={students}
         />
       </CustomBox>
       <CustomBox>

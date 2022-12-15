@@ -45,10 +45,10 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
-  const [stageList, setStageList] = useState([]);
+  const [stages, setStages] = useState([]);
   const [selectedStage, setSelectedStage] = useState(null);
   const [attendanceTableData, setAttendanceTableData] = useState({});
-  const [dateScheduleList, setDateScheduleList] = useState([]);
+  const [scheduleDates, setScheduleDates] = useState([]);
   const handleChangeTab = (event, newValue) => {
     if (loading) {
       return;
@@ -117,7 +117,7 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
   const PreviewStage = useCallback(
     ({ date }) => {
       const momentDate = moment(_.cloneDeep(date)).format("YYYY-MM-DD");
-      const dateScheduleObject = dateScheduleList.find(
+      const dateScheduleObject = scheduleDates.find(
         (item) => item.schedule_Date === momentDate
       );
       if (dateScheduleObject) {
@@ -136,7 +136,7 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
       }
       return null;
     },
-    [dateScheduleList]
+    [scheduleDates]
   );
 
   const getStageData = () => {
@@ -145,7 +145,7 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
       getStageByClassIdAction(classObject?.class_Id, (res, err) => {
         setLoading(false);
         if (err) return;
-        setStageList(res);
+        setStages(res);
       })
     );
   };
@@ -185,7 +185,7 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
           stage_Name: item.stage_Name,
           schedule_Date: moment(item.schedule_Date).format("YYYY-MM-DD"),
         }));
-        setDateScheduleList(_.cloneDeep(newData));
+        setScheduleDates(_.cloneDeep(newData));
       })
     );
   };
@@ -252,7 +252,7 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
               <>
                 <Grid container rowSpacing={2}>
                   {!selectedStage &&
-                    stageList.map((item, stageIndex) => (
+                    stages.map((item, stageIndex) => (
                       <Grid item xs={12} key={item.stage_Id + "-" + stageIndex}>
                         <Button
                           fullWidth

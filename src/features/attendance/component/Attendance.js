@@ -29,7 +29,7 @@ import { NAME_TRANS_VN } from "../../../config/constant";
 import { sortStudentFunc } from "../../../utils";
 import Animate from "../../../components/extended/Animate";
 const Attendance = (props) => {
-  const { classObject, dateScheduleList } = props;
+  const { classObject, scheduleDates } = props;
   const dispatch = useDispatch();
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
@@ -39,14 +39,13 @@ const Attendance = (props) => {
   const momentDateNow = moment().format("YYYY-MM-DD");
   const [selectedDate, setSelectedDate] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [attendanceStudentList, setAttendanceStudentsList] = useState([]);
-  const [defaultAttendanceStudentList, setDefaultAttendanceStudentList] =
-    useState([]);
+  const [attendanceStudents, setAttendanceStudents] = useState([]);
+  const [defaultAttendanceStudent, setDefaultAttendanceStudent] = useState([]);
 
   const SelectDateButton = useCallback(
     ({ date }) => {
       const momentDate = moment(_.cloneDeep(date)).format("YYYY-MM-DD");
-      const targetDateScheduleObject = _.cloneDeep(dateScheduleList).find(
+      const targetDateScheduleObject = _.cloneDeep(scheduleDates).find(
         (item) => item.schedule_Date === momentDate
       );
       if (targetDateScheduleObject?.stage_Id) {
@@ -73,7 +72,7 @@ const Attendance = (props) => {
       }
       return null;
     },
-    [dateScheduleList]
+    [scheduleDates]
   );
 
   const handleSetAttendanceList = (students) => {
@@ -107,15 +106,15 @@ const Attendance = (props) => {
           attendance_Status: item.attendance_Status,
         }));
 
-        setAttendanceStudentsList(_.cloneDeep(newAttendanceList));
-        setDefaultAttendanceStudentList(_.cloneDeep(newAttendanceList));
+        setAttendanceStudents(_.cloneDeep(newAttendanceList));
+        setDefaultAttendanceStudent(_.cloneDeep(newAttendanceList));
       })
     );
   };
 
   const handleChangeAttendanceStatus = useCallback(
     (student_Id, attendance_Status) => {
-      let newAttendanceList = _.cloneDeep(attendanceStudentList);
+      let newAttendanceList = _.cloneDeep(attendanceStudents);
       const isHaveAttendanceData = newAttendanceList.some(
         (item) => item.student_Id === student_Id
       );
@@ -134,15 +133,15 @@ const Attendance = (props) => {
           attendance_Status,
         });
       }
-      setAttendanceStudentsList(newAttendanceList);
+      setAttendanceStudents(newAttendanceList);
     },
-    [attendanceStudentList]
+    [attendanceStudents]
   );
 
   const Utility = useCallback(
     ({ item }) => {
       console.log("[Utility Attendance Item]", item);
-      const attendanceStatus = _.cloneDeep(attendanceStudentList).find(
+      const attendanceStatus = _.cloneDeep(attendanceStudents).find(
         (attendanceItem) => attendanceItem.student_Id === item.student_Id
       )?.attendance_Status;
       return (
@@ -188,7 +187,7 @@ const Attendance = (props) => {
         </Grid>
       );
     },
-    [loading, attendanceStudentList]
+    [loading, attendanceStudents]
   );
 
   const attendanceTableData = useMemo(() => {
@@ -203,7 +202,7 @@ const Attendance = (props) => {
         student_Name: item.student_Name,
         utility: <Utility item={item} />,
       }));
-  }, [classObject?.list_Student, loading, attendanceStudentList]);
+  }, [classObject?.list_Student, loading, attendanceStudents]);
 
   useEffect(() => {
     if (!selectedDate) {
@@ -233,12 +232,10 @@ const Attendance = (props) => {
               color="secondary"
               variant="contained"
               disabled={
-                _.isEqual(
-                  defaultAttendanceStudentList,
-                  attendanceStudentList
-                ) || loading
+                _.isEqual(defaultAttendanceStudent, attendanceStudents) ||
+                loading
               }
-              onClick={() => handleSetAttendanceList(attendanceStudentList)}
+              onClick={() => handleSetAttendanceList(attendanceStudents)}
             >
               {NAME_TRANS_VN.SAVE}
             </Button>

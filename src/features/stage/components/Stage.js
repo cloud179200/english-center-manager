@@ -26,7 +26,7 @@ const StageComponent = ({
   const dispatch = useDispatch();
   const [filter, setFilter] = useState(_.cloneDeep(initStageFilter));
   const [loading, setLoading] = useState(false);
-  const [stageList, setStageList] = useState([]);
+  const [stages, setStages] = useState([]);
   const [deleteStageObject, setDeleteStageObject] = useState(null);
   const [openAddStageModal, setOpenAddStageModal] = useState(false);
 
@@ -86,7 +86,7 @@ const StageComponent = ({
 
   const stageData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
-    const cloneStageList = _.cloneDeep(stageList).map((item) => ({
+    const cloneStageList = _.cloneDeep(stages).map((item) => ({
       stage_Id: item.stage_Id,
       stage_Name: item.stage_Name,
       utility: <Utility item={item} />,
@@ -108,7 +108,7 @@ const StageComponent = ({
           : true
       );
     return filterResult;
-  }, [stageList, filter]);
+  }, [stages, filter]);
 
   const getStageData = () => {
     setLoading(true);
@@ -116,7 +116,7 @@ const StageComponent = ({
       getStageByClassIdAction(classObject?.class_Id, (res, err) => {
         setLoading(false);
         if (err) return;
-        setStageList(res);
+        setStages(res);
         setStageListByFather && setStageListByFather(res);
       })
     );
@@ -153,7 +153,7 @@ const StageComponent = ({
         <StageFilterComponent
           filter={filter}
           setFilter={setFilter}
-          classList={stageList}
+          stages={stages}
         />
       </CustomBox>
       <CustomBox>

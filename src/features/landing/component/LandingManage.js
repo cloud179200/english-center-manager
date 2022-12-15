@@ -62,7 +62,6 @@ const LandingManageComponent = () => {
   const handleSetBase64String = async (e) => {
     setSubmitting(true);
     const value = await fileToBase64(e?.target?.files[0]);
-    debugger;
     setSubmitting(false);
     if (value) {
       setFieldValue("base64String", value || "");

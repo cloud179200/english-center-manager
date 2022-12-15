@@ -34,7 +34,7 @@ const ClassComponent = () => {
   const userDetail = useSelector((state) => state.user.userDetail);
 
   const [filter, setFilter] = useState(_.cloneDeep(initClassFilter));
-  const [classList, setClassList] = useState([]);
+  const [classes, setClasses] = useState([]);
   const [openAddClassModal, setOpenAddClassModal] = useState(false);
   const [editClassObject, setEditClassObject] = useState(null);
   const [scheduleClassObject, setScheduleClassObject] = useState(null);
@@ -81,7 +81,7 @@ const ClassComponent = () => {
         if (err) {
           return;
         }
-        setClassList(
+        setClasses(
           res
             .map((item) => ({
               class_Id: item.class_Id,
@@ -212,7 +212,7 @@ const ClassComponent = () => {
 
   const classData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
-    const cloneClassList = _.cloneDeep(classList).map((item) => ({
+    const cloneClassList = _.cloneDeep(classes).map((item) => ({
       class_Id: item.class_Id,
       class_Name: item.class_Name,
       total: item.total,
@@ -244,7 +244,7 @@ const ClassComponent = () => {
           : true
       );
     return filterResult;
-  }, [filter, classList]);
+  }, [filter, classes]);
 
   useEffect(() => {
     getClassData();
@@ -290,7 +290,7 @@ const ClassComponent = () => {
           <ClassFilterComponent
             filter={filter}
             setFilter={setFilter}
-            classList={classList}
+            classes={classes}
           />
         </CustomBox>
         <CustomBox>

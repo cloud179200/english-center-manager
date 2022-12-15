@@ -25,7 +25,7 @@ const ClassManageByTeacherModal = ({ open, handleClose, classObject }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
-  const [dateScheduleList, setDateScheduleList] = useState([]);
+  const [scheduleDates, setScheduleDates] = useState([]);
   
   const getScheduleData = () => {
     setLoading(true);
@@ -40,7 +40,7 @@ const ClassManageByTeacherModal = ({ open, handleClose, classObject }) => {
           stage_Name: item.stage_Name,
           schedule_Date: moment(item.schedule_Date).format("YYYY-MM-DD"),
         }));
-        setDateScheduleList(_.cloneDeep(newData));
+        setScheduleDates(_.cloneDeep(newData));
       })
     );
   };
@@ -77,7 +77,7 @@ const ClassManageByTeacherModal = ({ open, handleClose, classObject }) => {
             <CustomBox>
               <Attendance
                 classObject={classObject}
-                dateScheduleList={dateScheduleList}
+                scheduleDates={scheduleDates}
               />
             </CustomBox>
           )}

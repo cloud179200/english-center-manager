@@ -39,8 +39,8 @@ import Attendance from "../../attendance/component/Attendance";
 const ScheduleSetupButton = ({
   disabled,
   date,
-  stageList,
-  dateScheduleList,
+  stageList: stages,
+  scheduleDates,
   handleRemoveSchedule,
   handleSetSchedule,
 }) => {
@@ -48,7 +48,7 @@ const ScheduleSetupButton = ({
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
   const momentDate = moment(_.cloneDeep(date)).format("YYYY-MM-DD");
-  const dateScheduleObject = _.cloneDeep(dateScheduleList).find(
+  const dateScheduleObject = _.cloneDeep(scheduleDates).find(
     (item) => item.schedule_Date === momentDate
   );
   const [anchorEl, setAnchorEl] = useState(null);
@@ -83,7 +83,7 @@ const ScheduleSetupButton = ({
         <IconButton
           disabled={disabled}
           onClick={(e) => {
-            if (!stageList.length) {
+            if (!stages.length) {
               dispatch(
                 addNotificationAction("Lớp Không Tồn Tại Buổi Học", true)
               );
@@ -105,12 +105,12 @@ const ScheduleSetupButton = ({
         PaperProps={{
           style: {
             maxHeight: "70vh",
-            width: "fit-content",
+            maxWidth: "100vw",
           },
         }}
         onClose={() => setOpenMenu(false)}
       >
-        {_.cloneDeep(stageList).map((item, index) => (
+        {_.cloneDeep(stages).map((item, index) => (
           <MenuItem
             key={momentDate + item.stage_Id + item.stage_Name + index}
             onClick={() => handleSelectSchedule(item.stage_Id, item.stage_Name)}
@@ -129,9 +129,9 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
   const calendarView = useSelector((state) => state.customization.calendarView);
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
-  const [dateScheduleList, setDateScheduleList] = useState([]);
-  const [defaultDateScheduleList, setDefaultDateScheduleList] = useState([]);
-  const [stageList, setStageList] = useState([]);
+  const [scheduleDates, setScheduleDates] = useState([]);
+  const [defaultScheduleDates, setDefaultScheduleDates] = useState([]);
+  const [stages, setStages] = useState([]);
 
   const handleChangeTab = (event, newValue) => {
     if (loading) {
@@ -173,8 +173,8 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
           stage_Name: item.stage_Name,
           schedule_Date: moment(item.schedule_Date).format("YYYY-MM-DD"),
         }));
-        setDateScheduleList(_.cloneDeep(newData));
-        setDefaultDateScheduleList(_.cloneDeep(newData));
+        setScheduleDates(_.cloneDeep(newData));
+        setDefaultScheduleDates(_.cloneDeep(newData));
       })
     );
   };
@@ -185,7 +185,7 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
       getStageByClassIdAction(classObject?.class_Id, (res, err) => {
         setLoading(false);
         if (err) return;
-        setStageList(res);
+        setStages(res);
       })
     );
   };
@@ -196,15 +196,15 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
       stage_Id: stageId,
       stage_Name: stageName,
     };
-    const newDateSchedule = [..._.cloneDeep(dateScheduleList), scheduleObject];
-    setDateScheduleList(newDateSchedule);
+    const newDateSchedule = [..._.cloneDeep(scheduleDates), scheduleObject];
+    setScheduleDates(newDateSchedule);
   };
 
   const handleRemoveSchedule = (date) => {
-    const newDateSchedule = _.cloneDeep(dateScheduleList).filter(
+    const newDateSchedule = _.cloneDeep(scheduleDates).filter(
       (item) => item.schedule_Date !== date
     );
-    setDateScheduleList(newDateSchedule);
+    setScheduleDates(newDateSchedule);
   };
 
   useEffect(() => {
@@ -233,7 +233,7 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
           {tab === 0 && (
             <StageComponent
               classObject={classObject}
-              setStageListByFather={setStageList}
+              setStageListByFather={setStages}
             />
           )}
           {tab === 1 && (
@@ -250,10 +250,9 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
                     color="secondary"
                     variant="contained"
                     disabled={
-                      _.isEqual(defaultDateScheduleList, dateScheduleList) ||
-                      loading
+                      _.isEqual(defaultScheduleDates, scheduleDates) || loading
                     }
-                    onClick={() => handleSetClassSchedule(dateScheduleList)}
+                    onClick={() => handleSetClassSchedule(scheduleDates)}
                   >
                     {NAME_TRANS_VN.SAVE}
                   </Button>
@@ -266,8 +265,8 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
                       <ScheduleSetupButton
                         disabled={loading}
                         date={date}
-                        stageList={stageList}
-                        dateScheduleList={dateScheduleList}
+                        stages={stages}
+                        scheduleDates={scheduleDates}
                         handleSetSchedule={handleSetSchedule}
                         handleRemoveSchedule={handleRemoveSchedule}
                       />
@@ -281,7 +280,7 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
             <CustomBox>
               <Attendance
                 classObject={classObject}
-                dateScheduleList={dateScheduleList}
+                scheduleDates={scheduleDates}
               />
             </CustomBox>
           )}

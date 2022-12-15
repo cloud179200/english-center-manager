@@ -13,6 +13,7 @@ import {
   Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { usePrevious } from "react-use";
 import CustomRow from "./CustomRow";
 
 const CustomTable = ({
@@ -24,6 +25,8 @@ const CustomTable = ({
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
   const lengthData = data?.length || 0;
+  const prevLengthData = usePrevious(lengthData);
+
   const totalPage =
     Math.round(lengthData / rowsPerPage) < lengthData / rowsPerPage
       ? Math.round(lengthData / rowsPerPage) + 1
@@ -33,10 +36,9 @@ const CustomTable = ({
   };
 
   useEffect(() => {
-    if (!reloadPageWhenDataChange) {
-      return;
+    if (reloadPageWhenDataChange || prevLengthData > lengthData) {
+      setPage(1);
     }
-    setPage(1);
   }, [data]);
 
   return (

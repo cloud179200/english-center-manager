@@ -30,17 +30,17 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [teacherList, setTeacherList] = useState([]);
-  const [studentList, setStudentList] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [students, setStudents] = useState([]);
   const [studentChipValues, setStudentChipValues] = useState([]);
 
   const teacherOptions = useMemo(
-    () => _.cloneDeep(teacherList).sort(sortTeacherFunc),
-    [teacherList]
+    () => _.cloneDeep(teachers).sort(sortTeacherFunc),
+    [teachers]
   );
   const studentOptions = useMemo(
-    () => _.cloneDeep(studentList).sort(sortStudentFunc),
-    [studentList]
+    () => _.cloneDeep(students).sort(sortStudentFunc),
+    [students]
   );
 
   const formik = useFormik({
@@ -54,7 +54,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
     },
     validationSchema: addClassSchema,
     onSubmit: (values) => {
-      setLoading(true)
+      setLoading(true);
       dispatch(
         addClassAction(
           values.class_Name,
@@ -68,7 +68,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
   });
 
   const addClassCallback = (res, err) => {
-    setLoading(false)
+    setLoading(false);
     if (err) {
       return;
     }
@@ -93,7 +93,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
       getListStudentAction((res, err) => {
         setLoading(false);
         if (err) return;
-        setStudentList(
+        setStudents(
           _.cloneDeep(
             res.map((item) => ({
               student_Id: item.student_Id,
@@ -108,7 +108,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
       getListTeacherAction((res, err) => {
         setLoading(false);
         if (err) return;
-        setTeacherList(
+        setTeachers(
           _.cloneDeep(
             res.map((item) => ({
               teacher_Id: item.teacher_Id,
@@ -185,7 +185,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
                       {...props}
                     >{`${option.teacher_Name} - ${option.teacher_Id}`}</div>
                   )}
-                  value={teacherList.find(
+                  value={teachers.find(
                     (item) => item.teacher_Id === values.teacher_Id
                   )}
                   getOptionLabel={(option) =>
@@ -222,6 +222,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
             sx={{ ...theme.typography.customInput }}
           >
             <CustomChipsInput
+              hideClearAll={!open}
               onDeleteChip={(chipValue) => {
                 setStudentChipValues((prevChips) =>
                   prevChips.filter(

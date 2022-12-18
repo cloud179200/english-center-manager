@@ -39,9 +39,9 @@ const NotFoundComponent = () => {
             type="submit"
             variant="contained"
             color="secondary"
-            onClick={() => history.push("/")}
+            onClick={() => history.push("/signin")}
           >
-            Back Home
+            Trở Về Trang Chủ
           </Button>
         </AnimateButton>
       </Box>

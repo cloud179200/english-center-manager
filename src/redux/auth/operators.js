@@ -18,6 +18,7 @@ export const signUpAction = (
   address,
   phone_Number,
   user_Type,
+  gender,
   callback
 ) => {
   return async (dispatch) => {
@@ -31,6 +32,7 @@ export const signUpAction = (
         address,
         phone_Number,
         user_Type,
+        gender
       });
       if (res) {
         callback(res, null);

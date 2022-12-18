@@ -67,6 +67,7 @@ const SignUpComponent = ({ ...others }) => {
           values.address,
           values.phone_Number,
           values.user_Type,
+          values.gender,
           signUpCallback
         )
       );

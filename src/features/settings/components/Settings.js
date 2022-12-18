@@ -25,9 +25,9 @@ import { useFormik } from "formik";
 import { changePasswordSchema } from "../schema";
 import { NAME_TRANS_VN } from "./../../../config/constant";
 import { getUserDetailAction } from "./../../../redux/user/operators";
-import { sleep } from "../../../utils";
 import WangBinh from "../../../assets/images/users/gentleman.png";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { changePasswordAction } from "../../../redux/auth/operators";
 
 const Settings = () => {
   const theme = useTheme();
@@ -56,9 +56,13 @@ const Settings = () => {
     validationSchema: changePasswordSchema,
     onSubmit: async (values, formikHelpers) => {
       formikHelpers.setSubmitting(true);
-      console.log(values);
-      await sleep(2000);
-      formikHelpers.setSubmitting(false);
+      dispatch(changePasswordAction(values.password, values.new_password, (res, err) => {
+        formikHelpers.setSubmitting(false);
+        if(err){
+          return
+        }
+        formikHelpers.resetForm()
+      }))
     },
   });
 

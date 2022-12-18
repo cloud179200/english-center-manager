@@ -8,7 +8,7 @@ import {
   setLoadingCommonAction,
 } from "../utils/operators";
 import { SIGN_IN_ACTION, SIGN_OUT_ACTION } from "./action";
-import { signUpService, signInService, signOutService } from "./services";
+import { signUpService, signInService, signOutService, changePasswordService, forgotPasswordService } from "./services";
 
 export const signUpAction = (
   first_Name,
@@ -32,7 +32,7 @@ export const signUpAction = (
         address,
         phone_Number,
         user_Type,
-        gender
+        gender,
       });
       if (res) {
         callback(res, null);
@@ -115,9 +115,10 @@ export const signOutAction = (email = null, callback = null) => {
 
 export const forgotAction = (email, callback) => {
   return async (dispatch) => {
+    dispatch({ type: SIGN_OUT_ACTION });
     dispatch(setLoadingAction(true));
     try {
-      const res = await signInService({
+      const res = await forgotPasswordService({
         email,
       });
       if (res?.data) {
@@ -125,6 +126,35 @@ export const forgotAction = (email, callback) => {
         return;
       }
       callback(null, API_MESSAGE.SERVER_ERROR);
+    } catch (error) {
+      dispatch(
+        addNotificationAction(
+          error?.data?.messagee || API_MESSAGE.SERVER_ERROR,
+          true
+        )
+      );
+      callback(null, error?.data?.message || API_MESSAGE.SERVER_ERROR);
+    } finally {
+      dispatch(setLoadingAction(false));
+    }
+  };
+};
+
+export const changePasswordAction = (old_Password, new_Password, callback) => {
+  return async (dispatch) => {
+    dispatch(setLoadingAction(true));
+    try {
+      const res = await changePasswordService({
+        old_Password,
+        new_Password,
+      });
+      if (res) {
+        dispatch(
+          addNotificationAction(res?.messagee || API_MESSAGE.SUCCESS, false)
+        );
+        callback(API_MESSAGE.SUCCESS, null);
+        return;
+      }
     } catch (error) {
       dispatch(
         addNotificationAction(

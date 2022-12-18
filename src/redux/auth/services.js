@@ -16,9 +16,9 @@ export const signInService = async (body) => {
   }
 };
 
-export const forgotService = async (body) => {
+export const forgotPasswordService = async (body) => {
   try {
-    return await postService(`/api/users/login?email=${body.email}&password=${body.password}`, { }, "Sign in fail", false);
+    return await postService(`/api/users/forgot?email=${body.email}&password=${body.password}`, { }, "fail", false);
   } catch (error) {
     throw error;
   }
@@ -27,6 +27,14 @@ export const forgotService = async (body) => {
 export const signOutService = async (body) => {
   try {
     return await postService(`/api/users/logout?email=`+body.email, { }, "Sign out fail", false);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const changePasswordService = async (body) => {
+  try {
+    return await postService(`/api/users/change-password?old_Password=${body.old_Password}&new_Password=${body.new_Password}`, { }, "change password fail", false);
   } catch (error) {
     throw error;
   }

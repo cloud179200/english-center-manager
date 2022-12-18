@@ -8,7 +8,13 @@ import {
   setLoadingCommonAction,
 } from "../utils/operators";
 import { SIGN_IN_ACTION, SIGN_OUT_ACTION } from "./action";
-import { signUpService, signInService, signOutService, changePasswordService, forgotPasswordService } from "./services";
+import {
+  signUpService,
+  signInService,
+  signOutService,
+  changePasswordService,
+  forgotPasswordService,
+} from "./services";
 
 export const signUpAction = (
   first_Name,
@@ -140,11 +146,17 @@ export const forgotAction = (email, callback) => {
   };
 };
 
-export const changePasswordAction = (old_Password, new_Password, callback) => {
+export const changePasswordAction = (
+  email,
+  old_Password,
+  new_Password,
+  callback
+) => {
   return async (dispatch) => {
     dispatch(setLoadingAction(true));
     try {
       const res = await changePasswordService({
+        email,
         old_Password,
         new_Password,
       });

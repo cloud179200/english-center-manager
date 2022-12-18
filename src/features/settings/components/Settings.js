@@ -56,7 +56,7 @@ const Settings = () => {
     validationSchema: changePasswordSchema,
     onSubmit: async (values, formikHelpers) => {
       formikHelpers.setSubmitting(true);
-      dispatch(changePasswordAction(values.password, values.new_password, (res, err) => {
+      dispatch(changePasswordAction(userInfo?.email, values.password, values.new_password, (res, err) => {
         formikHelpers.setSubmitting(false);
         if(err){
           return

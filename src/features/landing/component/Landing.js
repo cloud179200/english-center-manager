@@ -23,7 +23,7 @@ import clsx from "clsx";
 import { IconCurrencyDong } from "@tabler/icons";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {

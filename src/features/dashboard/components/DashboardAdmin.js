@@ -11,7 +11,6 @@ import {
   Legend,
   ArcElement,
 } from "chart.js";
-// eslint-disable-next-line import/no-unresolved
 import { Line } from "react-chartjs-2";
 import faker from "faker";
 import { Grid, useTheme } from "@mui/material";

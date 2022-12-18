@@ -23,7 +23,6 @@ import {
 import moment from "moment";
 import _ from "lodash";
 import CustomBox from "../../../components/custom-box/CustomBox.js";
-// eslint-disable-next-line import/no-unresolved
 import { Pie } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, TooltipChartJS, Legend);

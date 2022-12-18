@@ -17,7 +17,6 @@ import { useDispatch } from "react-redux";
 import { removeStudentAction } from "../../../redux/student/operators";
 import StudentMale from "../../../assets/images/users/student_male.png";
 import StudentFemale from "../../../assets/images/users/student_female.png";
-import _ from "lodash";
 const StudentDeleteModal = ({
   open,
   handleClose,
@@ -41,8 +40,11 @@ const StudentDeleteModal = ({
     reloadStudentData();
   };
 
-  const imageSrc = useMemo(() => _.sample([StudentMale, StudentFemale]), [studentObject?.student_Id])
-   
+  const imageSrc = useMemo(
+    () => (studentObject?.gender ? StudentMale : StudentFemale),
+    [studentObject?.student_Id]
+  );
+
   return (
     <CustomModal
       open={open}
@@ -74,6 +76,21 @@ const StudentDeleteModal = ({
                 </Typography>
                 <Typography gutterBottom variant="h4" component="div">
                   Tên Học Viên: {studentObject?.student_Name}
+                </Typography>
+                <Typography gutterBottom variant="h4" component="div">
+                  Email: {studentObject?.email}
+                </Typography>
+                <Typography gutterBottom variant="h4" component="div">
+                  Số Điện Thoại: {studentObject?.phone_Number}
+                </Typography>
+                <Typography gutterBottom variant="h5" component="div">
+                  Giới Tính:{" "}
+                  {studentObject?.gender === 0
+                    ? NAME_TRANS_VN.MALE
+                    : NAME_TRANS_VN.FEMALE}
+                </Typography>
+                <Typography gutterBottom variant="h5" component="div">
+                  Địa Chỉ: {studentObject?.address}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Ngày Tạo: {studentObject?.created_Date}

@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import { removeTeacherAction } from "../../../redux/teacher/operators";
 import Professor from "../../../assets/images/users/professor.png";
 import Teacher from "../../../assets/images/users/teacher.png";
-import _ from "lodash";
+
 const TeacherDeleteModal = ({
   open,
   handleClose,
@@ -41,7 +41,7 @@ const TeacherDeleteModal = ({
     reloadTeacherData();
   };
   const imageSrc = useMemo(
-    () => _.sample([Professor, Teacher]),
+    () => (teacherObject?.gender ? Professor : Teacher),
     [teacherObject?.teacher_Id]
   );
 
@@ -76,6 +76,21 @@ const TeacherDeleteModal = ({
                 </Typography>
                 <Typography gutterBottom variant="h4" component="div">
                   Tên Giảng Viên: {teacherObject?.teacher_Name}
+                </Typography>
+                <Typography gutterBottom variant="h4" component="div">
+                  Email: {teacherObject?.email}
+                </Typography>
+                <Typography gutterBottom variant="h4" component="div">
+                  Số Điện Thoại: {teacherObject?.phone_Number}
+                </Typography>
+                <Typography gutterBottom variant="h5" component="div">
+                  Giới Tính:{" "}
+                  {teacherObject?.gender === 0
+                    ? NAME_TRANS_VN.MALE
+                    : NAME_TRANS_VN.FEMALE}
+                </Typography>
+                <Typography gutterBottom variant="h5" component="div">
+                  Địa Chỉ: {teacherObject?.address}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Ngày Tạo: {teacherObject?.created_Date}

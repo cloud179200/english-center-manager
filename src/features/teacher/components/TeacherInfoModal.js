@@ -17,7 +17,7 @@ const TeacherInfoModal = ({ open, handleClose, teacherObject }) => {
   const cloneTeacherObject = _.cloneDeep(teacherObject);
 
   const imageSrc = useMemo(
-    () => _.sample([Professor, Teacher]),
+    () =>  (teacherObject?.gender ? Professor : Teacher),
     [teacherObject?.teacher_Id]
   );
 
@@ -52,6 +52,21 @@ const TeacherInfoModal = ({ open, handleClose, teacherObject }) => {
                 </Typography>
                 <Typography gutterBottom variant="h4" component="div">
                   Tên Giảng Viên: {cloneTeacherObject?.teacher_Name}
+                </Typography>
+                <Typography gutterBottom variant="h4" component="div">
+                  Email: {cloneTeacherObject?.email}
+                </Typography>
+                <Typography gutterBottom variant="h4" component="div">
+                  Số Điện Thoại: {cloneTeacherObject?.phone_Number}
+                </Typography>
+                <Typography gutterBottom variant="h5" component="div">
+                  Giới Tính:{" "}
+                  {cloneTeacherObject?.gender === 0
+                    ? NAME_TRANS_VN.MALE
+                    : NAME_TRANS_VN.FEMALE}
+                </Typography>
+                <Typography gutterBottom variant="h5" component="div">
+                  Địa Chỉ: {cloneTeacherObject?.address}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Ngày Tạo: {cloneTeacherObject?.created_Date}

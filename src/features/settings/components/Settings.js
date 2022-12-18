@@ -142,7 +142,19 @@ const Settings = () => {
                         />
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="div">
-                            {`${userDetail?.first_Name} ${userDetail?.last_Name}`}
+                            Tên: {`${userDetail?.first_Name} ${userDetail?.last_Name}`}
+                          </Typography>
+                          <Typography gutterBottom variant="h5" component="div">
+                            Email: {`${userDetail?.email}`}
+                          </Typography>
+                          <Typography gutterBottom variant="h5" component="div">
+                            Số Điện Thoại: {`${userDetail?.phone_Number}`}
+                          </Typography>
+                          <Typography gutterBottom variant="h5" component="div">
+                            Giới Tính: {userDetail?.gender === 0 ? NAME_TRANS_VN.MALE : NAME_TRANS_VN.FEMALE}
+                          </Typography>
+                          <Typography gutterBottom variant="h5" component="div">
+                            Địa Chỉ: {userDetail?.address}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
                             Là một người ưang ping

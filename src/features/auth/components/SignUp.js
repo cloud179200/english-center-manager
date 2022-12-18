@@ -54,6 +54,7 @@ const SignUpComponent = ({ ...others }) => {
       address: "",
       phone_Number: "",
       user_Type: 2,
+      gender: 0,
     },
     validationSchema: signUpSchema,
     onSubmit: (values) => {
@@ -327,6 +328,26 @@ const SignUpComponent = ({ ...others }) => {
                 />
                 {touched.address && errors.address && (
                   <FormHelperText error>{errors.address}</FormHelperText>
+                )}
+              </FormControl>
+              <FormControl
+                fullWidth
+                variant="outlined"
+                error={Boolean(touched.gender && errors.gender)}
+                sx={{ ...theme.typography.customInput }}
+              >
+                <Select
+                  name="gender"
+                  select={true}
+                  value={values.gender}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                >
+                  <MenuItem value={0}>{NAME_TRANS_VN.MALE}</MenuItem>
+                  <MenuItem value={1}>{NAME_TRANS_VN.FEMALE}</MenuItem>
+                </Select>
+                {touched.gender && errors.gender && (
+                  <FormHelperText error>{errors.gender}</FormHelperText>
                 )}
               </FormControl>
               <FormControl

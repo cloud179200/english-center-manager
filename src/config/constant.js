@@ -81,5 +81,8 @@ export const NAME_TRANS_VN = {
   SAVE: "Lưu",
   ADD: "Thêm",
   NAME: "Tên",
-  LANDING_PAGE: "Trang Quảng Cảo"
-}
+  LANDING_PAGE: "Trang Quảng Cảo",
+  MALE: "Nam",
+  FEMALE: "Nữ",
+  GENDER: "Giới Tính",
+};

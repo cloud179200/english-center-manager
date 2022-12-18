@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { NAME_TRANS_VN } from "../../../config/constant";
-import Animate from "../../../components/extended/Animate";
+import AnimateButton from "../../../components/extended/Animate";
 import { useDispatch } from "react-redux";
 import { removeStudentAction } from "../../../redux/student/operators";
 import StudentMale from "../../../assets/images/users/student_male.png";
@@ -84,7 +84,7 @@ const StudentDeleteModal = ({
         </Grid>
         <Grid item xs={12}>
           <Box sx={{ mt: 2 }}>
-            <Animate>
+            <AnimateButton>
               <Button
                 disableElevation
                 fullWidth
@@ -99,7 +99,7 @@ const StudentDeleteModal = ({
               >
                 {NAME_TRANS_VN.STUDENT_DELETE}
               </Button>
-            </Animate>
+            </AnimateButton>
           </Box>
         </Grid>
       </Grid>

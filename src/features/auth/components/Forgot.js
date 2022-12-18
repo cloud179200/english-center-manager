@@ -20,7 +20,7 @@ import { addNotificationAction } from "../../../redux/utils/operators";
 import { forgotAction } from "../../../redux/auth/operators";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import { NAME_TRANS_VN } from "../../../config/constant";
-import Animate from "../../../components/extended/Animate";
+import AnimateButton from "../../../components/extended/Animate";
 
 const ForgotComponent = ({ ...others }) => {
   const theme = useTheme();
@@ -128,7 +128,7 @@ const ForgotComponent = ({ ...others }) => {
               </Typography>
             </Stack>
             <Box sx={{ mt: 2 }}>
-              <Animate>
+              <AnimateButton>
                 <Button
                   disableElevation
                   disabled={!isValid || loading}
@@ -143,7 +143,7 @@ const ForgotComponent = ({ ...others }) => {
                 >
                   {NAME_TRANS_VN.SEND_EMAIL}
                 </Button>
-              </Animate>
+              </AnimateButton>
             </Box>
           </form>
         </Grid>

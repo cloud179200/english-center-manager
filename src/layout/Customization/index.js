@@ -28,7 +28,7 @@ import {
   SET_FONT_FAMILY,
 } from "../../redux/customization/actions";
 import { gridSpacing } from "../../redux/customization/constant";
-import Animate from "../../components/extended/Animate";
+import AnimateButton from "../../components/extended/Animate";
 
 // concat 'px'
 function valueText(value) {
@@ -119,11 +119,11 @@ const Customization = () => {
             zIndex: theme.zIndex.speedDial,
           }}
         >
-          <Animate type="rotate">
+          <AnimateButton type="rotate">
             <IconButton color="inherit" size="large" disableRipple>
               <IconSettings />
             </IconButton>
-          </Animate>
+          </AnimateButton>
         </Fab>
       </Tooltip>
 

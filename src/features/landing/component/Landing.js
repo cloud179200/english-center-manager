@@ -16,7 +16,7 @@ import { sleep } from "../../../utils";
 // import { drawerWidth } from "../../redux/customization/constant";
 import { useFormik } from "formik";
 import { NAME_TRANS_VN } from "../../../config/constant";
-import Animate from "../../../components/extended/Animate";
+import AnimateButton from "../../../components/extended/Animate";
 import LandingPage1 from "../../../assets/images/landing-page-1.png";
 import { landingSchema } from "../schema";
 import clsx from "clsx";
@@ -261,7 +261,7 @@ const LandingComponent = () => {
                               </Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                              <Animate>
+                              <AnimateButton>
                                 <Button
                                   fullWidth
                                   variant="contained"
@@ -271,7 +271,7 @@ const LandingComponent = () => {
                                 >
                                   Đăng Ký {item.class_Name}
                                 </Button>
-                              </Animate>
+                              </AnimateButton>
                             </Grid>
                           </Grid>
                         </CustomBox>
@@ -346,7 +346,7 @@ const LandingComponent = () => {
                               </Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                              <Animate>
+                              <AnimateButton>
                                 <Button
                                   fullWidth
                                   variant="contained"
@@ -356,7 +356,7 @@ const LandingComponent = () => {
                                 >
                                   Đăng Ký {item.class_Name}
                                 </Button>
-                              </Animate>
+                              </AnimateButton>
                             </Grid>
                           </Grid>
                         </CustomBox>
@@ -530,7 +530,7 @@ const LandingComponent = () => {
                           </FormControl>
                         </Grid>
                         <Grid item xs={6}>
-                          <Animate>
+                          <AnimateButton>
                             <Button
                               disableElevation
                               disabled={isSubmitting || !isValid}
@@ -550,7 +550,7 @@ const LandingComponent = () => {
                             >
                               {NAME_TRANS_VN.SEND}
                             </Button>
-                          </Animate>
+                          </AnimateButton>
                         </Grid>
                       </Grid>
                     </CustomBox>

@@ -24,7 +24,7 @@ import {
 
 // assets
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import Animate from "../../../../../components/extended/Animate";
+import AnimateButton from "../../../../../components/extended/Animate";
 
 // ==============================|| SIDEBAR MENU LIST ITEMS ||============================== //
 
@@ -102,7 +102,7 @@ const NavItem = ({ item, level }) => {
       <ListItemIcon sx={{ my: "auto", minWidth: !item?.icon ? 18 : 36 }}>
         {itemIcon}
       </ListItemIcon>
-      <Animate type="slide">
+      <AnimateButton type="slide">
         <ListItemText
           primary={
             <Typography
@@ -129,7 +129,7 @@ const NavItem = ({ item, level }) => {
             )
           }
         />
-      </Animate>
+      </AnimateButton>
 
       {item.chip && (
         <Chip

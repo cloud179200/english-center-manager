@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Grid, Box, Button, CircularProgress } from "@mui/material";
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { NAME_TRANS_VN } from "../../../config/constant";
-import Animate from "../../../components/extended/Animate";
+import AnimateButton from "../../../components/extended/Animate";
 import { useDispatch } from "react-redux";
 import { removeStageAction } from "../../../redux/class/operators";
 
@@ -37,7 +37,7 @@ const StageDeleteModal = ({ open, handleClose, reloadStageData, stageObject }) =
         </Grid>
         <Grid item xs={12}>
           <Box sx={{ mt: 2 }}>
-            <Animate>
+            <AnimateButton>
               <Button
                 disableElevation
                 fullWidth
@@ -52,7 +52,7 @@ const StageDeleteModal = ({ open, handleClose, reloadStageData, stageObject }) =
               >
                 {NAME_TRANS_VN.STAGE_DELETE}
               </Button>
-            </Animate>
+            </AnimateButton>
           </Box>
         </Grid>
       </Grid>

@@ -27,7 +27,7 @@ import LoadingComponent from "../../../utils/component/Loading";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import { sortStudentFunc } from "../../../utils";
-import Animate from "../../../components/extended/Animate";
+import AnimateButton from "../../../components/extended/Animate";
 const Attendance = (props) => {
   const { classObject, scheduleDates } = props;
   const dispatch = useDispatch();
@@ -216,7 +216,7 @@ const Attendance = (props) => {
       {selectedDate ? (
         <Grid container justifyContent="flex-end" rowSpacing={2}>
           <Grid item xs={12} md={6}>
-            <Animate>
+            <AnimateButton>
               <IconButton
                 color="secondary"
                 sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
@@ -224,7 +224,7 @@ const Attendance = (props) => {
               >
                 <IconChevronLeft strokeWidth={2} size="2rem" />
               </IconButton>
-            </Animate>
+            </AnimateButton>
           </Grid>
           <Grid item xs={12} md={6}>
             <Button

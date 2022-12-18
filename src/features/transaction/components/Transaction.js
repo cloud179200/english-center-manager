@@ -24,7 +24,7 @@ import {
   getStudentTransactionsAction,
   confirmStudentTransactionAction,
 } from "../../../redux/student/operators";
-import Animate from "../../../components/extended/Animate";
+import AnimateButton from "../../../components/extended/Animate";
 export const initTransactionFilter = {
   class_Name: "",
   student_Name: "",
@@ -163,7 +163,7 @@ const TransactionComponent = () => {
       return (
         <Grid container flexWrap="nowrap" columnGap={2}>
           <Grid item xs={12}>
-            <Animate>
+            <AnimateButton>
               <Button
                 disabled={isDisabled}
                 variant="contained"
@@ -175,7 +175,7 @@ const TransactionComponent = () => {
               >
                 Xác Nhận
               </Button>
-            </Animate>
+            </AnimateButton>
           </Grid>
         </Grid>
       );

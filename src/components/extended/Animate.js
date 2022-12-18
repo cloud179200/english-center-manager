@@ -2,7 +2,7 @@ import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 import { motion, useCycle } from "framer-motion";
 
-const Animate = forwardRef(
+const AnimateButton = forwardRef(
   ({ children, type, direction, offset, scale }, ref) => {
     let offset1;
     let offset2;
@@ -83,8 +83,8 @@ const Animate = forwardRef(
     }
   }
 );
-Animate.displayName = "AnimateButton";
-Animate.propTypes = {
+AnimateButton.displayName = "AnimateButton";
+AnimateButton.propTypes = {
   children: PropTypes.node,
   offset: PropTypes.number,
   type: PropTypes.oneOf(["slide", "scale", "rotate"]),
@@ -92,7 +92,7 @@ Animate.propTypes = {
   scale: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
 };
 
-Animate.defaultProps = {
+AnimateButton.defaultProps = {
   type: "scale",
   offset: 10,
   direction: "right",
@@ -102,4 +102,4 @@ Animate.defaultProps = {
   },
 };
 
-export default Animate;
+export default AnimateButton;

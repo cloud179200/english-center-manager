@@ -3,7 +3,7 @@ import { Box, Button } from "@mui/material";
 import NotFoundPNG from "../../assets/images/404.png";
 import SearchSVG from "../../assets/images/search.svg";
 import { useHistory } from "react-router-dom";
-import Animate from "../../components/extended/Animate";
+import AnimateButton from "../../components/extended/Animate";
 import MinimalLayout from "../../layout/MinimalLayout";
 
 const NotFoundComponent = () => {
@@ -31,7 +31,7 @@ const NotFoundComponent = () => {
           <img src={SearchSVG} width="10%" />
           <img src={NotFoundPNG} width="30%" />
         </Box>
-        <Animate>
+        <AnimateButton>
           <Button
             disableElevation
             fullWidth
@@ -43,7 +43,7 @@ const NotFoundComponent = () => {
           >
             Back Home
           </Button>
-        </Animate>
+        </AnimateButton>
       </Box>
     </MinimalLayout>
   );

@@ -22,7 +22,7 @@ import {
 import { useFormik } from "formik";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import { landingManageSchema } from "../schema";
-import Animate from "../../../components/extended/Animate";
+import AnimateButton from "../../../components/extended/Animate";
 import { uniqueKey, fileToBase64 } from "./../../../utils/index";
 import _ from "lodash";
 import { IconTrash } from "@tabler/icons";
@@ -282,7 +282,7 @@ const LandingManageComponent = () => {
                     </FormControl>
                   </Grid>
                   <Grid item xs={6}>
-                    <Animate>
+                    <AnimateButton>
                       <Button
                         disableElevation
                         disabled={isSubmitting || !isValid}
@@ -299,7 +299,7 @@ const LandingManageComponent = () => {
                       >
                         {NAME_TRANS_VN.ADD}
                       </Button>
-                    </Animate>
+                    </AnimateButton>
                   </Grid>
                 </Grid>
               </Grid>

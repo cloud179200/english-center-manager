@@ -35,7 +35,7 @@ import CustomTable from "../../../components/custom-table/CustomTable";
 import attendanceStudentsMockData from "../../../config/data/attendance-student-mock-data.json";
 import moment from "moment";
 import LoadingComponent from "../../../utils/component/Loading";
-import Animate from "../../../components/extended/Animate";
+import AnimateButton from "../../../components/extended/Animate";
 import { Calendar } from "react-calendar";
 
 const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
@@ -271,7 +271,7 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
                   {selectedStage && (
                     <>
                       <Grid item xs={12}>
-                        <Animate type="slide">
+                        <AnimateButton type="slide">
                           <IconButton
                             color="secondary"
                             sx={{
@@ -281,7 +281,7 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
                           >
                             <IconChevronLeft strokeWidth={2} size="2rem" />
                           </IconButton>
-                        </Animate>
+                        </AnimateButton>
                       </Grid>
                       <Grid item xs={12}>
                         {loading ? (

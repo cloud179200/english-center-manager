@@ -331,51 +331,55 @@ const SignUpComponent = ({ ...others }) => {
                   <FormHelperText error>{errors.address}</FormHelperText>
                 )}
               </FormControl>
-              <FormControl
-                fullWidth
-                variant="outlined"
-                error={Boolean(touched.gender && errors.gender)}
-                sx={{ ...theme.typography.customInput }}
-              >
-                <Select
-                  name="gender"
-                  select={true}
-                  value={values.gender}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                >
-                  <MenuItem value={0}>{NAME_TRANS_VN.MALE}</MenuItem>
-                  <MenuItem value={1}>{NAME_TRANS_VN.FEMALE}</MenuItem>
-                </Select>
-                {touched.gender && errors.gender && (
-                  <FormHelperText error>{errors.gender}</FormHelperText>
-                )}
-              </FormControl>
-              <FormControl
-                fullWidth
-                variant="outlined"
-                error={Boolean(touched.user_Type && errors.user_Type)}
-                sx={{ ...theme.typography.customInput }}
-              >
-                <Select
-                  name="user_Type"
-                  select={true}
-                  value={values.user_Type}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                >
-                  <MenuItem value={2}>{NAME_TRANS_VN.STUDENT}</MenuItem>
-                  <MenuItem value={3}>{NAME_TRANS_VN.TEACHER}</MenuItem>
-                </Select>
-                {touched.user_Type && errors.user_Type && (
-                  <FormHelperText error>{errors.user_Type}</FormHelperText>
-                )}
-              </FormControl>
-              <Grid
-                container
-                alignItems="center"
-                justifyContent="flex-end"
-              >
+              <Grid container spacing={matchDownSM ? 0 : 2}>
+                <Grid item xs={12} sm={6}>
+                  <FormControl
+                    fullWidth
+                    variant="outlined"
+                    error={Boolean(touched.gender && errors.gender)}
+                    sx={{ ...theme.typography.customInput }}
+                  >
+                    <Select
+                      name="gender"
+                      value={values.gender}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    >
+                      <MenuItem value={0}>
+                        {NAME_TRANS_VN.MALE}{" "}
+                      </MenuItem>
+                      <MenuItem value={1}>
+                        {NAME_TRANS_VN.FEMALE}{" "}
+                      </MenuItem>
+                    </Select>
+                    {touched.gender && errors.gender && (
+                      <FormHelperText error>{errors.gender}</FormHelperText>
+                    )}
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl
+                    fullWidth
+                    variant="outlined"
+                    error={Boolean(touched.user_Type && errors.user_Type)}
+                    sx={{ ...theme.typography.customInput }}
+                  >
+                    <Select
+                      name="user_Type"
+                      value={values.user_Type}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    >
+                      <MenuItem value={2}>{NAME_TRANS_VN.STUDENT}</MenuItem>
+                      <MenuItem value={3}>{NAME_TRANS_VN.TEACHER}</MenuItem>
+                    </Select>
+                    {touched.user_Type && errors.user_Type && (
+                      <FormHelperText error>{errors.user_Type}</FormHelperText>
+                    )}
+                  </FormControl>
+                </Grid>
+              </Grid>
+              <Grid container alignItems="center" justifyContent="flex-end">
                 <Grid item>
                   <Typography
                     variant="subtitle1"
@@ -399,7 +403,9 @@ const SignUpComponent = ({ ...others }) => {
                     variant="contained"
                     color="secondary"
                     endIcon={
-                      loading ? <CircularProgress color="secondary" size={20} /> : null
+                      loading ? (
+                        <CircularProgress color="secondary" size={20} />
+                      ) : null
                     }
                   >
                     {NAME_TRANS_VN.SIGN_UP}

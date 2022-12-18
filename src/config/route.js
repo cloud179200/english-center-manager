@@ -12,7 +12,7 @@ import Settings from "../features/settings/components/Settings";
 import StudentComponent from "../features/student/components/Student";
 import TeacherComponent from "../features/teacher/components/Teacher";
 import TransactionComponent from "../features/transaction/components/Transaction";
-
+import { STATUS_VERIFY_EMAIL } from "./constant";
 export const PRIVATE_ROUTE_ADMIN = [
   {
     path: "/dashboard",
@@ -84,7 +84,17 @@ export const AUTH_ROUTE = [
   {
     path: "/verify-email",
     exact: true,
-    component: <VerifyEmailComponent />,
+    component: <VerifyEmailComponent status={STATUS_VERIFY_EMAIL.SENT} />,
+  },
+  {
+    path: "/verify-email-success",
+    exact: true,
+    component: <VerifyEmailComponent status={STATUS_VERIFY_EMAIL.SUCCESS} />,
+  },
+  {
+    path: "/verify-email-fail",
+    exact: true,
+    component: <VerifyEmailComponent status={STATUS_VERIFY_EMAIL.FAILED} />,
   },
   {
     path: "/forgot",

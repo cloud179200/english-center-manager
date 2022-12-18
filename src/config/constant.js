@@ -46,6 +46,8 @@ export const NAME_TRANS_VN = {
   DONT_HAVE_ACCOUNT: "Không Có Tài Khoản",
   FORGOT_PASSWORD: "Quên Mật Khẩu",
   CHECK_EMAIL_FOR_VERIFY: "Kiểm Tra Email Để Xác Minh Tài Khoản",
+  VERIFY_EMAIL_SUCCESS: "Xác Minh Thành Công",
+  VERIFY_EMAIL_FAILED: "Xác Minh Thất Bại",
   SIGN_IN_TITLE: "Đăng Nhập Với Emal",
   SIGN_UP_TITLE: "Đăng Ký Với Email",
   TEACHER: "Giảng Viên",
@@ -85,4 +87,10 @@ export const NAME_TRANS_VN = {
   MALE: "Nam",
   FEMALE: "Nữ",
   GENDER: "Giới Tính",
+};
+
+export const STATUS_VERIFY_EMAIL = {
+  SENT: "SENT",
+  SUCCESS: "SUCCESS",
+  FAILED: "FAILED",
 };

@@ -27,7 +27,7 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    background: `linear-gradient(180deg, #00DBDE 0%, #FC00FF 100%)`,
+    background: `background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);`,
   },
   flexCenter: {
     display: "flex",

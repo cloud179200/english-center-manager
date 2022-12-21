@@ -33,7 +33,7 @@ export const signOutService = async (body) => {
 };
 
 export const changePasswordService = async (body) => {
-  try {
+  try { 
     return await postService(`/api/users/change-password?email=${body.email}&old_Password=${body.old_Password}&new_Password=${body.new_Password}`, { }, "change password fail", false);
   } catch (error) {
     throw error;

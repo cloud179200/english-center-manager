@@ -14,41 +14,52 @@ import {
 } from "@mui/material";
 import CustomTable from "../../../components/custom-table/CustomTable.js";
 import attendanceStudentsMockData from "../../../config/data/attendance-student-mock-data.json";
-import {
-  Chart as ChartJS,
-  Tooltip as TooltipChartJS,
-  Legend,
-  ArcElement,
-} from "chart.js";
+import { Pie } from "@ant-design/plots";
 import moment from "moment";
 import _ from "lodash";
 import CustomBox from "../../../components/custom-box/CustomBox.js";
-import { Pie } from "react-chartjs-2";
-
-ChartJS.register(ArcElement, TooltipChartJS, Legend);
 
 const DashBoardStudent = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
   const [attendanceData, setAttendanceData] = useState([]);
-  const dataPie = {
-    labels: ["Có Mặt", "Muộn", "Vắng"],
-    datasets: [
+
+  const data = [
+    {
+      type: "Có Mặt",
+      value: 12,
+    },
+    {
+      type: "Muộn",
+      value: 4,
+    },
+    {
+      type: "Vắng",
+      value: 3,
+    },
+  ];
+  const config = {
+    appendPadding: 10,
+    data,
+    angleField: "value",
+    colorField: "type",
+    radius: 0.8,
+    label: {
+      type: "outer",
+      content: "{name} {percentage}",
+    },
+    interactions: [
       {
-        label: "Dữ Liệu Điểm Danh",
-        data: [2, 4, 4],
-        backgroundColor: [
-          theme.palette.secondary.main,
-          theme.palette.warning.main,
-          theme.palette.error.main,
-        ],
-        borderColor: [
-          theme.palette.secondary.light,
-          theme.palette.warning.light,
-          theme.palette.error.light,
-        ],
-        borderWidth: 3,
+        type: "pie-legend-active",
       },
+      {
+        type: "element-active",
+      },
+    ],
+    color: [
+      theme.palette.primary.main,
+      theme.palette.warning.main,
+      theme.palette.error.main,
     ],
   };
 
@@ -128,7 +139,7 @@ const DashBoardStudent = () => {
     <>
       <Grid container columnSpacing={4} rowSpacing={4}>
         <Grid item xs={12} md={6} sx={{ height: "50%" }}>
-          <Pie data={dataPie} />
+          <Pie {...config} />
         </Grid>
         <Grid item xs={12} md={6}>
           <CustomBox>

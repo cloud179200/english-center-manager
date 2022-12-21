@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import React from "react";
 // project imports
 // import Customization from "../Customization/index";
@@ -6,7 +7,13 @@ import React from "react";
 
 const MinimalLayout = (props) => (
   <>
-    {props.children}
+    <Box
+      sx={{
+        background: `background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);`,
+      }}
+    >
+      {props.children}
+    </Box>
   </>
 );
 

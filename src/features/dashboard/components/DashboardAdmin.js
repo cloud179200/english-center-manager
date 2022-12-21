@@ -1,30 +1,10 @@
-import React, { useMemo } from 'react';
-import CustomBox from '../../../components/custom-box/CustomBox';
-import {
-  Chart,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
+import React, { useMemo } from "react";
+import CustomBox from "../../../components/custom-box/CustomBox";
 import faker from "faker";
 import { Grid, useTheme } from "@mui/material";
-Chart.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
+import _ from "lodash";
+// eslint-disable-next-line import/named
+import { Line } from "@ant-design/plots";
 const DashboardAdmin = () => {
   const theme = useTheme();
   const labels = useMemo(
@@ -45,71 +25,32 @@ const DashboardAdmin = () => {
     []
   );
 
-  const options = useMemo(() => ({
-    responsive: true,
-    interaction: {
-      mode: "index",
-      intersect: false,
-    },
-    stacked: false,
-    plugins: {
-      title: {
-        display: true,
-        text: "",
-      },
-    },
-    scales: {
-      y: {
-        type: "linear",
-        display: true,
-        position: "left",
-      },
-      y1: {
-        type: "linear",
-        display: true,
-        position: "right",
-        grid: {
-          drawOnChartArea: false,
-        },
-      },
-    },
+  const data = labels.map((item) => ({
+    date: item,
+    value: faker.datatype.number({ min: 0, max: 100000000 }),
+    category: _.sample(["Doanh Thu", "Chi Tiêu"]),
   }));
 
-  const data = useMemo(
-    () => ({
-      labels,
-      datasets: [
-        {
-          label: "Doanh Thu",
-          data: labels.map(() =>
-            faker.datatype.number({ min: 0, max: 100000000 })
-          ),
-          borderColor: theme.palette.secondary.light,
-          backgroundColor: theme.palette.secondary.main,
-          yAxisID: "y",
-        },
-        {
-          label: "Chi Tiêu",
-          data: labels.map(() =>
-            faker.datatype.number({ min: 0, max: 100000000 })
-          ),
-          borderColor: theme.palette.primary.light,
-          backgroundColor: theme.palette.primary.main,
-          yAxisID: "y1",
-        },
-      ],
-    }),
-    []
-  );
+  const config = {
+    data,
+    xField: "date",
+    yField: "value",
+    seriesField: "category",
+    point: {
+      size: 5,
+      shape: "diamond",
+    },
+    color: [theme.palette.primary.main, theme.palette.secondary.main],
+  };
   return (
     <Grid container columnSpacing={4} rowSpacing={4}>
       <Grid item xs={12}>
         <CustomBox>
-          <Line options={options} data={data} />
+          <Line {...config} />
         </CustomBox>
       </Grid>
     </Grid>
   );
 };
 
-export default DashboardAdmin
+export default DashboardAdmin;

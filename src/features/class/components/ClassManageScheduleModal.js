@@ -39,7 +39,7 @@ import Attendance from "../../attendance/component/Attendance";
 const ScheduleSetupButton = ({
   disabled,
   date,
-  stageList: stages,
+  stages,
   scheduleDates,
   handleRemoveSchedule,
   handleSetSchedule,

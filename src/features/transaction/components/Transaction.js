@@ -5,6 +5,8 @@ import {
   Grid,
   IconButton,
   Switch,
+  Tab,
+  Tabs,
   Tooltip,
   useTheme,
 } from "@mui/material";
@@ -12,6 +14,7 @@ import {
   IconClockHour3,
   IconCurrencyDong,
   IconDiscountCheck,
+  IconSchool,
 } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
 import CustomBox from "../../../components/custom-box/CustomBox";
@@ -25,6 +28,7 @@ import {
   confirmStudentTransactionAction,
 } from "../../../redux/student/operators";
 import AnimateButton from "../../../components/extended/Animate";
+import { NAME_TRANS_VN } from "../../../config/constant";
 export const initTransactionFilter = {
   class_Name: "",
   student_Name: "",
@@ -41,6 +45,8 @@ const TransactionComponent = () => {
   const [filter, setFilter] = useState(_.cloneDeep(initTransactionFilter));
   const [transactions, setTranactions] = useState([]);
   const [filterConfirmed, setFilterConfirmed] = useState(false);
+  const [tab, setTab] = useState(0);
+
   const headers = useMemo(() => {
     if (userDetail?.user_Type === 2) {
       return [
@@ -60,6 +66,13 @@ const TransactionComponent = () => {
       "#",
     ];
   }, [userDetail?.user_Type]);
+
+  const handleChangeTab = (event, newValue) => {
+    if (loading) {
+      return;
+    }
+    setTab(newValue);
+  };
 
   const handleConfirmTransaction = (itemTransaction) => {
     setLoadingConfirm([...loadingConfirm, _.cloneDeep(itemTransaction)]);
@@ -273,64 +286,140 @@ const TransactionComponent = () => {
       </CustomBox>
       <CustomBox>
         <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
+          <Grid item xs={12} sx={{ padding: theme.spacing(1) }}>
+            <Tabs value={tab} onChange={handleChangeTab}>
+              <Tab
+                icon={<IconSchool strokeWidth={2} size="1.5rem" />}
+                iconPosition="start"
+                label={NAME_TRANS_VN.STUDENT}
+              />
+              <Tab
+                icon={<IconSchool strokeWidth={2} size="1.5rem" />}
+                iconPosition="start"
+                label={NAME_TRANS_VN.TEACHER}
+              />
+            </Tabs>
+          </Grid>
           {loading ? (
             <LoadingComponent />
           ) : (
             <>
-              <Grid container item xs={12} justifyContent="flex-end">
-                <Switch
-                  icon={
-                    <IconClockHour3
-                      strokeWidth={2}
-                      size="1.5rem"
-                      style={{
-                        marginTop: "auto",
-                        marginBottom: "auto",
-                        borderRadius: `${customization.borderRadius}px`,
-                        border: "2px solid",
-                        position: "relative",
-                        bottom: 2,
-                        backgroundColor: theme.palette.background.default,
-                        color: theme.palette.primary.main,
+              {tab === 0 && (
+                <>
+                  <Grid container item xs={12} justifyContent="flex-end">
+                    <Switch
+                      icon={
+                        <IconClockHour3
+                          strokeWidth={2}
+                          size="1.5rem"
+                          style={{
+                            marginTop: "auto",
+                            marginBottom: "auto",
+                            borderRadius: `${customization.borderRadius}px`,
+                            border: "2px solid",
+                            position: "relative",
+                            bottom: 2,
+                            backgroundColor: theme.palette.background.default,
+                            color: theme.palette.primary.main,
+                          }}
+                        />
+                      }
+                      checkedIcon={
+                        <IconDiscountCheck
+                          strokeWidth={2}
+                          size="1.5rem"
+                          style={{
+                            marginTop: "auto",
+                            marginBottom: "auto",
+                            borderRadius: `${customization.borderRadius}px`,
+                            border: "2px solid",
+                            position: "relative",
+                            bottom: 2,
+                            backgroundColor: theme.palette.background.default,
+                          }}
+                        />
+                      }
+                      checked={filterConfirmed}
+                      color="success"
+                      onChange={() => setFilterConfirmed(!filterConfirmed)}
+                      size="medium"
+                      sx={{
+                        "& .MuiSwitch-track": {
+                          backgroundColor: !filterConfirmed
+                            ? theme.palette.primary.dark
+                            : theme.palette.success.dark,
+                        },
                       }}
                     />
-                  }
-                  checkedIcon={
-                    <IconDiscountCheck
-                      strokeWidth={2}
-                      size="1.5rem"
-                      style={{
-                        marginTop: "auto",
-                        marginBottom: "auto",
-                        borderRadius: `${customization.borderRadius}px`,
-                        border: "2px solid",
-                        position: "relative",
-                        bottom: 2,
-                        backgroundColor: theme.palette.background.default,
+                  </Grid>
+                  <Grid item xs={12}>
+                    <CustomTable
+                      headers={headers}
+                      data={transactionData}
+                      title={"Danh Sách Giao Dịch"}
+                      // reloadPageWhenDataChange={false}
+                    />
+                  </Grid>
+                </>
+              )}
+              {tab === 1 && (
+                <>
+                  <Grid container item xs={12} justifyContent="flex-end">
+                    <Switch
+                      icon={
+                        <IconClockHour3
+                          strokeWidth={2}
+                          size="1.5rem"
+                          style={{
+                            marginTop: "auto",
+                            marginBottom: "auto",
+                            borderRadius: `${customization.borderRadius}px`,
+                            border: "2px solid",
+                            position: "relative",
+                            bottom: 2,
+                            backgroundColor: theme.palette.background.default,
+                            color: theme.palette.primary.main,
+                          }}
+                        />
+                      }
+                      checkedIcon={
+                        <IconDiscountCheck
+                          strokeWidth={2}
+                          size="1.5rem"
+                          style={{
+                            marginTop: "auto",
+                            marginBottom: "auto",
+                            borderRadius: `${customization.borderRadius}px`,
+                            border: "2px solid",
+                            position: "relative",
+                            bottom: 2,
+                            backgroundColor: theme.palette.background.default,
+                          }}
+                        />
+                      }
+                      checked={filterConfirmed}
+                      color="success"
+                      onChange={() => setFilterConfirmed(!filterConfirmed)}
+                      size="medium"
+                      sx={{
+                        "& .MuiSwitch-track": {
+                          backgroundColor: !filterConfirmed
+                            ? theme.palette.primary.dark
+                            : theme.palette.success.dark,
+                        },
                       }}
                     />
-                  }
-                  checked={filterConfirmed}
-                  color="success"
-                  onChange={() => setFilterConfirmed(!filterConfirmed)}
-                  size="medium"
-                  sx={{
-                    "& .MuiSwitch-track": {
-                      backgroundColor: !filterConfirmed
-                        ? theme.palette.primary.dark
-                        : theme.palette.success.dark,
-                    },
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <CustomTable
-                  headers={headers}
-                  data={transactionData}
-                  title={"Danh Sách Giao Dịch"}
-                  // reloadPageWhenDataChange={false}
-                />
-              </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <CustomTable
+                      headers={headers}
+                      data={transactionData}
+                      title={"Danh Sách Giao Dịch"}
+                      // reloadPageWhenDataChange={false}
+                    />
+                  </Grid>
+                </>
+              )}
             </>
           )}
         </Grid>

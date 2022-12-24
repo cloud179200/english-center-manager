@@ -18,9 +18,11 @@ import { Pie } from "@ant-design/plots";
 import moment from "moment";
 import _ from "lodash";
 import CustomBox from "../../../components/custom-box/CustomBox.js";
+import { useSelector } from "react-redux";
 
 const DashBoardStudent = () => {
   const theme = useTheme();
+  const userDetail = useSelector(state => state.user.userDetail)
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
   const [attendanceData, setAttendanceData] = useState([]);
 
@@ -124,7 +126,7 @@ const DashBoardStudent = () => {
   const attendanceTableData = useMemo(() => {
     return _.cloneDeep(attendanceData).map((item) => ({
       student_Id: item.student_Id,
-      student_Name: item.student_Name,
+      student_Name: userDetail?.first_Name +" "+userDetail.last_Name,
       stage_Date: moment(item.stage_Date).toJSON(),
       modified_Date: moment(item.modified_Date).toJSON(),
       utility: <AttendanceStatus item={item} />,

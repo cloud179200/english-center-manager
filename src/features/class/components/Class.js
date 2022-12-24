@@ -37,8 +37,8 @@ const ClassComponent = () => {
   const [classes, setClasses] = useState([]);
   const [openAddClassModal, setOpenAddClassModal] = useState(false);
   const [editClassObject, setEditClassObject] = useState(null);
-  const [scheduleClassObject, setScheduleClassObject] = useState(null);
   const [deleteClassObject, setDeleteClassObject] = useState(null);
+  const [scheduleClassObject, setScheduleClassObject] = useState(null);
   const [manageByStudentClassObject, setManageByStudentClassObject] =
     useState(null);
 

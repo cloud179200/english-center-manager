@@ -207,9 +207,13 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
     setScheduleDates(newDateSchedule);
   };
   useEffect(() => {
+    if (!classObject?.class_Id) {
+      return;
+    }
     switch (tab) {
       case 0:
         getStageData();
+        getScheduleData();
         break;
       case 1:
         getScheduleData();
@@ -217,15 +221,7 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
       default:
         break;
     }
-  }, [tab])
-  
-  useEffect(() => {
-    if (!classObject?.class_Id) {
-      return;
-    }
-    getStageData();
-    getScheduleData();
-  }, [classObject?.class_Id]);
+  }, [tab]);
 
   return (
     <CustomModal

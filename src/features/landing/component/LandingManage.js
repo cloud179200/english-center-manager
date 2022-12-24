@@ -18,6 +18,7 @@ import {
   CardContent,
   IconButton,
   Fade,
+  Tooltip,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { NAME_TRANS_VN } from "../../../config/constant";
@@ -108,13 +109,12 @@ const LandingManageComponent = () => {
                     </Grid>
                   )}
                   {landingData.map((item) => (
-                    <Fade in={true} key={item.class_Name + "-" + item.Id} style={{ transitionDelay: `100ms` }}>
-                      <Grid
-                        item
-                        xs={12}
-                        md={6}
-                        
-                      >
+                    <Fade
+                      in={true}
+                      key={item.class_Name + "-" + item.Id}
+                      style={{ transitionDelay: `100ms` }}
+                    >
+                      <Grid item xs={12} md={6}>
                         <Card>
                           <CardActionArea sx={{ display: "flex" }}>
                             <CardMedia
@@ -143,14 +143,23 @@ const LandingManageComponent = () => {
                               >
                                 Giá: {item?.class_Fee}
                               </Typography>
-                              <Typography
-                                gutterBottom
-                                variant="h4"
-                                color="text.primary"
-                                component="div"
-                              >
-                                Ghi Chú: {item?.description}
-                              </Typography>
+                              <Tooltip title={`Ghi Chú: ${item?.description}`}>
+                                <Typography
+                                  gutterBottom
+                                  variant="h4"
+                                  color="text.primary"
+                                  component="div"
+                                  sx={{
+                                    maxWidth: "150px",
+                                    maxHeight: "4rem",
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                  }}
+                                >
+                                  Ghi Chú: {item?.description}
+                                </Typography>
+                              </Tooltip>
                             </CardContent>
                             <IconButton
                               onClick={() =>

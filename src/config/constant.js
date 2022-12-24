@@ -87,6 +87,13 @@ export const NAME_TRANS_VN = {
   MALE: "Nam",
   FEMALE: "Nữ",
   GENDER: "Giới Tính",
+  PAYROLL_NEW: "Bậc Lương Mới",
+  PAYROLL_ADD: "Thêm Bậc Lương",
+  PAYROLL_EDIT: "Sửa Bậc Lương",
+  PAYROLL_DELETE: "Xóa Bậc Lương",
+  PAYROLL: "Bậc Lương",
+  PAYROLL_NAME: "Tên Bậc Lương",
+  PAYROLL_VALUE: "Giá Trị Bậc Lương",
 };
 
 export const STATUS_VERIFY_EMAIL = {

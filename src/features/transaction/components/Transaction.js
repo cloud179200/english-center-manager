@@ -14,7 +14,7 @@ import {
   IconClockHour3,
   IconCurrencyDong,
   IconDiscountCheck,
-  IconSchool,
+  IconList,
 } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
 import CustomBox from "../../../components/custom-box/CustomBox";
@@ -29,7 +29,13 @@ import {
 } from "../../../redux/student/operators";
 import AnimateButton from "../../../components/extended/Animate";
 import { NAME_TRANS_VN } from "../../../config/constant";
+import TransactionFilterTeacherComponent from "./TransactionFilterTeacherComponent";
 export const initTransactionFilter = {
+  class_Name: "",
+  student_Name: "",
+};
+
+export const initTransactionTeacherFilter = {
   class_Name: "",
   student_Name: "",
 };
@@ -43,6 +49,9 @@ const TransactionComponent = () => {
   const [loading, setLoading] = useState(false);
   const [loadingConfirm, setLoadingConfirm] = useState([]);
   const [filter, setFilter] = useState(_.cloneDeep(initTransactionFilter));
+  const [filterTeacher, setFilterTeacher] = useState(
+    _.cloneDeep(initTransactionTeacherFilter)
+  );
   const [transactions, setTranactions] = useState([]);
   const [filterConfirmed, setFilterConfirmed] = useState(false);
   const [tab, setTab] = useState(0);
@@ -66,6 +75,16 @@ const TransactionComponent = () => {
       "#",
     ];
   }, [userDetail?.user_Type]);
+
+  const headersTeacher = useMemo(() => {
+    return [
+      "Id Lớp",
+      "Tên Lớp",
+      "Tên Giảng Viên",
+      "Số Tiền Cần Đóng",
+      "Trạng Thái",
+    ];
+  }, []);
 
   const handleChangeTab = (event, newValue) => {
     if (loading) {
@@ -271,6 +290,81 @@ const TransactionComponent = () => {
     return filterResult;
   }, [filter, transactions, loadingConfirm, filterConfirmed]);
 
+  const transactionTeacherData = useMemo(() => {
+    const isFilter = Object.values(filterTeacher).some((item) => Boolean(item));
+    const cloneTransactionList = _.cloneDeep(transactions)
+      .filter((item) =>
+        filterConfirmed
+          ? item?.paid_Ammount === item?.class_Fee
+          : item?.paid_Ammount !== item?.class_Fee
+      )
+      .map((item) =>
+        userDetail?.user_Type === 1
+          ? {
+              class_Id: item.class_Id,
+              class_Name: item.class_Name,
+              student_Name: item.student_Name,
+              class_Fee: (
+                <>
+                  {item.class_Fee}
+                  <IconCurrencyDong
+                    strokeWidth={2}
+                    size="1.5rem"
+                    style={{
+                      marginTop: "auto",
+                      marginBottom: "auto",
+                      position: "relative",
+                      top: theme.spacing(1),
+                    }}
+                  />
+                </>
+              ),
+              utility: <Utility item={item} />,
+              utilityAdmin: <UtilityAdmin item={item} />,
+            }
+          : {
+              class_Id: item.class_Id,
+              class_Name: item.class_Name,
+              student_Name: item.student_Name,
+              class_Fee: (
+                <>
+                  {item.class_Fee}
+                  <IconCurrencyDong
+                    strokeWidth={2}
+                    size="1.5rem"
+                    style={{
+                      marginTop: "auto",
+                      marginBottom: "auto",
+                      position: "relative",
+                      top: theme.spacing(1),
+                    }}
+                  />
+                </>
+              ),
+              utility: <Utility item={item} />,
+            }
+      );
+    if (!isFilter) {
+      return cloneTransactionList;
+    }
+    let filterResult = cloneTransactionList
+      .filter((item) =>
+        filter.class_Name
+          ? item.class_Name
+              .toLowerCase()
+              .includes(filter.class_Name.toLowerCase())
+          : true
+      )
+      .filter((item) =>
+        filter.student_Name
+          ? item.student_Name
+              .toLowerCase()
+              .includes(filter.student_Name.toLowerCase())
+          : true
+      );
+    return filterResult;
+  }, [filter, transactions, loadingConfirm, filterConfirmed]);
+
   useEffect(() => {
     getTransactionData();
   }, [userDetail?.user_Type]);
@@ -278,23 +372,32 @@ const TransactionComponent = () => {
   return (
     <>
       <CustomBox>
-        <TransactionFilterComponent
-          filter={filter}
-          setFilter={setFilter}
-          transactionList={transactions}
-        />
+        {tab === 0 && (
+          <TransactionFilterComponent
+            filter={filter}
+            setFilter={setFilter}
+            transactionList={transactions}
+          />
+        )}
+        {tab === 1 && (
+          <TransactionFilterTeacherComponent
+            filter={filterTeacher}
+            setFilter={setFilterTeacher}
+            transactionList={transactions}
+          />
+        )}
       </CustomBox>
       <CustomBox>
         <Grid container rowSpacing={2} sx={{ overflowX: "auto" }}>
           <Grid item xs={12} sx={{ padding: theme.spacing(1) }}>
             <Tabs value={tab} onChange={handleChangeTab}>
               <Tab
-                icon={<IconSchool strokeWidth={2} size="1.5rem" />}
+                icon={<IconList strokeWidth={2} size="1.5rem" />}
                 iconPosition="start"
                 label={NAME_TRANS_VN.STUDENT}
               />
               <Tab
-                icon={<IconSchool strokeWidth={2} size="1.5rem" />}
+                icon={<IconList strokeWidth={2} size="1.5rem" />}
                 iconPosition="start"
                 label={NAME_TRANS_VN.TEACHER}
               />
@@ -412,9 +515,9 @@ const TransactionComponent = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <CustomTable
-                      headers={headers}
-                      data={transactionData}
-                      title={"Danh Sách Giao Dịch"}
+                      headers={headersTeacher}
+                      data={transactionTeacherData}
+                      title={"Danh Sách Giao Dịch Trả Lương Giảng Viên"}
                       // reloadPageWhenDataChange={false}
                     />
                   </Grid>

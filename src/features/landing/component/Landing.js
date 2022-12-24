@@ -41,8 +41,7 @@ const useStyles = makeStyles((theme) => ({
     "*.MuiTypography-root":{
         padding: theme.spacing(1),
         borderRadius: 14,
-        backgroundColor: theme.palette.background.default,
-        color: theme.palette.common.black,
+        color: theme.palette.background.default,
         boxShadow: 4
     }
   },
@@ -223,7 +222,7 @@ const LandingComponent = () => {
                                 variant="h2"
                                 component="div"
                                 align="center"
-                                
+                                color="#fff"
                               >
                                 Tên Lớp: {item.class_Name}
                               </Typography>
@@ -333,7 +332,6 @@ const LandingComponent = () => {
                               >
                                 Giá Tiền: {item.class_Fee}
                                 <IconCurrencyDong
-                                color="black"
                                   strokeWidth={2}
                                   size="1.5rem"
                                   style={{

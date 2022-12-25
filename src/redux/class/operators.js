@@ -1,6 +1,6 @@
 import {
   ADD_CLASS_ACTION,
-  GET_ATTENDANCE_BY_CLASS_ID_ACTION,
+  GET_ATTENDANCE_BY_CLASS_ID_ACTION as GET_ATTENDANCE_BY_CLASS_ID_AND_ATTENDANCE_DATE_ACTION,
   GET_CLASS_ACTION,
   GET_SCHEDULE_BY_CLASS_ID_ACTION,
   GET_STAGE_BY_CLASS_ID_ACTION,
@@ -24,8 +24,9 @@ import {
   removeStageService,
   setScheduleService,
   getScheduleByClassIdService,
-  getAttendanceByClassIdService,
+  getAttendanceByClassIdAndAttendanceDateService,
   setAttendanceService,
+  getAttendanceByStudentIdService,
 } from "./services";
 
 export const getClassAction = (callback) => {
@@ -291,12 +292,11 @@ export const setScheduleAction = (class_Id, schedules, callback) => {
   };
 };
 
-export const getAttendanceByClassIdAction = (class_Id, callback) => {
+export const getAttendanceByClassIdAndAttendanceDateAction = (class_Id, schedule_Date, callback) => {
   return async (dispatch) => {
-    dispatch({ type: GET_ATTENDANCE_BY_CLASS_ID_ACTION });
+    dispatch({ type: GET_ATTENDANCE_BY_CLASS_ID_AND_ATTENDANCE_DATE_ACTION });
     try {
-      const res = await getAttendanceByClassIdService({ class_Id });
-      debugger
+      const res = await getAttendanceByClassIdAndAttendanceDateService({ class_Id, schedule_Date });
       if (res?.data) {
         callback(res.data, null);
         return;
@@ -315,10 +315,9 @@ export const getAttendanceByClassIdAction = (class_Id, callback) => {
 
 export const getAttendanceByStudentIdAction = (student_Id, callback) => {
   return async (dispatch) => {
-    dispatch({ type: GET_ATTENDANCE_BY_CLASS_ID_ACTION });
+    dispatch({ type: GET_ATTENDANCE_BY_CLASS_ID_AND_ATTENDANCE_DATE_ACTION });
     try {
-      const res = await getAttendanceByClassIdService({ student_Id });
-      debugger
+      const res = await getAttendanceByStudentIdService({ student_Id });
       if (res?.data) {
         callback(res.data, null);
         return;

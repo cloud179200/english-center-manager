@@ -7,6 +7,7 @@ import {
   Switch,
   Tab,
   Tabs,
+  TextField,
   Tooltip,
   useTheme,
 } from "@mui/material";
@@ -30,6 +31,8 @@ import {
 import AnimateButton from "../../../components/extended/Animate";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import TransactionFilterTeacherComponent from "./TransactionFilterTeacherComponent";
+import moment from "moment";
+import { LocalizationProvider, AdapterMoment, DesktopDatePicker } from '@mui/x-date-pickers';
 export const initTransactionFilter = {
   class_Name: "",
   student_Name: "",
@@ -55,6 +58,11 @@ const TransactionComponent = () => {
   const [transactions, setTranactions] = useState([]);
   const [filterConfirmed, setFilterConfirmed] = useState(false);
   const [tab, setTab] = useState(0);
+  const [teacherSelectedMonth, setTeacherSelectedMonth] = useState(moment().toDate())
+
+  const handleChangeTeacherSelectedMonth = (newValue) => {
+    setTeacherSelectedMonth(newValue);
+  };
 
   const headers = useMemo(() => {
     if (userDetail?.user_Type === 2) {
@@ -81,8 +89,9 @@ const TransactionComponent = () => {
       "Id Lớp",
       "Tên Lớp",
       "Tên Giảng Viên",
-      "Số Tiền Cần Đóng",
+      "Số Tiền Thanh Toán",
       "Trạng Thái",
+      "#",
     ];
   }, []);
 
@@ -93,7 +102,7 @@ const TransactionComponent = () => {
     setTab(newValue);
   };
 
-  const handleConfirmTransaction = (itemTransaction) => {
+  const handleConfirmTransactionStudent = (itemTransaction) => {
     setLoadingConfirm([...loadingConfirm, _.cloneDeep(itemTransaction)]);
     dispatch(
       confirmStudentTransactionAction(
@@ -122,7 +131,8 @@ const TransactionComponent = () => {
       )
     );
   };
-  const getTransactionData = () => {
+
+  const getTransactionStudentData = () => {
     if (!userDetail?.user_Type) {
       return;
     }
@@ -200,7 +210,7 @@ const TransactionComponent = () => {
                 disabled={isDisabled}
                 variant="contained"
                 color="secondary"
-                onClick={() => handleConfirmTransaction(item)}
+                onClick={() => handleConfirmTransactionStudent(item)}
                 endIcon={
                   isLoading && <CircularProgress color="secondary" size={20} />
                 }
@@ -226,48 +236,48 @@ const TransactionComponent = () => {
       .map((item) =>
         userDetail?.user_Type === 1
           ? {
-              class_Id: item.class_Id,
-              class_Name: item.class_Name,
-              student_Name: item.student_Name,
-              class_Fee: (
-                <>
-                  {item.class_Fee}
-                  <IconCurrencyDong
-                    strokeWidth={2}
-                    size="1.5rem"
-                    style={{
-                      marginTop: "auto",
-                      marginBottom: "auto",
-                      position: "relative",
-                      top: theme.spacing(1),
-                    }}
-                  />
-                </>
-              ),
-              utility: <Utility item={item} />,
-              utilityAdmin: <UtilityAdmin item={item} />,
-            }
+            class_Id: item.class_Id,
+            class_Name: item.class_Name,
+            student_Name: item.student_Name,
+            class_Fee: (
+              <>
+                {item.class_Fee}
+                <IconCurrencyDong
+                  strokeWidth={2}
+                  size="1.5rem"
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    position: "relative",
+                    top: theme.spacing(1),
+                  }}
+                />
+              </>
+            ),
+            utility: <Utility item={item} />,
+            utilityAdmin: <UtilityAdmin item={item} />,
+          }
           : {
-              class_Id: item.class_Id,
-              class_Name: item.class_Name,
-              student_Name: item.student_Name,
-              class_Fee: (
-                <>
-                  {item.class_Fee}
-                  <IconCurrencyDong
-                    strokeWidth={2}
-                    size="1.5rem"
-                    style={{
-                      marginTop: "auto",
-                      marginBottom: "auto",
-                      position: "relative",
-                      top: theme.spacing(1),
-                    }}
-                  />
-                </>
-              ),
-              utility: <Utility item={item} />,
-            }
+            class_Id: item.class_Id,
+            class_Name: item.class_Name,
+            student_Name: item.student_Name,
+            class_Fee: (
+              <>
+                {item.class_Fee}
+                <IconCurrencyDong
+                  strokeWidth={2}
+                  size="1.5rem"
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    position: "relative",
+                    top: theme.spacing(1),
+                  }}
+                />
+              </>
+            ),
+            utility: <Utility item={item} />,
+          }
       );
     if (!isFilter) {
       return cloneTransactionList;
@@ -276,15 +286,15 @@ const TransactionComponent = () => {
       .filter((item) =>
         filter.class_Name
           ? item.class_Name
-              .toLowerCase()
-              .includes(filter.class_Name.toLowerCase())
+            .toLowerCase()
+            .includes(filter.class_Name.toLowerCase())
           : true
       )
       .filter((item) =>
         filter.student_Name
           ? item.student_Name
-              .toLowerCase()
-              .includes(filter.student_Name.toLowerCase())
+            .toLowerCase()
+            .includes(filter.student_Name.toLowerCase())
           : true
       );
     return filterResult;
@@ -301,48 +311,48 @@ const TransactionComponent = () => {
       .map((item) =>
         userDetail?.user_Type === 1
           ? {
-              class_Id: item.class_Id,
-              class_Name: item.class_Name,
-              student_Name: item.student_Name,
-              class_Fee: (
-                <>
-                  {item.class_Fee}
-                  <IconCurrencyDong
-                    strokeWidth={2}
-                    size="1.5rem"
-                    style={{
-                      marginTop: "auto",
-                      marginBottom: "auto",
-                      position: "relative",
-                      top: theme.spacing(1),
-                    }}
-                  />
-                </>
-              ),
-              utility: <Utility item={item} />,
-              utilityAdmin: <UtilityAdmin item={item} />,
-            }
+            class_Id: item.class_Id,
+            class_Name: item.class_Name,
+            student_Name: item.student_Name,
+            class_Fee: (
+              <>
+                {item.class_Fee}
+                <IconCurrencyDong
+                  strokeWidth={2}
+                  size="1.5rem"
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    position: "relative",
+                    top: theme.spacing(1),
+                  }}
+                />
+              </>
+            ),
+            utility: <Utility item={item} />,
+            utilityAdmin: <UtilityAdmin item={item} />,
+          }
           : {
-              class_Id: item.class_Id,
-              class_Name: item.class_Name,
-              student_Name: item.student_Name,
-              class_Fee: (
-                <>
-                  {item.class_Fee}
-                  <IconCurrencyDong
-                    strokeWidth={2}
-                    size="1.5rem"
-                    style={{
-                      marginTop: "auto",
-                      marginBottom: "auto",
-                      position: "relative",
-                      top: theme.spacing(1),
-                    }}
-                  />
-                </>
-              ),
-              utility: <Utility item={item} />,
-            }
+            class_Id: item.class_Id,
+            class_Name: item.class_Name,
+            student_Name: item.student_Name,
+            class_Fee: (
+              <>
+                {item.class_Fee}
+                <IconCurrencyDong
+                  strokeWidth={2}
+                  size="1.5rem"
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    position: "relative",
+                    top: theme.spacing(1),
+                  }}
+                />
+              </>
+            ),
+            utility: <Utility item={item} />,
+          }
       );
     if (!isFilter) {
       return cloneTransactionList;
@@ -351,23 +361,33 @@ const TransactionComponent = () => {
       .filter((item) =>
         filter.class_Name
           ? item.class_Name
-              .toLowerCase()
-              .includes(filter.class_Name.toLowerCase())
+            .toLowerCase()
+            .includes(filter.class_Name.toLowerCase())
           : true
       )
       .filter((item) =>
         filter.student_Name
           ? item.student_Name
-              .toLowerCase()
-              .includes(filter.student_Name.toLowerCase())
+            .toLowerCase()
+            .includes(filter.student_Name.toLowerCase())
           : true
       );
     return filterResult;
   }, [filter, transactions, loadingConfirm, filterConfirmed]);
 
+
   useEffect(() => {
-    getTransactionData();
-  }, [userDetail?.user_Type]);
+    switch (tab) {
+      case 0:
+        getTransactionStudentData()
+        break;
+      case 1:
+        getTransactionStudentData()
+        break;
+      default:
+        break;
+    }
+  }, [userDetail?.user_Type, tab, teacherSelectedMonth]);
 
   return (
     <>
@@ -460,14 +480,25 @@ const TransactionComponent = () => {
                       headers={headers}
                       data={transactionData}
                       title={"Danh Sách Giao Dịch"}
-                      // reloadPageWhenDataChange={false}
+                    // reloadPageWhenDataChange={false}
                     />
                   </Grid>
                 </>
               )}
               {tab === 1 && (
                 <>
-                  <Grid container item xs={12} justifyContent="flex-end">
+                  <Grid container item xs={6} justifyContent="flex-start">
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                      <DesktopDatePicker
+                        label="Tháng/Năm"
+                        inputFormat="MM/YYYY"
+                        value={teacherSelectedMonth}
+                        onChange={handleChangeTeacherSelectedMonth}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+                  </Grid>
+                  <Grid container item xs={6} justifyContent="flex-end">
                     <Switch
                       icon={
                         <IconClockHour3
@@ -518,7 +549,7 @@ const TransactionComponent = () => {
                       headers={headersTeacher}
                       data={transactionTeacherData}
                       title={"Danh Sách Giao Dịch Trả Lương Giảng Viên"}
-                      // reloadPageWhenDataChange={false}
+                    // reloadPageWhenDataChange={false}
                     />
                   </Grid>
                 </>

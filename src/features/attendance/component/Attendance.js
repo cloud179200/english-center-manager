@@ -20,7 +20,7 @@ import { Calendar } from "react-calendar";
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAttendanceByClassIdAction,
+  getAttendanceByClassIdAndAttendanceDateAction,
   setAttendanceAction,
 } from "../../../redux/class/operators";
 import LoadingComponent from "../../../utils/component/Loading";
@@ -81,7 +81,12 @@ const Attendance = (props) => {
       setAttendanceAction(
         classObject?.class_Id,
         selectedDate?.stage_Id,
-        students,
+        _.cloneDeep(students).map(item => ({
+          ...item, schedule_Date: moment(selectedDate?.schedule_Date)
+            .add("days", 1)
+            .toDate()
+            .toISOString()
+        })),
         (res, err) => {
           setLoading(false);
           if (err) {
@@ -95,20 +100,23 @@ const Attendance = (props) => {
   const getAttendanceData = () => {
     setLoading(true);
     dispatch(
-      getAttendanceByClassIdAction(classObject.class_Id, (res, err) => {
-        setLoading(false);
-        if (err) {
-          return;
-        }
+      getAttendanceByClassIdAndAttendanceDateAction(classObject.class_Id, moment(selectedDate?.schedule_Date)
+        .add("days", 1)
+        .toDate()
+        .toISOString(), (res, err) => {
+          setLoading(false);
+          if (err) {
+            return;
+          }
+          debugger
+          const newAttendanceList = _.cloneDeep(res.students || []).map((item) => ({
+            student_Id: item.student_Id,
+            attendance_Status: item.attendance_Status,
+          }));
 
-        const newAttendanceList = _.cloneDeep(res.students).map((item) => ({
-          student_Id: item.student_Id,
-          attendance_Status: item.attendance_Status,
-        }));
-
-        setAttendanceStudents(_.cloneDeep(newAttendanceList));
-        setDefaultAttendanceStudent(_.cloneDeep(newAttendanceList));
-      })
+          setAttendanceStudents(_.cloneDeep(newAttendanceList));
+          setDefaultAttendanceStudent(_.cloneDeep(newAttendanceList));
+        })
     );
   };
 

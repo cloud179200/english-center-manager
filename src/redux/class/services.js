@@ -86,9 +86,9 @@ export const setScheduleService = async (body) => {
 };
 
 
-export const getAttendanceByClassIdService = async (body) => {
+export const getAttendanceByClassIdAndAttendanceDateService = async (body) => {
   try {
-    return await getService(`/api/attendance/get-by-class-id?p_class_id=${body.class_Id}`, "get attendance fail", true);
+    return await getService(`/api/attendance/get-by-class-id?p_class_id=${body.class_Id}&p_schedule_date=${body.schedule_Date}`, "get attendance fail", true);
   } catch (error) {
     throw error;
   }

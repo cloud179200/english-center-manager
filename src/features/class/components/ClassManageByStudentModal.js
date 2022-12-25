@@ -27,7 +27,7 @@ import {
 } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAttendanceByClassIdAction,
+  getAttendanceByClassIdAndAttendanceDateAction,
   getStageByClassIdAction,
   getScheduleByClassIdAction,
 } from "../../../redux/class/operators";
@@ -152,9 +152,9 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
 
   const getAttendanceDataByStage = (stage_Id) => {
     setLoading(true);
+    //!FIXME: binding data here
     dispatch(
-      getAttendanceByClassIdAction(classObject?.class_Id, (res, err) => {
-        //TODO: binding data here
+      getAttendanceByClassIdAndAttendanceDateAction(classObject?.class_Id, (res, err) => {
         setLoading(false);
         const newAttendanceTableData = _.cloneDeep(attendanceTableData);
         newAttendanceTableData[stage_Id] = _.cloneDeep(

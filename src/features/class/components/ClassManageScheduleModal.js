@@ -35,6 +35,7 @@ import {
 import { addNotificationAction } from "../../../redux/utils/operators";
 import StageComponent from "../../stage/components/Stage";
 import Attendance from "../../attendance/component/Attendance";
+import LoadingComponent from "../../../utils/component/Loading";
 
 const ScheduleSetupButton = ({
   disabled,
@@ -219,6 +220,8 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
         getScheduleData();
         break;
       default:
+        getStageData();
+        getScheduleData();
         break;
     }
   }, [tab]);
@@ -266,7 +269,7 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
                   </Button>
                 </Grid>
                 <Grid item xs={12}>
-                  <Calendar
+                  {loading ? <LoadingComponent isModal /> : <Calendar
                     view={calendarView}
                     value={null}
                     tileContent={({ date }) => (
@@ -279,7 +282,8 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
                         handleRemoveSchedule={handleRemoveSchedule}
                       />
                     )}
-                  />
+                  />}
+
                 </Grid>
               </Grid>
             </CustomBox>

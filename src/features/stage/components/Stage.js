@@ -97,7 +97,7 @@ const StageComponent = ({
     let filterResult = cloneStageList
       .filter((item) =>
         filter.stage_Id
-          ? item.class_Id.toString().includes(filter.stage_Id)
+          ? item.stage_Id.toString().includes(filter.stage_Id)
           : true
       )
       .filter((item) =>

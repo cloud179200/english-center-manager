@@ -1,4 +1,10 @@
-import React, { useCallback, useMemo, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   Button,
   CircularProgress,
@@ -12,8 +18,6 @@ import {
   useTheme,
 } from "@mui/material";
 import CustomBox from "../../../components/custom-box/CustomBox";
-import { sleep } from "../../../utils";
-// import { drawerWidth } from "../../redux/customization/constant";
 import { useFormik } from "formik";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import AnimateButton from "../../../components/extended/Animate";
@@ -22,8 +26,14 @@ import { landingSchema } from "../schema";
 import clsx from "clsx";
 import { IconCurrencyDong } from "@tabler/icons";
 import { motion } from "framer-motion";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@mui/styles";
+import {
+  addClientDataAction,
+  getLandingPageDataAction,
+} from "../../../redux/landing/operators";
+import LoadingComponent from "../../../utils/component/Loading";
+import { uniqueKey } from "../../../utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,12 +48,12 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     boxShadow: "none",
     backgroundColor: "transparent",
-    "*.MuiTypography-root":{
-        padding: theme.spacing(1),
-        borderRadius: 14,
-        color: theme.palette.background.default,
-        boxShadow: 4
-    }
+    "*.MuiTypography-root": {
+      padding: theme.spacing(1),
+      borderRadius: 14,
+      color: theme.palette.background.default,
+      boxShadow: 4,
+    },
   },
   backgroundImage: {
     backgroundRepeat: "no-repeat",
@@ -57,7 +67,9 @@ const useStyles = makeStyles((theme) => ({
 const LandingComponent = () => {
   const theme = useTheme();
   const classes = useStyles();
-  const landingData = JSON.parse(localStorage.getItem("landingData") || "[]");
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [landingData, setLandingData] = useState([]);
   const customization = useSelector((state) => state.customization);
   const landingFormRef = useRef(null);
   const initialValues = useMemo(
@@ -75,9 +87,20 @@ const LandingComponent = () => {
     validationSchema: landingSchema,
     onSubmit: async (values, formikHelpers) => {
       formikHelpers.setSubmitting(true);
-      console.log(values);
-      await sleep(2000);
-      formikHelpers.setSubmitting(false);
+      dispatch(
+        addClientDataAction(
+          values.email,
+          values.phone_Number,
+          values.name,
+          values.description,
+          (res, err) => {
+            formikHelpers.setSubmitting(false);
+            if (err) {
+              return;
+            }
+          }
+        )
+      );
     },
   });
 
@@ -119,6 +142,31 @@ const LandingComponent = () => {
       },
     };
   }, []);
+
+  const getLandingData = () => {
+    setLoading(true);
+    dispatch(
+      getLandingPageDataAction((res, err) => {
+        setLoading(false);
+        if (err) {
+          return;
+        }
+        const formattedRes = res.map((item) => ({ Id: uniqueKey(), ...item }));
+        setLandingData(formattedRes);
+      })
+    );
+  };
+
+  
+
+  useEffect(() => {
+    getLandingData();
+  }, []);
+  
+  
+  if (loading) {
+    return <LoadingComponent />;
+  }
 
   return (
     <>
@@ -191,7 +239,7 @@ const LandingComponent = () => {
             <motion.div variants={getCourseItemVariants(index % 2 === 0)}>
               <Grid
                 sx={{
-                  backgroundImage: `url("${item.base64String}")`,
+                  backgroundImage: `url("${item.image_Source}")`,
                 }}
                 className={clsx([
                   classes.backgroundImage,
@@ -280,7 +328,7 @@ const LandingComponent = () => {
                         <CustomBox
                           sx={{
                             minHeight: "calc(100vh - 108px)",
-                            backgroundImage: `url("${item.base64String}")`,
+                            backgroundImage: `url("${item.image_Source}")`,
                           }}
                           className={classes.backgroundImage}
                         ></CustomBox>
@@ -364,7 +412,7 @@ const LandingComponent = () => {
                         <CustomBox
                           sx={{
                             minHeight: "calc(100vh - 108px)",
-                            backgroundImage: `url("${item.base64String}")`,
+                            backgroundImage: `url("${item.image_Source}")`,
                           }}
                           className={classes.backgroundImage}
                         ></CustomBox>

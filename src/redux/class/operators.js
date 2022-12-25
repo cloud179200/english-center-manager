@@ -334,11 +334,11 @@ export const getAttendanceByStudentIdAction = (student_Id, callback) => {
   };
 };
 
-export const setAttendanceAction = (class_Id, stage_Id, students, callback) => {
+export const setAttendanceAction = (user_Id, class_Id, stage_Id, students, callback) => {
   return async (dispatch) => {
     dispatch({ type: SET_ATTENDANCE_ACTION });
     try {
-      const res = await setAttendanceService({ class_Id, stage_Id, students });
+      const res = await setAttendanceService({ user_Id, class_Id, stage_Id, students });
       if (res) {
         addNotificationAction(
           res?.message || API_MESSAGE.SUCCESS,

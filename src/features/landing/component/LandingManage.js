@@ -1,11 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LoadingComponent from "../../../utils/component/Loading";
 import CustomBox from "../../../components/custom-box/CustomBox";
 import {
   Button,
-  Card,
-  CardActionArea,
   CardMedia,
   FormControl,
   FormHelperText,
@@ -15,7 +13,6 @@ import {
   useTheme,
   Typography,
   CircularProgress,
-  CardContent,
   IconButton,
   Fade,
   Tooltip,
@@ -27,19 +24,25 @@ import AnimateButton from "../../../components/extended/Animate";
 import { uniqueKey, fileToBase64 } from "./../../../utils/index";
 import _ from "lodash";
 import { IconTrash } from "@tabler/icons";
+import {
+  getClientDataAction,
+  getLandingPageDataAction,
+  setLandingPageDataAction,
+} from "../../../redux/landing/operators";
 
 const LandingManageComponent = () => {
   const theme = useTheme();
 
-  const loading = useSelector((state) => state.common.loading);
-
+  const loadingCommon = useSelector((state) => state.common.loading);
+  const dispatch = useDispatch();
+  const [defaultLandingData, setDefaultLandingData] = useState([]);
   const [landingData, setLandingData] = useState([]);
 
   const initialValues = useMemo(
     () => ({
       class_Name: "",
       class_Fee: 0,
-      base64String: "",
+      image_Source: "",
       description: "",
     }),
     []
@@ -49,24 +52,64 @@ const LandingManageComponent = () => {
     initialValues,
     validationSchema: landingManageSchema,
     onSubmit: async (values) => {
-      setLandingData([
-        ..._.cloneDeep(landingData),
-        { Id: uniqueKey(), ...values },
-      ]);
+      setLandingData([...landingData, { Id: uniqueKey(), ...values }]);
     },
   });
+
+  const handleSetLandingData = () => {
+    dispatch(
+      setLandingPageDataAction(
+        _.cloneDeep(landingData).map((item) => ({
+          class_Name: item.class_Name,
+          class_Fee: item.class_Fee,
+          description: item.description,
+          image_Source: item.image_Source,
+        })),
+        (res, err) => {
+          if (err) {
+            return;
+          }
+          getLandingData();
+        }
+      )
+    );
+  };
 
   const handleRemoveLandingData = (item) => {
     setLandingData(_.cloneDeep(landingData).filter((i) => !_.isEqual(i, item)));
   };
 
-  const handleSetBase64String = async (e) => {
+  const handleSetImageSourceBase64 = async (e) => {
     setSubmitting(true);
     const value = await fileToBase64(e?.target?.files[0]);
     setSubmitting(false);
     if (value) {
-      setFieldValue("base64String", value || "");
+      setFieldValue("image_Source", value || "");
     }
+  };
+
+  const getLandingData = () => {
+    dispatch(
+      getLandingPageDataAction((res, err) => {
+        if (err) {
+          return;
+        }
+        const formattedRes = res.map((item) => ({ Id: uniqueKey(), ...item }));
+        setLandingData(_.cloneDeep(formattedRes));
+        setDefaultLandingData(_.cloneDeep(formattedRes));
+      })
+    );
+  };
+
+  const getLandingClientData = () => {
+    dispatch(
+      getClientDataAction((res, err) => {
+        if (err) {
+          return;
+        }
+        debugger
+      })
+    );
   };
 
   const {
@@ -83,24 +126,20 @@ const LandingManageComponent = () => {
   } = formik;
 
   useEffect(() => {
-    if (landingData.length)
-      localStorage.setItem("landingData", JSON.stringify(landingData));
-  }, [landingData]);
-
-  useEffect(() => {
-    setLandingData(JSON.parse(localStorage.getItem("landingData") || "[]"));
+    getLandingData();
+    getLandingClientData();
   }, []);
 
   return (
     <>
-      {loading ? (
+      {loadingCommon ? (
         <LoadingComponent />
       ) : (
         <>
           <CustomBox>
             <Grid container columnSpacing={2} rowSpacing={2}>
-              <Grid item xs={12} md={6}>
-                <Grid container columnSpacing={2} rowSpacing={2}>
+              <Grid container justifyContent="center" item xs={12} md={6} columnSpacing={2} rowSpacing={2}>
+                <Grid container item xs={12} columnGap={2} rowGap={2} >
                   {landingData.length === 0 && (
                     <Grid item xs={12} md={6}>
                       <Typography variant="h4">
@@ -114,73 +153,97 @@ const LandingManageComponent = () => {
                       key={item.class_Name + "-" + item.Id}
                       style={{ transitionDelay: `100ms` }}
                     >
-                      <Grid item xs={12} md={6}>
-                        <Card>
-                          <CardActionArea sx={{ display: "flex" }}>
-                            <CardMedia
-                              component="img"
-                              src={item.base64String}
-                              alt="wang ping"
+                      <Grid container item xs={12} md={6} columnSpacing={2} maxHeight="100px">
+                        <Grid item xs={3}>
+                          <CardMedia
+                            component="img"
+                            src={item.image_Source}
+                            alt="wang ping"
+                            sx={{
+                              maxWidth: "100px"
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Typography
+                            gutterBottom
+                            variant="h4"
+                            color="text.primary"
+                            component="div"
+                          >
+                            Tên Lớp Học: {item?.class_Name}
+                          </Typography>
+                          <Typography
+                            gutterBottom
+                            variant="h4"
+                            color="text.primary"
+                            component="div"
+                          >
+                            Giá: {item?.class_Fee}
+                          </Typography>
+                          <Tooltip title={`Ghi Chú: ${item?.description}`}>
+                            <Typography
+                              gutterBottom
+                              variant="h4"
+                              color="text.primary"
+                              component="div"
                               sx={{
-                                height: "10vh",
-                                width: "auto",
+                                maxWidth: "100%",
+                                maxHeight: "4rem",
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
+                              Ghi Chú: {item?.description}
+                            </Typography>
+                          </Tooltip>
+                        </Grid>
+                        <Grid container item xs={3} justifyContent="center" alignItems="center">
+                          <IconButton
+                            onClick={() =>
+                              handleRemoveLandingData(_.cloneDeep(item))
+                            }
+                            color="error"
+                            sx={{
+                              maxheight: "100px",
+                            }}
+                          >
+                            <IconTrash
+                              strokeWidth={2}
+                              size="1.5rem"
+                              style={{
+                                marginTop: "auto",
+                                marginBottom: "auto",
                               }}
                             />
-                            <CardContent>
-                              <Typography
-                                gutterBottom
-                                variant="h4"
-                                color="text.primary"
-                                component="div"
-                              >
-                                Tên Lớp Học: {item?.class_Name}
-                              </Typography>
-                              <Typography
-                                gutterBottom
-                                variant="h4"
-                                color="text.primary"
-                                component="div"
-                              >
-                                Giá: {item?.class_Fee}
-                              </Typography>
-                              <Tooltip title={`Ghi Chú: ${item?.description}`}>
-                                <Typography
-                                  gutterBottom
-                                  variant="h4"
-                                  color="text.primary"
-                                  component="div"
-                                  sx={{
-                                    maxWidth: "150px",
-                                    maxHeight: "4rem",
-                                    whiteSpace: "nowrap",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                  }}
-                                >
-                                  Ghi Chú: {item?.description}
-                                </Typography>
-                              </Tooltip>
-                            </CardContent>
-                            <IconButton
-                              onClick={() =>
-                                handleRemoveLandingData(_.cloneDeep(item))
-                              }
-                              color="error"
-                            >
-                              <IconTrash
-                                strokeWidth={2}
-                                size="1.5rem"
-                                style={{
-                                  marginTop: "auto",
-                                  marginBottom: "auto",
-                                }}
-                              />
-                            </IconButton>
-                          </CardActionArea>
-                        </Card>
+                          </IconButton>
+                        </Grid>
                       </Grid>
                     </Fade>
                   ))}
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <AnimateButton>
+                    <Button
+                      disableElevation
+                      disabled={
+                        loadingCommon || _.isEqual(defaultLandingData, landingData)
+                      }
+                      onClick={handleSetLandingData}
+                      fullWidth
+                      size="large"
+                      variant="contained"
+                      color="secondary"
+                      endIcon={
+                        loadingCommon ? (
+                          <CircularProgress color="secondary" size={20} />
+                        ) : null
+                      }
+                    >
+                      {NAME_TRANS_VN.SAVE}
+                    </Button>
+                  </AnimateButton>
                 </Grid>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -247,21 +310,21 @@ const LandingManageComponent = () => {
                     <FormControl
                       fullWidth
                       error={Boolean(
-                        touched.base64String && errors.base64String
+                        touched.image_Source && errors.image_Source
                       )}
                       sx={{ ...theme.typography.customInput }}
                     >
                       <InputLabel>{"Ảnh Khóa Học"}</InputLabel>
                       <OutlinedInput
-                        name="base64String"
+                        name="image_Source"
                         onBlur={handleBlur}
-                        onChange={handleSetBase64String}
+                        onChange={handleSetImageSourceBase64}
                         autoComplete="off"
                         type="file"
                       />
-                      {touched.base64String && errors.base64String && (
+                      {touched.image_Source && errors.image_Source && (
                         <FormHelperText error>
-                          {errors.base64String}
+                          {errors.image_Source}
                         </FormHelperText>
                       )}
                     </FormControl>

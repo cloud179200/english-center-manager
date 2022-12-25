@@ -29,12 +29,12 @@ const PayrollAddModal = ({ open, handleClose, reloadPayrollData }) => {
       payroll_Value: 0,
     },
     validationSchema: addPayrollSchema,
-    onSubmit: (values) => {
+    onSubmit: (_values) => {
       setLoading(true);
       dispatch(
         addPayrollAction(
-          values.payrolll_Name,
-          values.payroll_Value,
+          _values.payroll_Name,
+          _values.payroll_Value,
           addPayrollCallback
         )
       );

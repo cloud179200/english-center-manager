@@ -30,13 +30,14 @@ const PayrollEditModal = ({ open, handleClose, payrollObject, reloadPayrollData 
       payroll_Value: 0,
     },
     validationSchema: editPayrollSchema,
-    onSubmit: (values) => {
+    onSubmit: (_values) => {
       setLoading(true);
+      debugger
       dispatch(
         setPayrollAction(
-          values.payroll_Id,
-          values.payrolll_Name,
-          values.payroll_Value,
+          _values.payroll_Id,
+          _values.payroll_Name,
+          _values.payroll_Value,
           setPayrollCallback
         )
       );
@@ -48,6 +49,7 @@ const PayrollEditModal = ({ open, handleClose, payrollObject, reloadPayrollData 
     if (err) {
       return;
     }
+    handleClose();
     reloadPayrollData();
   };
 

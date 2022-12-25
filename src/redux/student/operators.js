@@ -2,7 +2,7 @@ import { API_MESSAGE } from "../../config/constant";
 import {
   GET_STUDENT_ACTION,
   GET_STUDENT_TRANSACTIONS_ACTION,
-  GET_STUDENT_TRANSACTIONS_BY_ID_ACTION,
+  CONFIRM_STUDENT_TRANSACTIONS_BY_ID_ACTION,
   REMOVE_STUDENT_ACTION,
   STUDENT_PAYMENT_CLASS_FEE,
 } from "./action";
@@ -99,7 +99,7 @@ export const studentPaymentClassFeeAction = (
 
 export const getStudentTransactionsByIdAction = (student_Id, callback) => {
   return async (dispatch) => {
-    dispatch({ type: GET_STUDENT_TRANSACTIONS_BY_ID_ACTION });
+    dispatch({ type: CONFIRM_STUDENT_TRANSACTIONS_BY_ID_ACTION });
     try {
       const res = await getStudentTransactionsByIdService({ student_Id });
       if (res?.data) {

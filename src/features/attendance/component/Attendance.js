@@ -28,6 +28,7 @@ import CustomTable from "../../../components/custom-table/CustomTable";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import { sortStudentFunc } from "../../../utils";
 import AnimateButton from "../../../components/extended/Animate";
+import { addNotificationAction } from "../../../redux/utils/operators";
 const Attendance = (props) => {
   const { classObject, scheduleDates } = props;
   const dispatch = useDispatch();
@@ -76,16 +77,24 @@ const Attendance = (props) => {
   );
 
   const handleSetAttendanceList = (students) => {
+    console.log('[classObject?.list_Student]', classObject?.list_Student)
+    console.log('[students]', students)
+    if (classObject?.list_Student?.length !== students?.length) {
+      dispatch(addNotificationAction("Bạn Chưa Điểm Danh Đủ Học Viên!", true));
+      return
+    }
     setLoading(true);
     dispatch(
       setAttendanceAction(
+        userDetail?.user_Id,
         classObject?.class_Id,
         selectedDate?.stage_Id,
-        _.cloneDeep(students).map(item => ({
-          ...item, schedule_Date: moment(selectedDate?.schedule_Date)
+        _.cloneDeep(students).map((item) => ({
+          ...item,
+          schedule_Date: moment(selectedDate?.schedule_Date)
             .add("days", 1)
             .toDate()
-            .toISOString()
+            .toISOString(),
         })),
         (res, err) => {
           setLoading(false);
@@ -100,23 +109,28 @@ const Attendance = (props) => {
   const getAttendanceData = () => {
     setLoading(true);
     dispatch(
-      getAttendanceByClassIdAndAttendanceDateAction(classObject.class_Id, moment(selectedDate?.schedule_Date)
-        .add("days", 1)
-        .toDate()
-        .toISOString(), (res, err) => {
+      getAttendanceByClassIdAndAttendanceDateAction(
+        classObject.class_Id,
+        moment(selectedDate?.schedule_Date)
+          .add("days", 1)
+          .toDate()
+          .toISOString(),
+        (res, err) => {
           setLoading(false);
           if (err) {
             return;
           }
-          debugger
-          const newAttendanceList = _.cloneDeep(res.students || []).map((item) => ({
-            student_Id: item.student_Id,
-            attendance_Status: item.attendance_Status,
-          }));
+          const newAttendanceList = _.cloneDeep(res.students || []).map(
+            (item) => ({
+              student_Id: item.student_Id,
+              attendance_Status: item.attendance_Status,
+            })
+          );
 
           setAttendanceStudents(_.cloneDeep(newAttendanceList));
           setDefaultAttendanceStudent(_.cloneDeep(newAttendanceList));
-        })
+        }
+      )
     );
   };
 
@@ -148,7 +162,6 @@ const Attendance = (props) => {
 
   const Utility = useCallback(
     ({ item }) => {
-      console.log("[Utility Attendance Item]", item);
       const attendanceStatus = _.cloneDeep(attendanceStudents).find(
         (attendanceItem) => attendanceItem.student_Id === item.student_Id
       )?.attendance_Status;

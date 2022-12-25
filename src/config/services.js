@@ -47,7 +47,7 @@ export const postService = async (
     if (error?.response?.status === HTTP_RESPONSE_STATUS.UNAUTHORIZED) {
       localStorage.clear();
       sessionStorage.clear();
-      window.location.reload();
+      window.location.replace("/");
       throw error?.response;
     }
 

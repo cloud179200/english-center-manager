@@ -80,3 +80,19 @@ export const assignPayrollToTeacherService = async (body) => {
     throw error;
   }
 };
+
+export const getTeacherTransactionsByMonthService = async (body) => {
+  try {
+    return await getService(`/api/trans/get-teacher-trans?p_date=${body.selected_Month}`, "Get transactions fail", true);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const confirmTeacherTransactionService = async (body) => {
+  try {
+    return await postService(`/api/trans/confirm-teacher-trans?p_teacher_id=${body.teacher_Id}&p_date=${body.selected_Month}`, {}, "Confirm transactions fail", true);
+  } catch (error) {
+    throw error;
+  }
+};

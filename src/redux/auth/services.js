@@ -18,7 +18,7 @@ export const signInService = async (body) => {
 
 export const forgotPasswordService = async (body) => {
   try {
-    return await postService(`/api/users/forgot?email=${body.email}&password=${body.password}`, {}, "fail", false);
+    return await postService(`/api/users/forgot-password?email=${body.email}&password=${body.password}`, {}, "fail", false);
   } catch (error) {
     throw error;
   }

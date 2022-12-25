@@ -1,11 +1,11 @@
 import { Autocomplete, Button, Grid, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
-import { initTransactionFilter } from "./Transaction";
+import { initTransactionStudentFilter } from "./Transaction";
 import { NAME_TRANS_VN } from "../../../config/constant";
 const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
   const [filterInput, setFilterInput] = useState(
-    _.cloneDeep(initTransactionFilter)
+    _.cloneDeep(initTransactionStudentFilter)
   );
 
   const handleApply = () => {
@@ -13,7 +13,7 @@ const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
   };
 
   const handleClear = () => {
-    setFilter(_.cloneDeep(initTransactionFilter));
+    setFilter(_.cloneDeep(initTransactionStudentFilter));
   };
 
   const optionsTeacherName = [

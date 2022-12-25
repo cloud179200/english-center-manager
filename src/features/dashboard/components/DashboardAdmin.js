@@ -25,11 +25,15 @@ const DashboardAdmin = () => {
     []
   );
 
-  const data = labels.map((item) => ({
-    date: item,
-    value: faker.datatype.number({ min: 0, max: 100000000 }),
-    category: _.sample(["Doanh Thu", "Chi Tiêu"]),
-  }));
+  const data = useMemo(() => {
+    const sampleData = labels.map((item) => ({
+      date: item,
+      value: faker.datatype.number({ min: 0, max: 100000000 }),
+      category: _.sample(["Doanh Thu", "Chi Tiêu"]),
+    }));
+
+      return sampleData
+  }, []);
 
   const config = {
     data,

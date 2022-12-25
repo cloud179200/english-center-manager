@@ -1,11 +1,19 @@
 import { Autocomplete, Button, Grid, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
-import { initTransactionFilter } from "./Transaction";
+import { initTransactionTeacherFilter } from "./Transaction";
 import { NAME_TRANS_VN } from "../../../config/constant";
-const TransactionFilterTeacherComponent = ({ filter, setFilter, transactionList }) => {
+import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import moment from "moment";
+
+const TransactionFilterTeacherComponent = ({
+  filter,
+  setFilter,
+  transactionList,
+}) => {
   const [filterInput, setFilterInput] = useState(
-    _.cloneDeep(initTransactionFilter)
+    _.cloneDeep(initTransactionTeacherFilter)
   );
 
   const handleApply = () => {
@@ -13,7 +21,7 @@ const TransactionFilterTeacherComponent = ({ filter, setFilter, transactionList 
   };
 
   const handleClear = () => {
-    setFilter(_.cloneDeep(initTransactionFilter));
+    setFilter(_.cloneDeep(initTransactionTeacherFilter));
   };
 
   const optionsTeacherName = [
@@ -22,11 +30,12 @@ const TransactionFilterTeacherComponent = ({ filter, setFilter, transactionList 
     ),
   ];
 
-  const optionsStudentName = [
-    ...new Set(
-      _.cloneDeep(transactionList).map((option) => `${option.student_Name}`)
-    ),
-  ];
+  const handleChangeTeacherSelectedMonth = (newValue) => {
+    setFilterInput((prevFilterInput) => ({
+      ...prevFilterInput,
+      selected_Month: newValue,
+    }));
+  };
 
   useEffect(() => {
     setFilterInput(_.cloneDeep(filter));
@@ -61,25 +70,16 @@ const TransactionFilterTeacherComponent = ({ filter, setFilter, transactionList 
         />
       </Grid>
       <Grid item xs={12} md={4}>
-        <Autocomplete
-          freeSolo
-          disableClearable
-          options={optionsStudentName}
-          onChange={(event, newValue) => {
-            setFilterInput({ ...filterInput, student_Name: newValue });
-          }}
-          value={filterInput.student_Name}
-          onInputChange={(event, newValue) => {
-            setFilterInput({
-              ...filterInput,
-              student_Name: newValue,
-            });
-          }}
-          inputValue={filterInput.student_Name}
-          renderInput={(params) => (
-            <TextField {...params} label={NAME_TRANS_VN.TEACHER_NAME} />
-          )}
-        />
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <DesktopDatePicker
+            label="Tháng/Năm"
+            inputFormat="MM/YYYY"
+            value={filterInput.selected_Month}
+            onChange={handleChangeTeacherSelectedMonth}
+            maxDate={moment().toDate()}
+            renderInput={(params) => <TextField {...params} fullWidth/>}
+          />
+        </LocalizationProvider>
       </Grid>
       <Grid item xs={12} md={4}>
         <Grid
@@ -90,11 +90,7 @@ const TransactionFilterTeacherComponent = ({ filter, setFilter, transactionList 
           justifyContent={{ md: "flex-end", xs: "space-between" }}
         >
           <Grid item xs={6}>
-            <Button
-              variant="contained"
-              onClick={handleApply}
-              fullWidth
-            >
+            <Button variant="contained" onClick={handleApply} fullWidth>
               {NAME_TRANS_VN.APPLY_FILTER}
             </Button>
           </Grid>

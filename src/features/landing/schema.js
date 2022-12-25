@@ -26,6 +26,6 @@ export const landingManageSchema = Yup.object().shape({
   class_Name: Yup.string().required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
   class_Fee: Yup.number().min(1, FORM_VALIDATE_ERROR_MESSAGE.INVALID),
   description: Yup.string().required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED),
-  base64String: Yup.string().required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED)
+  image_Source: Yup.string().required(FORM_VALIDATE_ERROR_MESSAGE.REQUIRED)
 });
 

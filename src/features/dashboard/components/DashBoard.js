@@ -5,6 +5,7 @@ import { getUserDetailAction } from "../../../redux/user/operators";
 
 import DashBoardStudent from "./DashBoardStudent";
 import DashboardAdmin from "./DashboardAdmin";
+import DashBoardTeacher from "./DashBoardTeacher";
 
 const DashBoard = () => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const DashBoard = () => {
         <>
           {userDetail?.user_Type === 1 && <DashboardAdmin />}
           {userDetail?.user_Type === 2 && <DashBoardStudent />}
-          {userDetail?.user_Type === 3 && <DashboardAdmin />}
+          {userDetail?.user_Type === 3 && <DashBoardTeacher />}
         </>
       )}
     </>

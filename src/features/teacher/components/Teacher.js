@@ -203,12 +203,12 @@ const TeacherComponent = () => {
           return;
         }
         setPayrolls(
-          res.slice(0, 50).map((item) => {
+          res.map((item) => {
             return {
               ...item,
               payroll_Id: item.payroll_Id,
               payroll_Name: item.payroll_Name,
-              value: item.value,
+              payroll_Value: item.payroll_Value,
             };
           })
         );

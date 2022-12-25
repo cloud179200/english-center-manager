@@ -46,6 +46,7 @@
     "react-animated-css": "^1.2.1",
     "react-apexcharts": "^1.4.0",
     "react-calendar": "^4.0.0",
+    "react-countup": "^6.4.0",
     "react-device-detect": "^2.2.2",
     "react-dom": "^18.2.0",
     "react-perfect-scrollbar": "^1.5.8",

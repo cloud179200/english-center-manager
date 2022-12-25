@@ -139,7 +139,7 @@ const LandingManageComponent = () => {
           <CustomBox>
             <Grid container columnSpacing={2} rowSpacing={2}>
               <Grid container justifyContent="center" item xs={12} md={6} columnSpacing={2} rowSpacing={2}>
-                <Grid container item xs={12} columnGap={2} rowGap={2} >
+                <Grid container item xs={12} columnSpacing={2} rowSpacing={2} >
                   {landingData.length === 0 && (
                     <Grid item xs={12} md={6}>
                       <Typography variant="h4">

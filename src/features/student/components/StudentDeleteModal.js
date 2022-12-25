@@ -41,7 +41,7 @@ const StudentDeleteModal = ({
   };
 
   const imageSrc = useMemo(
-    () => (studentObject?.gender ? StudentMale : StudentFemale),
+    () => (studentObject?.gender ? StudentFemale : StudentMale),
     [studentObject?.student_Id]
   );
 

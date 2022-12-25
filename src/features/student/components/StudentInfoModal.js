@@ -16,7 +16,7 @@ const StudentInfoModal = ({ open, handleClose, studentObject }) => {
   const cloneStudentObject = _.cloneDeep(studentObject);
 
   const imageSrc = useMemo(
-    () => (studentObject?.gender ? StudentMale : StudentFemale),
+    () => (studentObject?.gender ? StudentFemale : StudentMale),
     [studentObject?.student_Id]
   );
 

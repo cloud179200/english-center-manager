@@ -160,9 +160,6 @@ const Settings = () => {
                           <Typography gutterBottom variant="h5" component="div">
                             Địa Chỉ: {userDetail?.address}
                           </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            Là một người ưang ping
-                          </Typography>
                         </CardContent>
                       </CardActionArea>
                     </Card>

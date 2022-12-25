@@ -516,17 +516,15 @@ const TransactionComponent = () => {
   ]);
 
   useEffect(() => {
-    switch (tab) {
-      case 0:
-        getTransactionStudentData();
-        break;
-      case 1:
-        getTransactionTeacherData();
-        break;
-      default:
-        break;
+    if(isRenderStudent){
+      getTransactionStudentData();
+      return
     }
-  }, [userDetail?.user_Type, tab, filterTeacher.selected_Month]);
+    if(isRenderTeacher){
+      getTransactionTeacherData();
+      return
+    }
+  }, [userDetail?.user_Type, isRenderStudent, isRenderTeacher, filterTeacher.selected_Month]);
 
   return (
     <>

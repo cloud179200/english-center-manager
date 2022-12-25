@@ -32,7 +32,8 @@ import AnimateButton from "../../../components/extended/Animate";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import TransactionFilterTeacherComponent from "./TransactionFilterTeacherComponent";
 import moment from "moment";
-import { LocalizationProvider, AdapterMoment, DesktopDatePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider, DesktopDatePicker } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 export const initTransactionFilter = {
   class_Name: "",
   student_Name: "",

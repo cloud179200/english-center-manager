@@ -23,7 +23,6 @@ import CustomTable from "../../../components/custom-table/CustomTable";
 import LoadingComponent from "../../../utils/component/Loading";
 import TransactionFilterComponent from "./TransactionFilterComponent";
 import {
-  getStudentTransactionsByIdAction,
   getStudentTransactionsAction,
   confirmStudentTransactionAction,
 } from "../../../redux/student/operators";
@@ -156,28 +155,13 @@ const TransactionComponent = () => {
       return;
     }
     setLoading(true);
-    if (userDetail?.user_Type === 2) {
-      dispatch(
-        getStudentTransactionsByIdAction(
-          userDetail.reference_Id,
-          (res, err) => {
-            setLoading(false);
-            if (err) {
-              return;
-            }
-            setTranactions(res);
-          }
-        )
-      );
-      return;
-    }
     dispatch(
       getStudentTransactionsAction((res, err) => {
         setLoading(false);
         if (err) {
           return;
         }
-        setTranactions(res);
+        setTranactions(res.filter(item => (userDetail?.user_Type === 2 ? (item?.student_Id === userDetail?.reference_Id) : true)));
       })
     );
   };

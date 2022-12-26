@@ -187,10 +187,19 @@ const LandingManageComponent = () => {
     <>
       <CustomBox>
         <Grid container columnSpacing={2} rowSpacing={2}>
-          <Grid container justifyContent="center" item xs={12} md={4}>
-            <Grid container item xs={12}>
+          <Grid container justifyContent="center" item xs={12} md={4} rowSpacing={2}>
+            <Grid
+              container
+              item
+              xs={12}
+              sx={{
+                minHeight: "50vh",
+                maxHeight: "50vh",
+                overflow: "auto",
+              }}
+            >
               {loadingLandingData ? (
-                <LoadingComponent height="50vh" />
+                <LoadingComponent height="100%" />
               ) : (
                 <>
                   {landingData.length === 0 ? (

@@ -96,7 +96,7 @@ export const getAttendanceByClassIdAndAttendanceDateService = async (body) => {
 
 export const getAttendanceByStudentIdService = async (body) => {
   try {
-    return await getService(`/api/attendance/get-by-student-id?p_student_id=${body.class_Id}`, "get attendance fail", true);
+    return await getService(`/api/attendance/get-by-student-id?p_student_id=${body.student_Id}`, "get attendance fail", true);
   } catch (error) {
     throw error;
   }

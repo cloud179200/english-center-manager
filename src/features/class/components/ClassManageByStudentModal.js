@@ -27,9 +27,9 @@ import {
 } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAttendanceByClassIdAndAttendanceDateAction,
   getStageByClassIdAction,
   getScheduleByClassIdAction,
+  getAttendanceByStudentIdAction,
 } from "../../../redux/class/operators";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import attendanceStudentsMockData from "../../../config/data/attendance-student-mock-data.json";
@@ -152,10 +152,13 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
 
   const getAttendanceDataByStage = (stage_Id) => {
     setLoading(true);
-    //!FIXME: binding data here
     dispatch(
-      getAttendanceByClassIdAndAttendanceDateAction(classObject?.class_Id, (res, err) => {
+      getAttendanceByStudentIdAction(classObject?.class_Id, (res, err) => {
         setLoading(false);
+        if(err){
+          return
+        }
+        //TODO: binding attendance data
         const newAttendanceTableData = _.cloneDeep(attendanceTableData);
         newAttendanceTableData[stage_Id] = _.cloneDeep(
           attendanceStudentsMockData

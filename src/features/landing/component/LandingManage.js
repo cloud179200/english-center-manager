@@ -57,8 +57,8 @@ const LandingManageComponent = () => {
     validationSchema: landingManageSchema,
     onSubmit: async (values, formikHelpers) => {
       if (values.Id) {
-        const newLandingData = _.cloneDeep(landingData);
-        newLandingData.map((item) =>
+        setLandingData(prevLandingData => {
+          return prevLandingData.map((item) =>
           item.Id === values.Id
             ? {
                 ...item,
@@ -69,7 +69,7 @@ const LandingManageComponent = () => {
               }
             : item
         );
-        setLandingData(newLandingData);
+        });
         formikHelpers.setFieldValue("Id", "");
         return;
       }
@@ -321,7 +321,7 @@ const LandingManageComponent = () => {
                 </>
               )}
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={12}>
               <AnimateButton>
                 <Button
                   disableElevation
@@ -439,7 +439,7 @@ const LandingManageComponent = () => {
                 <AnimateButton>
                   <Button
                     disableElevation
-                    disabled={isSubmitting || !isValid}
+                    disabled={isSubmitting || !isValid || loadingLandingData}
                     onClick={handleSubmit}
                     fullWidth
                     size="large"
@@ -475,6 +475,7 @@ const LandingManageComponent = () => {
           <Grid item xs={12} md={3} sx={{ marginTop: theme.spacing(2) }}>
             <CSVLink
               data={landingClientData}
+              filename="dataClient.csv"
               style={{ textDecoration: "none" }}
             >
               <Button

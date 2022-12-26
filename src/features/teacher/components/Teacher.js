@@ -319,7 +319,7 @@ const TeacherComponent = () => {
         </Grid>
       );
     },
-    [teachers, loadingSelectPayrolls]
+    [teachers, payrolls, loadingSelectPayrolls]
   );
 
   const teacherData = useMemo(() => {
@@ -347,7 +347,7 @@ const TeacherComponent = () => {
           : true
       );
     return filterResult;
-  }, [filter, teachers]);
+  }, [filter, teachers, payrolls]);
 
   const payrollData = useMemo(() => {
     const isFilter = Object.values(filterPayroll).some((item) => Boolean(item));

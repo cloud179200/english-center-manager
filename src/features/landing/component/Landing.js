@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
   },
   courseItemBackground: {
-    filter: `blur(${theme.spacing * 4}px)`,
+    backdropFilter: `blur(${theme.spacing(2)})`,
   },
 }));
 
@@ -158,13 +158,10 @@ const LandingComponent = () => {
     );
   };
 
-  
-
   useEffect(() => {
     getLandingData();
   }, []);
-  
-  
+
   if (loading) {
     return <LoadingComponent />;
   }
@@ -244,183 +241,189 @@ const LandingComponent = () => {
                 }}
                 className={clsx([
                   classes.backgroundImage,
-                  classes.courseItemBackground,
                 ])}
                 item
                 xs={12}
               >
-                <Container maxWidth="xl">
-                  <Grid container>
-                    {index % 2 === 0 ? (
-                      <Grid item xs={12} md={6}>
-                        <CustomBox
-                          className={clsx([
-                            classes.courseItemInfo,
-                            classes.flexCenter,
-                          ])}
-                        >
-                          <Grid
-                            container
-                            rowSpacing={4}
-                            justifyContent="center"
-                            alignItems="center"
+                <Grid
+                  container
+                  className={clsx([
+                    classes.courseItemBackground,
+                  ])}
+                >
+                  <Container maxWidth="xl">
+                    <Grid container>
+                      {index % 2 === 0 ? (
+                        <Grid item xs={12} md={6}>
+                          <CustomBox
+                            className={clsx([
+                              classes.courseItemInfo,
+                              classes.flexCenter,
+                            ])}
                           >
-                            <Grid item xs={12}>
-                              <Typography
-                                gutterBottom
-                                variant="h2"
-                                component="div"
-                                align="center"
-                                color="#fff"
-                              >
-                                Tên Lớp: {item.class_Name}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography
-                                gutterBottom
-                                variant="h2"
-                                component="div"
-                                align="center"
-                                color="#fff"
-                              >
-                                Mô Tả: {item.description}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography
-                                gutterBottom
-                                variant="h2"
-                                component="div"
-                                align="center"
-                                color="#fff"
-                              >
-                                Giá Tiền: {item.class_Fee}{" "}
-                                <IconCurrencyDong
-                                  strokeWidth={2}
-                                  size="1.5rem"
-                                  style={{
-                                    marginTop: "auto",
-                                    marginBottom: "auto",
-                                    position: "relative",
-                                    top: theme.spacing(1) / 4,
-                                  }}
-                                />
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                              <AnimateButton>
-                                <Button
-                                  fullWidth
-                                  variant="contained"
-                                  onClick={() =>
-                                    handleClickCourse(item.class_Name)
-                                  }
+                            <Grid
+                              container
+                              rowSpacing={4}
+                              justifyContent="center"
+                              alignItems="center"
+                            >
+                              <Grid item xs={12}>
+                                <Typography
+                                  gutterBottom
+                                  variant="h2"
+                                  component="div"
+                                  align="center"
+                                  color="#fff"
                                 >
-                                  Đăng Ký {item.class_Name}
-                                </Button>
-                              </AnimateButton>
+                                  Tên Lớp: {item.class_Name}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12}>
+                                <Typography
+                                  gutterBottom
+                                  variant="h2"
+                                  component="div"
+                                  align="center"
+                                  color="#fff"
+                                >
+                                  Mô Tả: {item.description}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12}>
+                                <Typography
+                                  gutterBottom
+                                  variant="h2"
+                                  component="div"
+                                  align="center"
+                                  color="#fff"
+                                >
+                                  Giá Tiền: {item.class_Fee}{" "}
+                                  <IconCurrencyDong
+                                    strokeWidth={2}
+                                    size="1.5rem"
+                                    style={{
+                                      marginTop: "auto",
+                                      marginBottom: "auto",
+                                      position: "relative",
+                                      top: theme.spacing(1) / 4,
+                                    }}
+                                  />
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12} md={6}>
+                                <AnimateButton>
+                                  <Button
+                                    fullWidth
+                                    variant="contained"
+                                    onClick={() =>
+                                      handleClickCourse(item.class_Name)
+                                    }
+                                  >
+                                    Đăng Ký {item.class_Name}
+                                  </Button>
+                                </AnimateButton>
+                              </Grid>
                             </Grid>
-                          </Grid>
-                        </CustomBox>
-                      </Grid>
-                    ) : (
-                      <Grid item xs={12} md={6}>
-                        <CustomBox
-                          sx={{
-                            minHeight: "calc(100vh - 108px)",
-                            backgroundImage: `url("${item.image_Source}")`,
-                          }}
-                          className={classes.backgroundImage}
-                        ></CustomBox>
-                      </Grid>
-                    )}
-                    {index % 2 !== 0 ? (
-                      <Grid item xs={12} md={6}>
-                        <CustomBox
-                          className={clsx([
-                            classes.courseItemInfo,
-                            classes.flexCenter,
-                          ])}
-                        >
-                          <Grid
-                            container
-                            rowSpacing={4}
-                            justifyContent="center"
-                            alignItems="center"
+                          </CustomBox>
+                        </Grid>
+                      ) : (
+                        <Grid item xs={12} md={6}>
+                          <CustomBox
+                            sx={{
+                              minHeight: "calc(100vh - 108px)",
+                              backgroundImage: `url("${item.image_Source}")`,
+                            }}
+                            className={classes.backgroundImage}
+                          ></CustomBox>
+                        </Grid>
+                      )}
+                      {index % 2 !== 0 ? (
+                        <Grid item xs={12} md={6}>
+                          <CustomBox
+                            className={clsx([
+                              classes.courseItemInfo,
+                              classes.flexCenter,
+                            ])}
                           >
-                            <Grid item xs={12}>
-                              <Typography
-                                gutterBottom
-                                variant="h2"
-                                component="div"
-                                align="center"
-                                color="#fff"
-                              >
-                                Tên Lớp: {item.class_Name}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography
-                                gutterBottom
-                                variant="h2"
-                                component="div"
-                                align="center"
-                                color="#fff"
-                              >
-                                Mô Tả: {item.description}
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Typography
-                                gutterBottom
-                                variant="h2"
-                                component="div"
-                                align="center"
-                                color="#fff"
-                              >
-                                Giá Tiền: {item.class_Fee}
-                                <IconCurrencyDong
-                                  strokeWidth={2}
-                                  size="1.5rem"
-                                  style={{
-                                    marginTop: "auto",
-                                    marginBottom: "auto",
-                                    position: "relative",
-                                    top: theme.spacing(1) / 4,
-                                  }}
-                                />
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                              <AnimateButton>
-                                <Button
-                                  fullWidth
-                                  variant="contained"
-                                  onClick={() =>
-                                    handleClickCourse(item.class_Name)
-                                  }
+                            <Grid
+                              container
+                              rowSpacing={4}
+                              justifyContent="center"
+                              alignItems="center"
+                            >
+                              <Grid item xs={12}>
+                                <Typography
+                                  gutterBottom
+                                  variant="h2"
+                                  component="div"
+                                  align="center"
+                                  color="#fff"
                                 >
-                                  Đăng Ký {item.class_Name}
-                                </Button>
-                              </AnimateButton>
+                                  Tên Lớp: {item.class_Name}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12}>
+                                <Typography
+                                  gutterBottom
+                                  variant="h2"
+                                  component="div"
+                                  align="center"
+                                  color="#fff"
+                                >
+                                  Mô Tả: {item.description}
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12}>
+                                <Typography
+                                  gutterBottom
+                                  variant="h2"
+                                  component="div"
+                                  align="center"
+                                  color="#fff"
+                                >
+                                  Giá Tiền: {item.class_Fee}
+                                  <IconCurrencyDong
+                                    strokeWidth={2}
+                                    size="1.5rem"
+                                    style={{
+                                      marginTop: "auto",
+                                      marginBottom: "auto",
+                                      position: "relative",
+                                      top: theme.spacing(1) / 4,
+                                    }}
+                                  />
+                                </Typography>
+                              </Grid>
+                              <Grid item xs={12} md={6}>
+                                <AnimateButton>
+                                  <Button
+                                    fullWidth
+                                    variant="contained"
+                                    onClick={() =>
+                                      handleClickCourse(item.class_Name)
+                                    }
+                                  >
+                                    Đăng Ký {item.class_Name}
+                                  </Button>
+                                </AnimateButton>
+                              </Grid>
                             </Grid>
-                          </Grid>
-                        </CustomBox>
-                      </Grid>
-                    ) : (
-                      <Grid item xs={12} md={6}>
-                        <CustomBox
-                          sx={{
-                            minHeight: "calc(100vh - 108px)",
-                            backgroundImage: `url("${item.image_Source}")`,
-                          }}
-                          className={classes.backgroundImage}
-                        ></CustomBox>
-                      </Grid>
-                    )}
-                  </Grid>
-                </Container>
+                          </CustomBox>
+                        </Grid>
+                      ) : (
+                        <Grid item xs={12} md={6}>
+                          <CustomBox
+                            sx={{
+                              minHeight: "calc(100vh - 108px)",
+                              backgroundImage: `url("${item.image_Source}")`,
+                            }}
+                            className={classes.backgroundImage}
+                          ></CustomBox>
+                        </Grid>
+                      )}
+                    </Grid>
+                  </Container>
+                </Grid>
               </Grid>
             </motion.div>
           </motion.div>

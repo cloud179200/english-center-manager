@@ -63,7 +63,7 @@ export const getClientDataAction = (callback) => {
     try {
       const res = await getClientDataService();
       if (res?.data) {
-        callback(res, null);
+        callback(res.data, null);
         return;
       }
       callback(null, API_MESSAGE.SERVER_ERROR);

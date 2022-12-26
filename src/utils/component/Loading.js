@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 const { Box, CircularProgress } = require("@mui/material");
 import loadingSVG from "../../assets/images/loading.svg";
 
-const LoadingComponent = ({ isModal = false }) => {
+const LoadingComponent = ({ isModal = false, height = "100vh" }) => {
   const userDetail = useSelector((state) => state.user.userDetail);
   return (
     <Box
@@ -12,7 +12,7 @@ const LoadingComponent = ({ isModal = false }) => {
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
-        height: isModal ? "30vh" : "100vh",
+        height: isModal ? "30vh" : height,
       }}
     >
       {userDetail?.user_Type ? (

@@ -34,10 +34,11 @@ import {
 } from "../../../redux/landing/operators";
 import LoadingComponent from "../../../utils/component/Loading";
 import { uniqueKey } from "../../../utils";
+import { DEFAULT_BACKGROUND_IMAGE } from "../../../redux/customization/constant";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    background: `background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);`,
+    backgroundImage: DEFAULT_BACKGROUND_IMAGE,
   },
   flexCenter: {
     display: "flex",

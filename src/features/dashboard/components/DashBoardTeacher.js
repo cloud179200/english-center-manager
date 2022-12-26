@@ -3,6 +3,7 @@ import {
   IconBan,
   IconChecks,
   IconClockHour3,
+  IconCurrencyDong,
   IconHourglass,
 } from "@tabler/icons";
 import {
@@ -20,6 +21,7 @@ import moment from "moment";
 import _ from "lodash";
 import CustomBox from "../../../components/custom-box/CustomBox.js";
 import { useSelector } from "react-redux";
+import { DEFAULT_BACKGROUND_IMAGE } from "../../../redux/customization/constant.js";
 
 const DashBoardTeacher = () => {
   const theme = useTheme();
@@ -102,20 +104,7 @@ const DashBoardTeacher = () => {
   return (
     <>
       <Grid container columnSpacing={4} rowSpacing={4}>
-        <Grid item xs={12} md={6} sx={{ height: "50%" }}>
-          <CustomBox
-            sx={{
-              backgroundImage:
-                "linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%)",
-            }}
-          >
-            <Typography variant="h3" align="center" mb={2} mt={2}>
-              Tổng Số Tiền Đã Nhận:
-            </Typography>
-            <CountUp end={888888888} duration="3" />
-          </CustomBox>
-        </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={9}>
           <CustomBox>
             <CustomTable
               headers={[
@@ -129,6 +118,70 @@ const DashBoardTeacher = () => {
               title={`Lịch Sử Điểm Danh`}
             />
           </CustomBox>
+        </Grid>
+        <Grid container item xs={12} md={3} sx={{ height: "50%" }}>
+          <Grid item xs={12}>
+            <CustomBox
+              sx={{
+                backgroundImage: DEFAULT_BACKGROUND_IMAGE,
+              }}
+            >
+              <Typography
+                variant="h3"
+                align="center"
+                mb={2}
+                mt={2}
+                color={theme.palette.background.default}
+              >
+                Tổng Số Tiền Đã Nhận:
+              </Typography>
+              <Typography
+                variant="h1"
+                align="center"
+                mb={2}
+                mt={2}
+                color={theme.palette.background.default}
+              >
+                <CountUp end={888888888} duration="2" separator="." />
+                <IconCurrencyDong
+                  strokeWidth={2}
+                  size="1.5rem"
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    position: "relative",
+                    top: theme.spacing(1) / 4,
+                  }}
+                />
+              </Typography>
+            </CustomBox>
+          </Grid>
+          <Grid item xs={12}>
+            <CustomBox
+              sx={{
+                backgroundImage: DEFAULT_BACKGROUND_IMAGE,
+              }}
+            >
+              <Typography
+                variant="h3"
+                align="center"
+                mb={2}
+                mt={2}
+                color={theme.palette.background.default}
+              >
+                Buổi Học Đã Dạy:
+              </Typography>
+              <Typography
+                variant="h1"
+                align="center"
+                mb={2}
+                mt={2}
+                color={theme.palette.background.default}
+              >
+                <CountUp end={999} duration="2" separator="." />
+              </Typography>
+            </CustomBox>
+          </Grid>
         </Grid>
       </Grid>
     </>

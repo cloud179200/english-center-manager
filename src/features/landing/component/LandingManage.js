@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import LoadingComponent from "../../../utils/component/Loading";
 import CustomBox from "../../../components/custom-box/CustomBox";
 import {
@@ -23,23 +23,27 @@ import { landingManageSchema } from "../schema";
 import AnimateButton from "../../../components/extended/Animate";
 import { uniqueKey, fileToBase64 } from "./../../../utils/index";
 import _ from "lodash";
-import { IconTrash } from "@tabler/icons";
+import { IconEdit, IconFileExport, IconTrash } from "@tabler/icons";
 import {
   getClientDataAction,
   getLandingPageDataAction,
   setLandingPageDataAction,
 } from "../../../redux/landing/operators";
+import CustomTable from "../../../components/custom-table/CustomTable";
+import { CSVLink } from "react-csv";
 
 const LandingManageComponent = () => {
   const theme = useTheme();
 
-  const loadingCommon = useSelector((state) => state.common.loading);
   const dispatch = useDispatch();
   const [defaultLandingData, setDefaultLandingData] = useState([]);
   const [landingData, setLandingData] = useState([]);
-
+  const [landingClientData, setLandingClientData] = useState([]);
+  const [loadingLandingData, setLoadingLandingData] = useState(false);
+  const [loadingClientData, setLoadingClientData] = useState(false);
   const initialValues = useMemo(
     () => ({
+      Id: "",
       class_Name: "",
       class_Fee: 0,
       image_Source: "",
@@ -51,7 +55,24 @@ const LandingManageComponent = () => {
   const formik = useFormik({
     initialValues,
     validationSchema: landingManageSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, formikHelpers) => {
+      if (values.Id) {
+        const newLandingData = _.cloneDeep(landingData);
+        newLandingData.map((item) =>
+          item.Id === values.Id
+            ? {
+                ...item,
+                class_Name: values.class_Name,
+                class_Fee: values.class_Fee,
+                description: values.description,
+                image_Source: values.image_Source,
+              }
+            : item
+        );
+        setLandingData(newLandingData);
+        formikHelpers.setFieldValue("Id", "");
+        return;
+      }
       setLandingData([...landingData, { Id: uniqueKey(), ...values }]);
     },
   });
@@ -88,9 +109,15 @@ const LandingManageComponent = () => {
     }
   };
 
+  const handleExportLandingClientCSV = () => {
+    return;
+  };
+
   const getLandingData = () => {
+    setLoadingLandingData(true);
     dispatch(
       getLandingPageDataAction((res, err) => {
+        setLoadingLandingData(false);
         if (err) {
           return;
         }
@@ -102,12 +129,21 @@ const LandingManageComponent = () => {
   };
 
   const getLandingClientData = () => {
+    setLoadingClientData(true);
     dispatch(
       getClientDataAction((res, err) => {
+        setLoadingClientData(false);
         if (err) {
           return;
         }
-        debugger
+        setLandingClientData(
+          res.map((item) => ({
+            email: item.email,
+            full_Name: item.full_Name,
+            phone_Number: item.phone_Number,
+            note: item.note,
+          }))
+        );
       })
     );
   };
@@ -123,6 +159,7 @@ const LandingManageComponent = () => {
     isSubmitting,
     setFieldValue,
     setSubmitting,
+    setValues,
   } = formik;
 
   useEffect(() => {
@@ -132,19 +169,23 @@ const LandingManageComponent = () => {
 
   return (
     <>
-      {loadingCommon ? (
-        <LoadingComponent />
-      ) : (
-        <>
-          <CustomBox>
-            <Grid container columnSpacing={2} rowSpacing={2}>
-              <Grid container justifyContent="center" item xs={12} md={6} columnSpacing={2} rowSpacing={2}>
-                <Grid container item xs={12} columnSpacing={2} rowSpacing={2} >
-                  {landingData.length === 0 && (
-                    <Grid item xs={12} md={6}>
+      <CustomBox>
+        <Grid container columnSpacing={2} rowSpacing={2}>
+          <Grid container justifyContent="center" item xs={12} md={4}>
+            <Grid container item xs={12}>
+              {loadingLandingData ? (
+                <LoadingComponent height="50vh" />
+              ) : (
+                <>
+                  {landingData.length === 0 ? (
+                    <Grid item xs={12}>
                       <Typography variant="h4">
                         Không Có Lớp Học Quảng Cáo...
                       </Typography>
+                    </Grid>
+                  ) : (
+                    <Grid item xs={12}>
+                      <Typography variant="h4">Lớp Học Quảng Cáo</Typography>
                     </Grid>
                   )}
                   {landingData.map((item) => (
@@ -153,18 +194,26 @@ const LandingManageComponent = () => {
                       key={item.class_Name + "-" + item.Id}
                       style={{ transitionDelay: `100ms` }}
                     >
-                      <Grid container item xs={12} md={6} columnSpacing={2} maxHeight="100px">
+                      <Grid
+                        container
+                        item
+                        xs={12}
+                        maxHeight="100px"
+                        flexWrap="nowrap"
+                        columnSpacing={1}
+                      >
                         <Grid item xs={3}>
                           <CardMedia
                             component="img"
                             src={item.image_Source}
                             alt="wang ping"
                             sx={{
-                              maxWidth: "100px"
+                              maxHeight: "100px",
+                              maxWidth: "100px",
                             }}
                           />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={8}>
                           <Typography
                             gutterBottom
                             variant="h4"
@@ -188,7 +237,7 @@ const LandingManageComponent = () => {
                               color="text.primary"
                               component="div"
                               sx={{
-                                maxWidth: "100%",
+                                maxWidth: "300px",
                                 maxHeight: "4rem",
                                 whiteSpace: "nowrap",
                                 overflow: "hidden",
@@ -199,186 +248,249 @@ const LandingManageComponent = () => {
                             </Typography>
                           </Tooltip>
                         </Grid>
-                        <Grid container item xs={3} justifyContent="center" alignItems="center">
-                          <IconButton
-                            onClick={() =>
-                              handleRemoveLandingData(_.cloneDeep(item))
-                            }
-                            color="error"
-                            sx={{
-                              maxheight: "100px",
-                            }}
+                        <Grid
+                          item
+                          xs={2}
+                          container
+                          justifyContent="center"
+                          alignItems="center"
+                        >
+                          <Grid
+                            item
+                            xs={12}
+                            container
+                            justifyContent="center"
+                            alignItems="center"
                           >
-                            <IconTrash
-                              strokeWidth={2}
-                              size="1.5rem"
-                              style={{
-                                marginTop: "auto",
-                                marginBottom: "auto",
+                            <IconButton
+                              onClick={() => setValues(_.cloneDeep(item))}
+                              disabled={item?.Id === values.Id}
+                              sx={{
+                                maxheight: "100px",
                               }}
-                            />
-                          </IconButton>
+                            >
+                              <IconEdit
+                                strokeWidth={2}
+                                size="1.5rem"
+                                style={{
+                                  marginTop: "auto",
+                                  marginBottom: "auto",
+                                }}
+                              />
+                            </IconButton>
+                          </Grid>
+                          <Grid
+                            xs={12}
+                            container
+                            justifyContent="center"
+                            alignItems="center"
+                          >
+                            {" "}
+                            <IconButton
+                              onClick={() =>
+                                handleRemoveLandingData(_.cloneDeep(item))
+                              }
+                              color="error"
+                              sx={{
+                                maxheight: "100px",
+                              }}
+                            >
+                              <IconTrash
+                                strokeWidth={2}
+                                size="1.5rem"
+                                style={{
+                                  marginTop: "auto",
+                                  marginBottom: "auto",
+                                }}
+                              />
+                            </IconButton>
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Fade>
                   ))}
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <AnimateButton>
-                    <Button
-                      disableElevation
-                      disabled={
-                        loadingCommon || _.isEqual(defaultLandingData, landingData)
-                      }
-                      onClick={handleSetLandingData}
-                      fullWidth
-                      size="large"
-                      variant="contained"
-                      color="secondary"
-                      endIcon={
-                        loadingCommon ? (
-                          <CircularProgress color="secondary" size={20} />
-                        ) : null
-                      }
-                    >
-                      {NAME_TRANS_VN.SAVE}
-                    </Button>
-                  </AnimateButton>
-                </Grid>
+                </>
+              )}
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <AnimateButton>
+                <Button
+                  disableElevation
+                  disabled={
+                    loadingLandingData ||
+                    _.isEqual(defaultLandingData, landingData)
+                  }
+                  onClick={handleSetLandingData}
+                  fullWidth
+                  size="large"
+                  variant="contained"
+                  color="secondary"
+                >
+                  {NAME_TRANS_VN.SAVE}
+                </Button>
+              </AnimateButton>
+            </Grid>
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <Grid
+              container
+              component="form"
+              justifyContent="center"
+              alignItems="center"
+              onSubmit={handleSubmit}
+              rowSpacing={2}
+              columnSpacing={2}
+            >
+              <Grid item xs={12}>
+                <Typography variant="h4">Thêm Lớp Học Quảng Cáo</Typography>
               </Grid>
               <Grid item xs={12} md={6}>
-                <Grid
-                  container
-                  component="form"
-                  justifyContent="center"
-                  alignItems="center"
-                  onSubmit={handleSubmit}
-                  rowSpacing={2}
-                  columnSpacing={2}
+                <FormControl
+                  fullWidth
+                  error={Boolean(touched.class_Name && errors.class_Name)}
+                  sx={{ ...theme.typography.customInput }}
                 >
-                  <Grid item xs={12}>
-                    <Typography variant="h4">
-                      Thêm Khóa Học Quảng Cáo
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <FormControl
-                      fullWidth
-                      error={Boolean(touched.class_Name && errors.class_Name)}
-                      sx={{ ...theme.typography.customInput }}
-                    >
-                      <InputLabel>{NAME_TRANS_VN.CLASS_NAME}</InputLabel>
-                      <OutlinedInput
-                        value={values.class_Name}
-                        name="class_Name"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        label={NAME_TRANS_VN.CLASS_NAME}
-                        autoComplete="off"
-                      />
-                      {touched.class_Name && errors.class_Name && (
-                        <FormHelperText error>
-                          {errors.class_Name}
-                        </FormHelperText>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <FormControl
-                      fullWidth
-                      error={Boolean(touched.class_Fee && errors.class_Fee)}
-                      sx={{ ...theme.typography.customInput }}
-                    >
-                      <InputLabel>{NAME_TRANS_VN.CLASS_FEE}</InputLabel>
-                      <OutlinedInput
-                        value={values.class_Fee}
-                        name="class_Fee"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        label={NAME_TRANS_VN.CLASS_FEE}
-                        autoComplete="off"
-                        type="number"
-                      />
-                      {touched.class_Fee && errors.class_Fee && (
-                        <FormHelperText error>
-                          {errors.class_Fee}
-                        </FormHelperText>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl
-                      fullWidth
-                      error={Boolean(
-                        touched.image_Source && errors.image_Source
-                      )}
-                      sx={{ ...theme.typography.customInput }}
-                    >
-                      <InputLabel>{"Ảnh Khóa Học"}</InputLabel>
-                      <OutlinedInput
-                        name="image_Source"
-                        onBlur={handleBlur}
-                        onChange={handleSetImageSourceBase64}
-                        autoComplete="off"
-                        type="file"
-                      />
-                      {touched.image_Source && errors.image_Source && (
-                        <FormHelperText error>
-                          {errors.image_Source}
-                        </FormHelperText>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl
-                      fullWidth
-                      error={Boolean(touched.description && errors.description)}
-                      sx={{ ...theme.typography.customInput }}
-                    >
-                      <InputLabel>{NAME_TRANS_VN.DESCRIPTION}</InputLabel>
-                      <OutlinedInput
-                        value={values.description}
-                        name="description"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        label={NAME_TRANS_VN.DESCRIPTION}
-                        autoComplete="off"
-                        multiline
-                        minRows={3}
-                      />
-                      {touched.description && errors.description && (
-                        <FormHelperText error>
-                          {errors.description}
-                        </FormHelperText>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <AnimateButton>
-                      <Button
-                        disableElevation
-                        disabled={isSubmitting || !isValid}
-                        onClick={handleSubmit}
-                        fullWidth
-                        size="large"
-                        variant="contained"
-                        color="secondary"
-                        endIcon={
-                          isSubmitting ? (
-                            <CircularProgress color="secondary" size={20} />
-                          ) : null
-                        }
-                      >
-                        {NAME_TRANS_VN.ADD}
-                      </Button>
-                    </AnimateButton>
-                  </Grid>
-                </Grid>
+                  <InputLabel>{NAME_TRANS_VN.CLASS_NAME}</InputLabel>
+                  <OutlinedInput
+                    value={values.class_Name}
+                    name="class_Name"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    label={NAME_TRANS_VN.CLASS_NAME}
+                    autoComplete="off"
+                  />
+                  {touched.class_Name && errors.class_Name && (
+                    <FormHelperText error>{errors.class_Name}</FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <FormControl
+                  fullWidth
+                  error={Boolean(touched.class_Fee && errors.class_Fee)}
+                  sx={{ ...theme.typography.customInput }}
+                >
+                  <InputLabel>{NAME_TRANS_VN.CLASS_FEE}</InputLabel>
+                  <OutlinedInput
+                    value={values.class_Fee}
+                    name="class_Fee"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    label={NAME_TRANS_VN.CLASS_FEE}
+                    autoComplete="off"
+                    type="number"
+                  />
+                  {touched.class_Fee && errors.class_Fee && (
+                    <FormHelperText error>{errors.class_Fee}</FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl
+                  fullWidth
+                  error={Boolean(touched.image_Source && errors.image_Source)}
+                  sx={{ ...theme.typography.customInput }}
+                >
+                  <InputLabel>{"Ảnh Khóa Học"}</InputLabel>
+                  <OutlinedInput
+                    name="image_Source"
+                    onBlur={handleBlur}
+                    onChange={handleSetImageSourceBase64}
+                    autoComplete="off"
+                    type="file"
+                  />
+                  {touched.image_Source && errors.image_Source && (
+                    <FormHelperText error>{errors.image_Source}</FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl
+                  fullWidth
+                  error={Boolean(touched.description && errors.description)}
+                  sx={{ ...theme.typography.customInput }}
+                >
+                  <InputLabel>{NAME_TRANS_VN.DESCRIPTION}</InputLabel>
+                  <OutlinedInput
+                    value={values.description}
+                    name="description"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    label={NAME_TRANS_VN.DESCRIPTION}
+                    autoComplete="off"
+                    multiline
+                    minRows={3}
+                  />
+                  {touched.description && errors.description && (
+                    <FormHelperText error>{errors.description}</FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <AnimateButton>
+                  <Button
+                    disableElevation
+                    disabled={isSubmitting || !isValid}
+                    onClick={handleSubmit}
+                    fullWidth
+                    size="large"
+                    variant="contained"
+                    color="secondary"
+                    endIcon={
+                      isSubmitting ? (
+                        <CircularProgress color="secondary" size={20} />
+                      ) : null
+                    }
+                  >
+                    {values.Id ? NAME_TRANS_VN.EDIT : NAME_TRANS_VN.ADD}
+                  </Button>
+                </AnimateButton>
               </Grid>
             </Grid>
-          </CustomBox>
-        </>
-      )}
+          </Grid>
+        </Grid>
+      </CustomBox>
+      <CustomBox>
+        <Grid container justifyContent="flex-end">
+          <Grid item xs={12}>
+            {loadingClientData ? (
+              <LoadingComponent height="50vh" />
+            ) : (
+              <CustomTable
+                headers={["Email", "Tên Khách Hàng", "SĐT", "Ghi Chú"]}
+                data={landingClientData}
+                title={`Danh Sách Khách Hàng Yêu Cầu Tư Vấn`}
+              />
+            )}
+          </Grid>
+          <Grid item xs={12} md={3} sx={{ marginTop: theme.spacing(2) }}>
+            <CSVLink
+              data={landingClientData}
+              style={{ textDecoration: "none" }}
+            >
+              <Button
+                variant="contained"
+                color="secondary"
+                size="small"
+                endIcon={
+                  <IconFileExport
+                    stroke={1.5}
+                    size="1.5rem"
+                    style={{ marginTop: "auto", marginBottom: "auto" }}
+                  />
+                }
+                disabled={loadingClientData}
+                onClick={handleExportLandingClientCSV}
+                sx={{
+                  width: "100%",
+                }}
+              >
+                Xuất Dữ Liệu
+              </Button>
+            </CSVLink>
+          </Grid>
+        </Grid>
+      </CustomBox>
     </>
   );
 };

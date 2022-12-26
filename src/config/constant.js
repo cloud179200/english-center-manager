@@ -82,6 +82,7 @@ export const NAME_TRANS_VN = {
   STAGE_DELETE: "Xóa Buổi Học",
   SAVE: "Lưu",
   ADD: "Thêm",
+  EDIT: "Sửa",
   NAME: "Tên",
   LANDING_PAGE: "Trang Quảng Cảo",
   MALE: "Nam",

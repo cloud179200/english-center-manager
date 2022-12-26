@@ -16,7 +16,7 @@ export const postService = async (
     const headers = isFormData
       ? { "Content-Type": "multipart/form-data" }
       : { Accept: "application/json ", "Content-Type": "application/json" };
-
+    headers["ngrok-skip-browser-warning"] = "true";
     if (isAuthorization) {
       headers["Authorization"] =
         "Bearer " + (localStorage.getItem("auth_token") || "");
@@ -81,6 +81,7 @@ export const getService = async (
     const headers = isFormData
       ? { "Content-Type": "multipart/form-data" }
       : { Accept: "application/json", "Content-Type": "application/json" };
+    headers["ngrok-skip-browser-warning"] = "true";
 
     if (isAuthorization) {
       headers["Authorization"] =

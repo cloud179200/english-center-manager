@@ -57,6 +57,10 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: 4,
     },
   },
+  hightlightText: {
+    color: "#fff",
+    textShadow: `2px 2px 24px ${theme.palette.common.black}`,
+  },
   backgroundImage: {
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
@@ -266,35 +270,36 @@ const LandingComponent = () => {
                             >
                               <Grid item xs={12}>
                                 <Typography
+                                  className={classes.hightlightText}
                                   gutterBottom
                                   variant="h2"
                                   component="div"
                                   align="center"
-                                  color="#fff"
                                 >
                                   Tên Lớp: {item.class_Name}
                                 </Typography>
                               </Grid>
                               <Grid item xs={12}>
                                 <Typography
+                                  className={classes.hightlightText}
                                   gutterBottom
                                   variant="h2"
                                   component="div"
                                   align="center"
-                                  color="#fff"
                                 >
                                   Mô Tả: {item.description}
                                 </Typography>
                               </Grid>
                               <Grid item xs={12}>
                                 <Typography
+                                  className={classes.hightlightText}
                                   gutterBottom
                                   variant="h2"
                                   component="div"
                                   align="center"
-                                  color="#fff"
                                 >
-                                  Giá Tiền: <NumericFormat
+                                  Giá Tiền:{" "}
+                                  <NumericFormat
                                     value={item.class_Fee}
                                     thousandsGroupStyle="lakh"
                                     displayType="text"
@@ -354,33 +359,33 @@ const LandingComponent = () => {
                             >
                               <Grid item xs={12}>
                                 <Typography
+                                  className={classes.hightlightText}
                                   gutterBottom
                                   variant="h2"
                                   component="div"
                                   align="center"
-                                  color="#fff"
                                 >
                                   Tên Lớp: {item.class_Name}
                                 </Typography>
                               </Grid>
                               <Grid item xs={12}>
                                 <Typography
+                                  className={classes.hightlightText}
                                   gutterBottom
                                   variant="h2"
                                   component="div"
                                   align="center"
-                                  color="#fff"
                                 >
                                   Mô Tả: {item.description}
                                 </Typography>
                               </Grid>
                               <Grid item xs={12}>
                                 <Typography
+                                  className={classes.hightlightText}
                                   gutterBottom
                                   variant="h2"
                                   component="div"
                                   align="center"
-                                  color="#fff"
                                 >
                                   Giá Tiền:{" "}
                                   <NumericFormat

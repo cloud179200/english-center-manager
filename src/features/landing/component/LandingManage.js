@@ -430,7 +430,7 @@ const LandingManageComponent = () => {
                         : ""
                     }
                     onBlur={handleBlur}
-                    onFocus={() =>
+                    onClick={() =>
                       imageSourceRef.current && imageSourceRef.current?.click()
                     }
                     autoComplete="off"

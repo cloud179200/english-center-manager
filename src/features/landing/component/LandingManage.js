@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import LoadingComponent from "../../../utils/component/Loading";
 import CustomBox from "../../../components/custom-box/CustomBox";
@@ -41,11 +41,15 @@ const LandingManageComponent = () => {
   const [landingClientData, setLandingClientData] = useState([]);
   const [loadingLandingData, setLoadingLandingData] = useState(false);
   const [loadingClientData, setLoadingClientData] = useState(false);
+
+  const imageSourceRef = useRef(null);
+
   const initialValues = useMemo(
     () => ({
       Id: "",
       class_Name: "",
       class_Fee: 0,
+      image_Name: "",
       image_Source: "",
       description: "",
     }),
@@ -57,18 +61,18 @@ const LandingManageComponent = () => {
     validationSchema: landingManageSchema,
     onSubmit: async (values, formikHelpers) => {
       if (values.Id) {
-        setLandingData(prevLandingData => {
+        setLandingData((prevLandingData) => {
           return prevLandingData.map((item) =>
-          item.Id === values.Id
-            ? {
-                ...item,
-                class_Name: values.class_Name,
-                class_Fee: values.class_Fee,
-                description: values.description,
-                image_Source: values.image_Source,
-              }
-            : item
-        );
+            item.Id === values.Id
+              ? {
+                  ...item,
+                  class_Name: values.class_Name,
+                  class_Fee: values.class_Fee,
+                  description: values.description,
+                  image_Source: values.image_Source,
+                }
+              : item
+          );
         });
         formikHelpers.setFieldValue("Id", "");
         return;
@@ -87,6 +91,7 @@ const LandingManageComponent = () => {
   });
 
   const handleSetLandingData = () => {
+    setLoadingLandingData(true);
     dispatch(
       setLandingPageDataAction(
         _.cloneDeep(landingData).map((item) => ({
@@ -96,6 +101,7 @@ const LandingManageComponent = () => {
           image_Source: item.image_Source,
         })),
         (res, err) => {
+          setLoadingLandingData(false);
           if (err) {
             return;
           }
@@ -115,6 +121,7 @@ const LandingManageComponent = () => {
     setSubmitting(false);
     if (value) {
       setFieldValue("image_Source", value || "");
+      setFieldValue("image_Name", e?.target?.files[0].name || "");
     }
   };
 
@@ -272,7 +279,12 @@ const LandingManageComponent = () => {
                             alignItems="center"
                           >
                             <IconButton
-                              onClick={() => setValues(_.cloneDeep(item))}
+                              onClick={() =>
+                                setValues({
+                                  ..._.cloneDeep(item),
+                                  image_Name: "",
+                                })
+                              }
                               disabled={item?.Id === values.Id}
                               sx={{
                                 maxheight: "100px",
@@ -403,10 +415,24 @@ const LandingManageComponent = () => {
                   <InputLabel>{"Ảnh Khóa Học"}</InputLabel>
                   <OutlinedInput
                     name="image_Source"
+                    value={
+                      values.image_Source
+                        ? values.image_Name || "base64.jpg"
+                        : ""
+                    }
                     onBlur={handleBlur}
-                    onChange={handleSetImageSourceBase64}
+                    onFocus={() =>
+                      imageSourceRef.current && imageSourceRef.current?.click()
+                    }
                     autoComplete="off"
+                  />
+                  <OutlinedInput
+                    onChange={handleSetImageSourceBase64}
                     type="file"
+                    inputRef={imageSourceRef}
+                    sx={{
+                      display: "none",
+                    }}
                   />
                   {touched.image_Source && errors.image_Source && (
                     <FormHelperText error>{errors.image_Source}</FormHelperText>

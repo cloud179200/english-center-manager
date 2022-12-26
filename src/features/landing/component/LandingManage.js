@@ -73,7 +73,16 @@ const LandingManageComponent = () => {
         formikHelpers.setFieldValue("Id", "");
         return;
       }
-      setLandingData([...landingData, { Id: uniqueKey(), ...values }]);
+      setLandingData([
+        ...landingData,
+        {
+          Id: uniqueKey(),
+          class_Name: values.class_Name,
+          class_Fee: values.class_Fee,
+          description: values.description,
+          image_Source: values.image_Source,
+        },
+      ]);
     },
   });
 
@@ -188,11 +197,11 @@ const LandingManageComponent = () => {
                       <Typography variant="h4">Lớp Học Quảng Cáo</Typography>
                     </Grid>
                   )}
-                  {landingData.map((item) => (
+                  {landingData.map((item, index) => (
                     <Fade
                       in={true}
                       key={item.class_Name + "-" + item.Id}
-                      style={{ transitionDelay: `100ms` }}
+                      style={{ transitionDelay: `${index * 100}ms` }}
                     >
                       <Grid
                         container

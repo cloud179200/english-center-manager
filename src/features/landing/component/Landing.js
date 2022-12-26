@@ -35,6 +35,7 @@ import {
 import LoadingComponent from "../../../utils/component/Loading";
 import { uniqueKey } from "../../../utils";
 import { DEFAULT_BACKGROUND_IMAGE } from "../../../redux/customization/constant";
+import { NumericFormat } from "react-number-format";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -239,17 +240,13 @@ const LandingComponent = () => {
                 sx={{
                   backgroundImage: `url("${item.image_Source}")`,
                 }}
-                className={clsx([
-                  classes.backgroundImage,
-                ])}
+                className={clsx([classes.backgroundImage])}
                 item
                 xs={12}
               >
                 <Grid
                   container
-                  className={clsx([
-                    classes.courseItemBackground,
-                  ])}
+                  className={clsx([classes.courseItemBackground])}
                 >
                   <Container maxWidth="xl">
                     <Grid container>
@@ -297,7 +294,11 @@ const LandingComponent = () => {
                                   align="center"
                                   color="#fff"
                                 >
-                                  Giá Tiền: {item.class_Fee}{" "}
+                                  Giá Tiền: <NumericFormat
+                                    value={item.class_Fee}
+                                    thousandsGroupStyle="lakh"
+                                    displayType="text"
+                                  />
                                   <IconCurrencyDong
                                     strokeWidth={2}
                                     size="1.5rem"
@@ -381,7 +382,12 @@ const LandingComponent = () => {
                                   align="center"
                                   color="#fff"
                                 >
-                                  Giá Tiền: {item.class_Fee}
+                                  Giá Tiền:{" "}
+                                  <NumericFormat
+                                    value={item.class_Fee}
+                                    thousandSeparator={true}
+                                    displayType="text"
+                                  />
                                   <IconCurrencyDong
                                     strokeWidth={2}
                                     size="1.5rem"

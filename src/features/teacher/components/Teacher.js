@@ -41,6 +41,7 @@ import PayrollDeleteModal from "./PayrollDeleteModal";
 import PayrollEditModal from "./PayrollEditModal";
 import PayrollAddModal from "./PayrollAddModal";
 import { addNotificationAction } from "../../../redux/utils/operators";
+import { NumericFormat } from "react-number-format";
 
 export const initTeacherFilter = {
   teacher_Id: "",
@@ -107,8 +108,8 @@ const TeacherComponent = () => {
   };
 
   const handleOpenSelectSalaryMenu = (e, item) => {
-    if(!payrolls.length) {
-      dispatch(addNotificationAction("Hiện Không Có Bậc Lương Nào!", true))
+    if (!payrolls.length) {
+      dispatch(addNotificationAction("Hiện Không Có Bậc Lương Nào!", true));
       return;
     }
     setOpenMenu(true);
@@ -355,7 +356,11 @@ const TeacherComponent = () => {
       payroll_Name: item.payroll_Name,
       payroll_Value: (
         <>
-          {item.payroll_Value}
+          <NumericFormat
+            value={item.payroll_Value}
+            thousandSeparator={true}
+            displayType="text"
+          />
           <IconCurrencyDong
             strokeWidth={2}
             size="1.5rem"

@@ -29,14 +29,14 @@ import {
 } from "../../../redux/student/operators";
 import AnimateButton from "../../../components/extended/Animate";
 import { NAME_TRANS_VN } from "../../../config/constant";
-
 import moment from "moment";
-
+import { NumericFormat } from "react-number-format";
 import {
   confirmTeacherTransactionAction,
   getTeacherTransactionsByMonthAction,
 } from "../../../redux/teacher/operators";
 import TransactionFilterTeacherComponent from "./TransactionFilterTeacherComponent";
+
 export const initTransactionStudentFilter = {
   class_Name: "",
   student_Name: "",
@@ -365,7 +365,11 @@ const TransactionComponent = () => {
               student_Name: item.student_Name,
               class_Fee: (
                 <>
-                  {item.class_Fee}
+                  <NumericFormat
+                    value={item.class_Fee}
+                    thousandSeparator={true}
+                    displayType="text"
+                  />
                   <IconCurrencyDong
                     strokeWidth={2}
                     size="1.5rem"
@@ -387,7 +391,11 @@ const TransactionComponent = () => {
               student_Name: item.student_Name,
               class_Fee: (
                 <>
-                  {item.class_Fee}
+                  <NumericFormat
+                    value={item.class_Fee}
+                    thousandSeparator={true}
+                    displayType="text"
+                  />
                   <IconCurrencyDong
                     strokeWidth={2}
                     size="1.5rem"
@@ -456,7 +464,11 @@ const TransactionComponent = () => {
               period: item.period,
               total: (
                 <>
-                  {item.total}
+                  <NumericFormat
+                    value={item.total}
+                    thousandSeparator={true}
+                    displayType="text"
+                  />
                   <IconCurrencyDong
                     strokeWidth={2}
                     size="1.5rem"
@@ -479,7 +491,12 @@ const TransactionComponent = () => {
               period: item.period,
               total: (
                 <>
-                  {item.total}
+                  <NumericFormat
+                    value={item.total}
+                    type="text"
+                    thousandSeparator={true}
+                    displayType="text"
+                  />
                   <IconCurrencyDong
                     strokeWidth={2}
                     size="1.5rem"
@@ -516,15 +533,20 @@ const TransactionComponent = () => {
   ]);
 
   useEffect(() => {
-    if(isRenderStudent){
+    if (isRenderStudent) {
       getTransactionStudentData();
-      return
+      return;
     }
-    if(isRenderTeacher){
+    if (isRenderTeacher) {
       getTransactionTeacherData();
-      return
+      return;
     }
-  }, [userDetail?.user_Type, isRenderStudent, isRenderTeacher, filterTeacher.selected_Month]);
+  }, [
+    userDetail?.user_Type,
+    isRenderStudent,
+    isRenderTeacher,
+    filterTeacher.selected_Month,
+  ]);
 
   return (
     <>

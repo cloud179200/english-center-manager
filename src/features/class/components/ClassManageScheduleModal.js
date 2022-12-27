@@ -172,7 +172,7 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
         const newData = (res?.schedules || []).map((item) => ({
           stage_Id: item.stage_Id,
           stage_Name: item.stage_Name,
-          schedule_Date: moment(item.schedule_Date).format("YYYY-MM-DD"),
+          schedule_Date: moment(item.schedule_Date).format("MM/DD/YYYY"),
         }));
         setScheduleDates(_.cloneDeep(newData));
         setDefaultScheduleDates(_.cloneDeep(newData));

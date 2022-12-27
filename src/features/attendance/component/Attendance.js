@@ -226,11 +226,11 @@ const Attendance = (props) => {
   }, [classObject?.list_Student, loading, attendanceStudents]);
 
   useEffect(() => {
-    if (!selectedDate) {
+    if (!selectedDate || !classObject?.class_Id) {
       return;
     }
     getAttendanceData();
-  }, [selectedDate]);
+  }, [selectedDate, classObject?.class_Id]);
 
   return (
     <>

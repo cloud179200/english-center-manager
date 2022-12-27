@@ -13,33 +13,35 @@ import {
   useTheme,
 } from "@mui/material";
 import CustomTable from "../../../components/custom-table/CustomTable.js";
-import attendanceStudentsMockData from "../../../config/data/attendance-student-mock-data.json";
 import { Pie } from "@ant-design/plots";
 import moment from "moment";
 import _ from "lodash";
 import CustomBox from "../../../components/custom-box/CustomBox.js";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import LoadingComponent from "../../../utils/component/Loading.js";
+import { getAttendanceByStudentIdAction } from "../../../redux/class/operators.js";
 
 const DashBoardStudent = () => {
   const theme = useTheme();
   const userDetail = useSelector(state => state.user.userDetail)
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
+  const dispatch = useDispatch()
   const [attendanceData, setAttendanceData] = useState([]);
-
-  const data = [
+  const [loading, setLoading] = useState([]);
+  const data = useMemo(() => ([
     {
       type: "Có Mặt",
-      value: 12,
+      value: _.cloneDeep(attendanceData).filter(item => item.attendance_Status === 1).length,
     },
     {
       type: "Muộn",
-      value: 4,
+      value: _.cloneDeep(attendanceData).filter(item => item.attendance_Status === 2).length,
     },
     {
       type: "Vắng",
-      value: 3,
+      value: _.cloneDeep(attendanceData).filter(item => item.attendance_Status === 3).length,
     },
-  ];
+  ]), [attendanceData]) 
   const config = {
     appendPadding: 10,
     data,
@@ -122,42 +124,57 @@ const DashBoardStudent = () => {
     },
     [matchDownSM]
   );
+  
+
+  const getAttendanceData = () => {
+    dispatch(
+      getAttendanceByStudentIdAction(userDetail?.reference_Id, (res, err) => {
+        setLoading(false);
+        if (err) {
+          return
+        }
+        setAttendanceData(res);
+      })
+    );
+  }
 
   const attendanceTableData = useMemo(() => {
-    return _.cloneDeep(attendanceData).map((item) => ({
+    return _.cloneDeep(attendanceData).sort().map((item) => ({
       student_Id: item.student_Id,
-      student_Name: userDetail?.first_Name +" "+userDetail.last_Name,
-      stage_Date: moment(item.stage_Date).toJSON(),
-      modified_Date: moment(item.modified_Date).toJSON(),
+      student_Name: userDetail?.first_Name + " " + userDetail.last_Name,
+      schedule_Date: moment(item.schedule_Date).format("MM/DD/YYYY"),
+      attendance_Date: moment(item.attendance_Date).toJSON(),
       utility: <AttendanceStatus item={item} />,
     }));
   }, [attendanceData]);
 
   useEffect(() => {
-    setAttendanceData(_.cloneDeep(attendanceStudentsMockData).slice(0, 5));
+    getAttendanceData()
   }, []);
 
   return (
     <>
       <Grid container columnSpacing={4} rowSpacing={4}>
-        <Grid item xs={12} md={6} sx={{ height: "50%" }}>
-          <Pie {...config} />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <CustomBox>
-            <CustomTable
-              headers={[
-                "Id",
-                "Tên Học Viên",
-                "Thời Gian Diễn Ra Buổi Học",
-                "Ngày Cập Nhật",
-                "#",
-              ]}
-              data={attendanceTableData}
-              title={`Lịch Sử Điểm Danh`}
-            />
-          </CustomBox>
-        </Grid>
+        {loading ? <LoadingComponent /> : <>
+          <Grid item xs={12} md={4}>
+            <Pie {...config} />
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <CustomBox>
+              <CustomTable
+                headers={[
+                  "Id",
+                  "Tên Học Viên",
+                  "Thời Gian Diễn Ra Buổi Học",
+                  "Ngày Cập Nhật",
+                  "#",
+                ]}
+                data={attendanceTableData}
+                title={`5 Buổi Điểm Danh Gần Nhất...`}
+              />
+            </CustomBox>
+          </Grid>
+        </>}
       </Grid>
     </>
   );

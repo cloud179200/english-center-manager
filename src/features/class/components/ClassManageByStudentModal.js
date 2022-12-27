@@ -32,16 +32,15 @@ import {
   getAttendanceByStudentIdAction,
 } from "../../../redux/class/operators";
 import CustomTable from "../../../components/custom-table/CustomTable";
-import attendanceStudentsMockData from "../../../config/data/attendance-student-mock-data.json";
 import moment from "moment";
 import LoadingComponent from "../../../utils/component/Loading";
-import AnimateButton from "../../../components/extended/Animate";
 import { Calendar } from "react-calendar";
 
 const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const calendarView = useSelector((state) => state.customization.calendarView);
+  const userDetail = useSelector((state) => state.user.userDetail);
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
@@ -153,20 +152,17 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
   const getAttendanceDataByStage = (stage_Id) => {
     setLoading(true);
     dispatch(
-      getAttendanceByStudentIdAction(classObject?.class_Id, (res, err) => {
+      getAttendanceByStudentIdAction(userDetail?.reference_Id, (res, err) => {
         setLoading(false);
-        if(err){
+        if (err) {
           return
         }
-        //TODO: binding attendance data
         const newAttendanceTableData = _.cloneDeep(attendanceTableData);
-        newAttendanceTableData[stage_Id] = _.cloneDeep(
-          attendanceStudentsMockData
-        ).map((item) => ({
+        newAttendanceTableData[stage_Id] = _.cloneDeep(res).filter(item => (item.stage_Id === stage_Id && item.class_Id === classObject?.class_Id)).map((item) => ({
           student_Id: item.student_Id,
-          student_Name: item.student_Name,
-          stage_Date: moment(item.stage_Date).toJSON(),
-          modified_Date: moment(item.modified_Date).toJSON(),
+          student_Name: userDetail.first_Name + ' ' + userDetail.last_Name,
+          schedule_Date: moment(item.schedule_Date).format("MM/DD/YYYY"),
+          attendance_Date: moment(item.attendance_Date).toJSON(),
           utility: <AttendanceStatus item={item} />,
         }));
         setAttendanceTableData(newAttendanceTableData);
@@ -186,20 +182,13 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
         const newData = (res?.schedules || []).map((item) => ({
           stage_Id: item.stage_Id,
           stage_Name: item.stage_Name,
-          schedule_Date: moment(item.schedule_Date).format("YYYY-MM-DD"),
+          schedule_Date: moment(item.schedule_Date).format("MM/DD/YYYY"),
         }));
         setScheduleDates(_.cloneDeep(newData));
       })
     );
   };
 
-  useEffect(() => {
-    if (!classObject?.class_Id) {
-      return;
-    }
-    getStageData();
-    getScheduleData();
-  }, [classObject?.class_Id]);
 
   useEffect(() => {
     if (!selectedStage?.stage_Id) {
@@ -207,6 +196,15 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
     }
     getAttendanceDataByStage(selectedStage.stage_Id);
   }, [selectedStage]);
+
+  useEffect(() => {
+    if (!open) {
+      return
+    }
+    setSelectedStage(null)
+    getStageData();
+    getScheduleData();
+  }, [open])
 
   return (
     <CustomModal
@@ -274,7 +272,6 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
                   {selectedStage && (
                     <>
                       <Grid item xs={12}>
-                        <AnimateButton type="slide">
                           <IconButton
                             color="secondary"
                             sx={{
@@ -284,7 +281,6 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
                           >
                             <IconChevronLeft strokeWidth={2} size="2rem" />
                           </IconButton>
-                        </AnimateButton>
                       </Grid>
                       <Grid item xs={12}>
                         {loading ? (

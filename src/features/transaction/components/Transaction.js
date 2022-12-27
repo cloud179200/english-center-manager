@@ -174,7 +174,7 @@ const TransactionComponent = () => {
     dispatch(
       confirmTeacherTransactionAction(
         itemTransaction.teacher_Id,
-        filterTeacher.selected_Month,
+        moment(filterTeacher.selected_Month).toDate().toISOString(),
         (res, err) => {
           setLoadingConfirmTeacher(
             [...loadingConfirmTeacher].filter((i) =>
@@ -201,7 +201,7 @@ const TransactionComponent = () => {
     setLoading(true);
     dispatch(
       getTeacherTransactionsByMonthAction(
-        filterTeacher.selected_Month,
+        moment(filterTeacher.selected_Month).toDate().toISOString(),
         (res, err) => {
           setLoading(false);
           if (err) {
@@ -514,6 +514,7 @@ const TransactionComponent = () => {
     transactionsTeacher,
     loadingConfirmTeacher,
     filterConfirmedTeacher,
+    userDetail?.user_Type
   ]);
 
   useEffect(() => {

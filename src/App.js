@@ -130,7 +130,7 @@ function App() {
             <Alert
               sx={{ width: "fit-content" }}
               variant="filled"
-              severity={notification?.error ? "error" : "primary"}
+              severity={notification?.error ? "error" : "success"}
               onClose={handleCloseNotification}
             >
               {notification?.message}

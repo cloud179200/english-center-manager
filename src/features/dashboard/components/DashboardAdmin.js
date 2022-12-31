@@ -1,56 +1,99 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import CustomBox from "../../../components/custom-box/CustomBox";
-import faker from "faker";
 import { Grid, useTheme } from "@mui/material";
 import _ from "lodash";
 // eslint-disable-next-line import/named
 import { Line } from "@ant-design/plots";
+import { getAdminDashboardDataAction } from "../../../redux/dashboard/operators";
+import { useDispatch } from "react-redux";
+// import moment from "moment";
+
 const DashboardAdmin = () => {
   const theme = useTheme();
+  const dispatch = useDispatch()
+  const [data, setData] = useState([])
+
   const labels = useMemo(
-    () => [
-      "Tháng 1",
-      "Tháng 2",
-      "Tháng 3",
-      "Tháng 4",
-      "Tháng 5",
-      "Tháng 6",
-      "Tháng 7",
-      "Tháng 8",
-      "Tháng 9",
-      "Tháng 10",
-      "Tháng 11",
-      "Tháng 12",
-    ],
-    []
+    () => {
+      const defaultLabel = [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+      ]
+
+      let result = []
+      const yearData = [...new Set([...data.map(item => item.transaction_Year.toString()), "2022"])]
+      const mappingLabelFunc = (item) => {
+        _.cloneDeep(defaultLabel).forEach(i => {
+          result.push({
+            label: "Tháng " + i + " - " + item,
+            transaction_Month: i,
+            transaction_Year: item
+          })
+        })
+        return item
+      }
+
+      yearData.forEach(mappingLabelFunc)
+      return result
+    },
+    [data]
   );
 
-  const data = useMemo(() => {
-    const sampleData = labels.map((item) => ({
-      date: item,
-      value: faker.datatype.number({ min: 0, max: 100000000 }),
-      category: _.sample(["Doanh Thu", "Chi Tiêu"]),
-    }));
 
-      return sampleData
-  }, []);
+  const dataFormatted = useMemo(() => {
+    let resultDataFormatted = []
+    labels.map((item) => {
+      const resultData = data.find(i => i.transaction_Month.toString() === item.transaction_Month && i.transaction_Year.toString() === item.transaction_Year)
+      resultDataFormatted.push({
+        date: item.label,
+        value: resultData?.income || 0,
+        category: "Doanh Thu",
+      })
 
-  const config = {
-    data,
+      resultDataFormatted.push({
+        date: item.label,
+        value: resultData?.outcome || 0,
+        category: "Chi Tiêu",
+      })
+      return item
+    });
+    return resultDataFormatted
+  }, [labels, data]);
+
+  const config = useMemo(() => ({
+    data: dataFormatted,
     xField: "date",
     yField: "value",
     seriesField: "category",
     point: {
-      size: 5,
+      size: 10,
       shape: "diamond",
     },
     color: [theme.palette.primary.main, theme.palette.secondary.main],
-  };
+  }), [dataFormatted]);
+
+  useEffect(() => {
+    dispatch(getAdminDashboardDataAction((res, err) => {
+      if (err) return
+      setData(res)
+    }))
+  }, []);
+  console.log({ dataFormatted })
   return (
     <Grid container columnSpacing={4} rowSpacing={4}>
       <Grid item xs={12}>
         <CustomBox>
-          <Line {...config} />
+          {Boolean(data.length) && <Line {...config} />}
         </CustomBox>
       </Grid>
     </Grid>

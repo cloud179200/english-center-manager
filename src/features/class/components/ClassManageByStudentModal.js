@@ -115,7 +115,7 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
 
   const PreviewStage = useCallback(
     ({ date }) => {
-      const momentDate = moment(_.cloneDeep(date)).format("YYYY-MM-DD");
+      const momentDate = moment(_.cloneDeep(date)).format("MM/DD/YYYY");
       const dateScheduleObject = scheduleDates.find(
         (item) => item.schedule_Date === momentDate
       );

@@ -37,7 +37,7 @@ const Attendance = (props) => {
   const userDetail = useSelector((state) => state.user.userDetail);
   const calendarView = useSelector((state) => state.customization.calendarView);
 
-  const momentDateNow = moment().format("YYYY-MM-DD");
+  const momentDateNow = moment().format("MM/DD/YYYY");
   const [selectedDate, setSelectedDate] = useState(null);
   const [loading, setLoading] = useState(false);
   const [attendanceStudents, setAttendanceStudents] = useState([]);
@@ -45,7 +45,7 @@ const Attendance = (props) => {
 
   const SelectDateButton = useCallback(
     ({ date }) => {
-      const momentDate = moment(_.cloneDeep(date)).format("YYYY-MM-DD");
+      const momentDate = moment(_.cloneDeep(date)).format("MM/DD/YYYY");
       const targetDateScheduleObject = _.cloneDeep(scheduleDates).find(
         (item) => item.schedule_Date === momentDate
       );

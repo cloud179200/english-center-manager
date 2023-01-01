@@ -48,7 +48,7 @@ const ScheduleSetupButton = ({
   const dispatch = useDispatch();
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
-  const momentDate = moment(_.cloneDeep(date)).format("YYYY-MM-DD");
+  const momentDate = moment(_.cloneDeep(date)).format("MM/DD/YYYY");
   const dateScheduleObject = _.cloneDeep(scheduleDates).find(
     (item) => item.schedule_Date === momentDate
   );
@@ -283,7 +283,6 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
                       />
                     )}
                   />}
-
                 </Grid>
               </Grid>
             </CustomBox>

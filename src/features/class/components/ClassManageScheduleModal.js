@@ -224,7 +224,7 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
         getScheduleData();
         break;
     }
-  }, [tab]);
+  }, [tab, open]);
 
   return (
     <CustomModal

@@ -31,7 +31,7 @@ const DashboardAdmin = () => {
       ]
 
       let result = []
-      const yearData = [...new Set([...data.map(item => item.transaction_Year.toString()), "2022"])]
+      const yearData = [...new Set([...data.map(item => item.transaction_Year.toString()), "2023"])].sort((a, b) => parseInt(a) - parseInt(b))
       const mappingLabelFunc = (item) => {
         _.cloneDeep(defaultLabel).forEach(i => {
           result.push({

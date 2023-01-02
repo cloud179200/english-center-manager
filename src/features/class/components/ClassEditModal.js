@@ -157,7 +157,7 @@ const ClassEditModal = ({
     setFieldValue("class_Id", class_Id);
     setFieldValue("class_Name", class_Name);
     setFieldValue("teacher_Id", teacher_Id);
-    setFieldValue("teacherInput", `${teacher_Name} - ${teacher_Id}`);
+    setFieldValue("teacherInput", teacher_Id !== 0 ? `${teacher_Name} - ${teacher_Id}` : "");
     setFieldValue("class_Fee", class_Fee);
     setStudentChipValues(_.cloneDeep(list_Student));
   }, [open]);

@@ -86,17 +86,14 @@ const ClassComponent = () => {
             .map((item) => ({
               class_Id: item.class_Id,
               class_Name: item.class_Name,
-              total: item.list_Student.length,
-              teacher_Name:
-                item.list_Teacher[0].first_Name +
-                " " +
-                item.list_Teacher[0].last_Name,
+              total: item?.list_Student?.length || 0,
+              teacher_Name: item?.list_Teacher?.length ? (item.list_Teacher[0].first_Name + " " + item.list_Teacher[0].last_Name) : " ",
               class_Fee: item.class_Fee,
-              teacher_Id: item.list_Teacher[0].teacher_Id,
-              list_Student: item.list_Student.map((i) => ({
+              teacher_Id: item?.list_Teacher?.length ? item.list_Teacher[0].teacher_Id : 0,
+              list_Student: item?.list_Student?.length ? item.list_Student.map((i) => ({
                 student_Id: i.student_Id,
                 student_Name: i.first_Name + " " + i.last_Name,
-              })),
+              })) : [],
             }))
             .filter((item) => {
               if (userDetail?.user_Type === 2) {
@@ -118,6 +115,7 @@ const ClassComponent = () => {
   const reloadClassData = () => {
     getClassData();
   };
+
   const Utility = useCallback(
     ({ item }) => {
       if (userDetail?.user_Type === 2) {
@@ -232,15 +230,15 @@ const ClassComponent = () => {
       .filter((item) =>
         filter.class_Name
           ? item.class_Name
-              .toLowerCase()
-              .includes(filter.class_Name.toLowerCase())
+            .toLowerCase()
+            .includes(filter.class_Name.toLowerCase())
           : true
       )
       .filter((item) =>
         filter.teacher_Name
           ? item.teacher_Name
-              .toLowerCase()
-              .includes(filter.teacher_Name.toLowerCase())
+            .toLowerCase()
+            .includes(filter.teacher_Name.toLowerCase())
           : true
       );
     return filterResult;

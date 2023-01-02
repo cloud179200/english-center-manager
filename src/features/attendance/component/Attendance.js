@@ -15,7 +15,7 @@ import {
   IconClockHour3,
 } from "@tabler/icons";
 import moment from "moment";
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Calendar } from "react-calendar";
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,38 +43,35 @@ const Attendance = (props) => {
   const [attendanceStudents, setAttendanceStudents] = useState([]);
   const [defaultAttendanceStudent, setDefaultAttendanceStudent] = useState([]);
 
-  const SelectDateButton = useCallback(
-    ({ date }) => {
-      const momentDate = moment(_.cloneDeep(date)).format("MM/DD/YYYY");
-      const targetDateScheduleObject = _.cloneDeep(scheduleDates).find(
-        (item) => item.schedule_Date === momentDate
-      );
-      if (targetDateScheduleObject?.stage_Id) {
-        return (
-          <Fade in={true} style={{ transitionDelay: `100ms` }}>
-            <Tooltip
-              title={`Ngày Này Có Buổi Học: ${targetDateScheduleObject?.stage_Name} - ${targetDateScheduleObject?.stage_Id}`}
+  const SelectDateButton = ({ date }) => {
+    const momentDate = moment(_.cloneDeep(date)).format("MM/DD/YYYY");
+    const targetDateScheduleObject = _.cloneDeep(scheduleDates).find(
+      (item) => item.schedule_Date === momentDate
+    );
+    if (targetDateScheduleObject?.stage_Id) {
+      return (
+        <Fade in={true} style={{ transitionDelay: `100ms` }}>
+          <Tooltip
+            title={`Ngày Này Có Buổi Học: ${targetDateScheduleObject?.stage_Name} - ${targetDateScheduleObject?.stage_Id}`}
+          >
+            <IconButton
+              disabled={
+                userDetail?.user_Type === 3 && momentDate !== momentDateNow
+              }
+              onClick={() =>
+                setSelectedDate(_.cloneDeep(targetDateScheduleObject))
+              }
+              color="primary"
+              sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
             >
-              <IconButton
-                disabled={
-                  userDetail?.user_Type === 3 && momentDate !== momentDateNow
-                }
-                onClick={() =>
-                  setSelectedDate(_.cloneDeep(targetDateScheduleObject))
-                }
-                color="primary"
-                sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
-              >
-                <IconClick strokeWidth={2} size="2rem" />
-              </IconButton>
-            </Tooltip>
-          </Fade>
-        );
-      }
-      return null;
-    },
-    [scheduleDates]
-  );
+              <IconClick strokeWidth={2} size="2rem" />
+            </IconButton>
+          </Tooltip>
+        </Fade>
+      );
+    }
+    return null;
+  }
 
   const handleSetAttendanceList = (students) => {
     console.log('[classObject?.list_Student]', classObject?.list_Student)
@@ -86,7 +83,7 @@ const Attendance = (props) => {
     setLoading(true);
     dispatch(
       setAttendanceAction(
-        userDetail?.user_Id,
+        userDetail?.user_Type === 1 ? 0 : userDetail?.user_Id,
         classObject?.class_Id,
         selectedDate?.stage_Id,
         _.cloneDeep(students).map((item) => ({
@@ -101,6 +98,8 @@ const Attendance = (props) => {
           if (err) {
             return;
           }
+          setAttendanceStudents(_.cloneDeep(students));
+          setDefaultAttendanceStudent(_.cloneDeep(students));
         }
       )
     );
@@ -126,7 +125,6 @@ const Attendance = (props) => {
               attendance_Status: item.attendance_Status,
             })
           );
-
           setAttendanceStudents(_.cloneDeep(newAttendanceList));
           setDefaultAttendanceStudent(_.cloneDeep(newAttendanceList));
         }
@@ -134,82 +132,63 @@ const Attendance = (props) => {
     );
   };
 
-  const handleChangeAttendanceStatus = useCallback(
-    (student_Id, attendance_Status) => {
-      let newAttendanceList = _.cloneDeep(attendanceStudents);
-      const isHaveAttendanceData = newAttendanceList.some(
-        (item) => item.student_Id === student_Id
-      );
+  const handleChangeAttendanceStatus = (student_Id, attendance_Status) => {
+    setAttendanceStudents(prevAttendanceStudents => {
+      const newAttendanceList = _.cloneDeep(prevAttendanceStudents).filter(item => item.student_Id !== student_Id)
+      return [...newAttendanceList, {
+        student_Id,
+        attendance_Status,
+      }]
+    });
+  }
 
-      if (isHaveAttendanceData) {
-        newAttendanceList = newAttendanceList.map((item) => ({
-          ...item,
-          attendance_Status:
-            item.student_Id === student_Id
-              ? attendance_Status
-              : item.attendance_Status,
-        }));
-      } else {
-        newAttendanceList.push({
-          student_Id,
-          attendance_Status,
-        });
-      }
-      setAttendanceStudents(newAttendanceList);
-    },
-    [attendanceStudents]
-  );
-
-  const Utility = useCallback(
-    ({ item }) => {
-      const attendanceStatus = _.cloneDeep(attendanceStudents).find(
-        (attendanceItem) => attendanceItem.student_Id === item.student_Id
-      )?.attendance_Status;
-      return (
-        <Grid
-          container
-          justifyContent="flex-end"
-          flexWrap="nowrap"
-          columnGap={2}
-        >
-          <Grid item>
-            <Tooltip title={`Có mặt`}>
-              <IconButton
-                disabled={loading || attendanceStatus === 1}
-                color="secondary"
-                onClick={() => handleChangeAttendanceStatus(item.student_Id, 1)}
-              >
-                <IconChecks strokeWidth={2} size="2rem" />
-              </IconButton>
-            </Tooltip>
-          </Grid>
-          <Grid item>
-            <Tooltip title={`Muộn`}>
-              <IconButton
-                disabled={loading || attendanceStatus === 2}
-                color="warning"
-                onClick={() => handleChangeAttendanceStatus(item.student_Id, 2)}
-              >
-                <IconClockHour3 strokeWidth={2} size="2rem" />
-              </IconButton>
-            </Tooltip>
-          </Grid>
-          <Grid item>
-            <Tooltip title={`Vắng`}>
-              <IconButton
-                disabled={loading || attendanceStatus === 3}
-                color="error"
-                onClick={() => handleChangeAttendanceStatus(item.student_Id, 3)}
-              >
-                <IconBan strokeWidth={2} size="2rem" />
-              </IconButton>
-            </Tooltip>
-          </Grid>
+  const Utility = ({ item }) => {
+    const attendanceStatus = _.cloneDeep(attendanceStudents).find(
+      (attendanceItem) => attendanceItem.student_Id === item.student_Id
+    )?.attendance_Status;
+    return (
+      <Grid
+        container
+        justifyContent="flex-end"
+        flexWrap="nowrap"
+        columnGap={2}
+      >
+        <Grid item>
+          <Tooltip title={`Có mặt`}>
+            <IconButton
+              disabled={loading || attendanceStatus === 1}
+              color="secondary"
+              onClick={() => handleChangeAttendanceStatus(item.student_Id, 1)}
+            >
+              <IconChecks strokeWidth={2} size="2rem" />
+            </IconButton>
+          </Tooltip>
         </Grid>
-      );
-    },
-    [loading, attendanceStudents]
-  );
+        <Grid item>
+          <Tooltip title={`Muộn`}>
+            <IconButton
+              disabled={loading || attendanceStatus === 2}
+              color="warning"
+              onClick={() => handleChangeAttendanceStatus(item.student_Id, 2)}
+            >
+              <IconClockHour3 strokeWidth={2} size="2rem" />
+            </IconButton>
+          </Tooltip>
+        </Grid>
+        <Grid item>
+          <Tooltip title={`Vắng`}>
+            <IconButton
+              disabled={loading || attendanceStatus === 3}
+              color="error"
+              onClick={() => handleChangeAttendanceStatus(item.student_Id, 3)}
+            >
+              <IconBan strokeWidth={2} size="2rem" />
+            </IconButton>
+          </Tooltip>
+        </Grid>
+      </Grid>
+    );
+  }
 
   const attendanceTableData = useMemo(() => {
     if (!classObject?.list_Student) {
@@ -290,4 +269,4 @@ const Attendance = (props) => {
   );
 };
 
-export default memo(Attendance, _.isEqual);
+export default Attendance;

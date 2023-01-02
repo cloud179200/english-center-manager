@@ -212,13 +212,12 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
       return;
     }
     switch (tab) {
-      case 0:
-        getStageData();
-        getScheduleData();
-        break;
+
       case 1:
         getScheduleData();
         break;
+      case 0:
+      case 2:
       default:
         getStageData();
         getScheduleData();

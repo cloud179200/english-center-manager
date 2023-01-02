@@ -199,22 +199,9 @@ const LandingComponent = () => {
                   xs={12}
                   md={6}
                 >
-                  <motion.div
-                    animate={{
-                      scale: [0.2, 1],
-                      rotate: [0, 360],
-                      // borderRadius: ["20%", "20%", "50%", "50%", "20%"],
-                    }}
-                    transition={{
-                      duration: 1,
-                      ease: "easeInOut",
-                      times: [0, 1],
-                    }}
-                  >
-                    <Typography variant="h1" color="#fff">
-                      Chinh phục thần tốc mục tiêu IELTS với Trung tâm Anh Ngữ Berry
-                    </Typography>
-                  </motion.div>
+                  <Typography variant="h1" color="#fff">
+                    Chinh phục thần tốc mục tiêu IELTS với Trung tâm Anh Ngữ Berry
+                  </Typography>
                 </Grid>
               </Grid>
             </CustomBox>

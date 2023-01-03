@@ -143,6 +143,7 @@ const TransactionComponent = () => {
             );
             prevList[indexTransactionTarget].paid_Ammount =
               prevList[indexTransactionTarget].class_Fee;
+            prevList[indexTransactionTarget].status = 2
             return prevList;
           });
         }
@@ -214,9 +215,7 @@ const TransactionComponent = () => {
   };
 
   const UtilityStudent = useCallback(({ item }) => {
-    const isFullfiled = Boolean(
-      item?.paid_Ammount === item?.class_Fee && item?.paid_Ammount
-    );
+    const isFullfiled = Boolean(item?.status === 2)
     return (
       <>
         {isFullfiled ? (
@@ -275,9 +274,7 @@ const TransactionComponent = () => {
 
   const UtilityAdminStudent = useCallback(
     ({ item }) => {
-      const isFullfiled = Boolean(
-        item?.paid_Ammount === item?.class_Fee && item?.paid_Ammount
-      );
+      const isFullfiled = Boolean(item?.status === 2);
       const isDisabled =
         isFullfiled || loadingConfirm.some((i) => _.isEqual(i, item));
       const isLoading = loadingConfirm.some((i) => _.isEqual(i, item));
@@ -338,62 +335,62 @@ const TransactionComponent = () => {
     const cloneTransactionList = _.cloneDeep(transactions)
       .filter((item) =>
         filterConfirmed
-          ? item?.paid_Ammount === item?.class_Fee
-          : item?.paid_Ammount !== item?.class_Fee
+          ? item?.status === 2
+          : item?.status === 1
       )
       .map((item) =>
         userDetail?.user_Type === 1
           ? {
-              class_Id: item.class_Id,
-              class_Name: item.class_Name,
-              student_Name: item.student_Name,
-              class_Fee: (
-                <>
-                  <NumericFormat
-                    value={item.class_Fee}
-                    thousandSeparator={true}
-                    displayType="text"
-                  />
-                  <IconCurrencyDong
-                    strokeWidth={2}
-                    size="1.5rem"
-                    style={{
-                      marginTop: "auto",
-                      marginBottom: "auto",
-                      position: "relative",
-                      top: theme.spacing(1),
-                    }}
-                  />
-                </>
-              ),
-              utility: <UtilityStudent item={item} />,
-              utilityAdmin: <UtilityAdminStudent item={item} />,
-            }
+            class_Id: item.class_Id,
+            class_Name: item.class_Name,
+            student_Name: item.student_Name,
+            class_Fee: (
+              <>
+                <NumericFormat
+                  value={(filterConfirmed ? item?.paid_Ammount : item?.class_Fee) || 0}
+                  thousandSeparator={true}
+                  displayType="text"
+                />
+                <IconCurrencyDong
+                  strokeWidth={2}
+                  size="1.5rem"
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    position: "relative",
+                    top: theme.spacing(1),
+                  }}
+                />
+              </>
+            ),
+            utility: <UtilityStudent item={item} />,
+            utilityAdmin: <UtilityAdminStudent item={item} />,
+          }
           : {
-              class_Id: item.class_Id,
-              class_Name: item.class_Name,
-              student_Name: item.student_Name,
-              class_Fee: (
-                <>
-                  <NumericFormat
-                    value={item.class_Fee}
-                    thousandSeparator={true}
-                    displayType="text"
-                  />
-                  <IconCurrencyDong
-                    strokeWidth={2}
-                    size="1.5rem"
-                    style={{
-                      marginTop: "auto",
-                      marginBottom: "auto",
-                      position: "relative",
-                      top: theme.spacing(1),
-                    }}
-                  />
-                </>
-              ),
-              utility: <UtilityStudent item={item} />,
-            }
+            class_Id: item.class_Id,
+            class_Name: item.class_Name,
+            student_Name: item.student_Name,
+            class_Fee: (
+              <>
+                <NumericFormat
+                  value={(filterConfirmed ? item?.paid_Ammount : item?.class_Fee) || 0}
+                  thousandSeparator={true}
+                  displayType="text"
+                />
+                <IconCurrencyDong
+                  strokeWidth={2}
+                  size="1.5rem"
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    position: "relative",
+                    top: theme.spacing(1),
+                  }}
+                />
+              </>
+            ),
+            utility: <UtilityStudent item={item} />,
+          }
       );
     if (!isFilter) {
       return cloneTransactionList;
@@ -402,15 +399,15 @@ const TransactionComponent = () => {
       .filter((item) =>
         filter.class_Name
           ? item.class_Name
-              .toLowerCase()
-              .includes(filter.class_Name.toLowerCase())
+            .toLowerCase()
+            .includes(filter.class_Name.toLowerCase())
           : true
       )
       .filter((item) =>
         filter.student_Name
           ? item.student_Name
-              .toLowerCase()
-              .includes(filter.student_Name.toLowerCase())
+            .toLowerCase()
+            .includes(filter.student_Name.toLowerCase())
           : true
       );
     return filterResult;
@@ -443,59 +440,59 @@ const TransactionComponent = () => {
       .map((item) =>
         userDetail?.user_Type === 1
           ? {
-              teacher_Id: item.teacher_Id,
-              teacher_Name: item.teacher_Name,
-              period: item.period,
-              total: (
-                <>
-                  <NumericFormat
-                    value={item.total}
-                    thousandSeparator={true}
-                    displayType="text"
-                  />
-                  <IconCurrencyDong
-                    strokeWidth={2}
-                    size="1.5rem"
-                    style={{
-                      marginTop: "auto",
-                      marginBottom: "auto",
-                      position: "relative",
-                      top: theme.spacing(1),
-                    }}
-                  />
-                </>
-              ),
-              date: item.transaction_Month + "/" + item.transaction_Year,
-              utility: <UtilityTeacher item={item} />,
-              utilityAdmin: <UtilityAdminTeacher item={item} />,
-            }
+            teacher_Id: item.teacher_Id,
+            teacher_Name: item.teacher_Name,
+            period: item.period,
+            total: (
+              <>
+                <NumericFormat
+                  value={item.total}
+                  thousandSeparator={true}
+                  displayType="text"
+                />
+                <IconCurrencyDong
+                  strokeWidth={2}
+                  size="1.5rem"
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    position: "relative",
+                    top: theme.spacing(1),
+                  }}
+                />
+              </>
+            ),
+            date: item.transaction_Month + "/" + item.transaction_Year,
+            utility: <UtilityTeacher item={item} />,
+            utilityAdmin: <UtilityAdminTeacher item={item} />,
+          }
           : {
-              teacher_Id: item.teacher_Id,
-              teacher_Name: item.teacher_Name,
-              period: item.period,
-              total: (
-                <>
-                  <NumericFormat
-                    value={item.total}
-                    type="text"
-                    thousandSeparator={true}
-                    displayType="text"
-                  />
-                  <IconCurrencyDong
-                    strokeWidth={2}
-                    size="1.5rem"
-                    style={{
-                      marginTop: "auto",
-                      marginBottom: "auto",
-                      position: "relative",
-                      top: theme.spacing(1),
-                    }}
-                  />
-                </>
-              ),
-              date: item.transaction_Month + "/" + item.transaction_Year,
-              utility: <UtilityTeacher item={item} />,
-            }
+            teacher_Id: item.teacher_Id,
+            teacher_Name: item.teacher_Name,
+            period: item.period,
+            total: (
+              <>
+                <NumericFormat
+                  value={item.total}
+                  type="text"
+                  thousandSeparator={true}
+                  displayType="text"
+                />
+                <IconCurrencyDong
+                  strokeWidth={2}
+                  size="1.5rem"
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    position: "relative",
+                    top: theme.spacing(1),
+                  }}
+                />
+              </>
+            ),
+            date: item.transaction_Month + "/" + item.transaction_Year,
+            utility: <UtilityTeacher item={item} />,
+          }
       );
     if (!isFilter) {
       return cloneTransactionList;
@@ -503,8 +500,8 @@ const TransactionComponent = () => {
     let filterResult = cloneTransactionList.filter((item) =>
       filter.teacher_Name
         ? item.teacher_Name
-            .toLowerCase()
-            .includes(filter.teacher_Name.toLowerCase())
+          .toLowerCase()
+          .includes(filter.teacher_Name.toLowerCase())
         : true
     );
 
@@ -626,7 +623,7 @@ const TransactionComponent = () => {
                       headers={headersStudent}
                       data={transactionData}
                       title={"Danh Sách Giao Dịch"}
-                      // reloadPageWhenDataChange={false}
+                    // reloadPageWhenDataChange={false}
                     />
                   </Grid>
                 </>
@@ -686,7 +683,7 @@ const TransactionComponent = () => {
                       headers={headersTeacher}
                       data={transactionTeacherData}
                       title={"Danh Sách Giao Dịch Trả Lương Giảng Viên"}
-                      // reloadPageWhenDataChange={false}
+                    // reloadPageWhenDataChange={false}
                     />
                   </Grid>
                 </>

@@ -22,7 +22,7 @@ import {
 } from "@tabler/icons";
 import { useDispatch } from "react-redux";
 import CustomBox from "../../../components/custom-box/CustomBox";
-import _ from "lodash";
+import _ from "underscore";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import LoadingComponent from "../../../utils/component/Loading";
 import TeacherFilterComponent from "./TeacherFilterComponent";
@@ -57,9 +57,9 @@ const TeacherComponent = () => {
   const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const [loadingSelectPayrolls, setLoadingSelectPayrolls] = useState([]);
-  const [filter, setFilter] = useState(_.cloneDeep(initTeacherFilter));
+  const [filter, setFilter] = useState(_.clone(initTeacherFilter));
   const [filterPayroll, setFilterPayroll] = useState(
-    _.cloneDeep(initPayrollFilter)
+    _.clone(initPayrollFilter)
   );
   const [teachers, setTeachers] = useState([]);
   const [deleteTeacherObject, setDeleteTeacherObject] = useState(null);
@@ -99,7 +99,7 @@ const TeacherComponent = () => {
   };
 
   const handleRemovePayroll = (item) => {
-    const newTeachers = _.cloneDeep(teachers).map((i) =>
+    const newTeachers = _.clone(teachers).map((i) =>
       i?.teacher_Id === item?.teacher_Id
         ? { ...i, payroll_Id: null, payroll_Name: null }
         : i
@@ -138,7 +138,7 @@ const TeacherComponent = () => {
           setLoadingSelectPayrolls((prevState) => {
             return prevState.filter((i) => !_.isEqual(i, teacherObject));
           });
-          const newTeachers = _.cloneDeep(teachers).map((i) =>
+          const newTeachers = _.clone(teachers).map((i) =>
             i?.teacher_Id === teacherObject?.teacher_Id
               ? {
                   ...i,
@@ -225,7 +225,7 @@ const TeacherComponent = () => {
     return (
       <Grid container justifyContent="flex-end" flexWrap="nowrap" columnGap={2}>
         <Grid item>
-          <IconButton onClick={() => setEditPayrollObject(_.cloneDeep(item))}>
+          <IconButton onClick={() => setEditPayrollObject(_.clone(item))}>
             <IconEdit
               strokeWidth={2}
               size="1.5rem"
@@ -235,7 +235,7 @@ const TeacherComponent = () => {
         </Grid>
         <Grid item>
           <IconButton
-            onClick={() => setDeletePayrollObject(_.cloneDeep(item))}
+            onClick={() => setDeletePayrollObject(_.clone(item))}
             color="error"
           >
             <IconTrash
@@ -255,7 +255,7 @@ const TeacherComponent = () => {
         <Grid item>
           <IconButton
             color="primary"
-            onClick={() => setInfoTeacherObject(_.cloneDeep(item))}
+            onClick={() => setInfoTeacherObject(_.clone(item))}
           >
             <IconInfoCircle
               strokeWidth={2}
@@ -268,7 +268,7 @@ const TeacherComponent = () => {
         <Grid item>
           <IconButton
             color="error"
-            onClick={() => setDeleteTeacherObject(_.cloneDeep(item))}
+            onClick={() => setDeleteTeacherObject(_.clone(item))}
           >
             <IconTrash
               strokeWidth={2}
@@ -296,7 +296,7 @@ const TeacherComponent = () => {
                 <Chip
                   color="secondary"
                   label={item?.payroll_Name}
-                  onDelete={() => handleRemovePayroll(_.cloneDeep(item))}
+                  onDelete={() => handleRemovePayroll(_.clone(item))}
                   deleteIcon={<IconBackspace strokeWidth={2} size="1.5rem" />}
                 />
               </Fade>
@@ -305,7 +305,7 @@ const TeacherComponent = () => {
                 color="secondary"
                 disabled={loadingSelectPayrolls.some((i) => _.isEqual(i, item))}
                 onClick={(e) =>
-                  handleOpenSelectSalaryMenu(e, _.cloneDeep(item))
+                  handleOpenSelectSalaryMenu(e, _.clone(item))
                 }
               >
                 <IconSelect
@@ -324,7 +324,7 @@ const TeacherComponent = () => {
 
   const teacherData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
-    const cloneTeacherList = _.cloneDeep(teachers).map((item) => ({
+    const cloneTeacherList = _.clone(teachers).map((item) => ({
       teacher_Id: item.teacher_Id,
       teacher_Name: item.teacher_Name,
       utilitySalary: <UtilitySelectPayroll item={item} />,
@@ -351,7 +351,7 @@ const TeacherComponent = () => {
 
   const payrollData = useMemo(() => {
     const isFilter = Object.values(filterPayroll).some((item) => Boolean(item));
-    const cloneTeacherList = _.cloneDeep(payrolls).map((item) => ({
+    const cloneTeacherList = _.clone(payrolls).map((item) => ({
       payroll_Id: item.payroll_Id,
       payroll_Name: item.payroll_Name,
       payroll_Value: (

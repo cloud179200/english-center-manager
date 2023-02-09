@@ -22,7 +22,7 @@ import MinimalLayout from "./layout/MinimalLayout";
 import MainLayout from "./layout/MainLayout";
 import { removeNotificationAction } from "./redux/utils/operators";
 import NotFoundComponent from "./utils/component/NotFound";
-import _ from "lodash";
+import _ from "underscore";
 import ErrorBoundary from "./utils/component/ErrorBoundary";
 import PublicLayout from "./layout/PublicLayout";
 
@@ -33,8 +33,8 @@ function App() {
   const userDetail = useSelector((state) => state.user.userDetail);
   // const loadingCommon = useSelector((state) => state.common.loadingCommon);
   const dispatch = useDispatch();
-  const isValidPath = _.cloneDeep(AUTH_ROUTE)
-    .concat(_.cloneDeep(PRIVATE_ROUTE_ADMIN)).concat(_.cloneDeep(PUBLIC_ROUTE))
+  const isValidPath = _.clone(AUTH_ROUTE)
+    .concat(_.clone(PRIVATE_ROUTE_ADMIN)).concat(_.clone(PUBLIC_ROUTE))
     .some((route) => route.path === window.location.pathname);
 
   const PublicRoute = useCallback(({ routeInfo }) => {

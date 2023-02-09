@@ -1,5 +1,5 @@
 import * as actionTypes from "./action";
-import _ from "lodash";
+import _ from "underscore";
 export const initialState = {
   userInfo: null,
   userDetail: null,
@@ -7,7 +7,7 @@ export const initialState = {
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
 
-const userReducer = (state = _.cloneDeep(initialState), action) => {
+const userReducer = (state = _.clone(initialState), action) => {
   switch (action.type) {
     case actionTypes.SET_USER_ACTION:
       return {
@@ -30,7 +30,7 @@ const userReducer = (state = _.cloneDeep(initialState), action) => {
         userDetail: action.data,
       };
     case actionTypes.RESET_USER_REDUCER_ACTION:
-        return _.cloneDeep(initialState)
+        return _.clone(initialState)
     default:
       return state;
   }

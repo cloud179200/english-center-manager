@@ -18,7 +18,7 @@ import {
 } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
 import CustomBox from "../../../components/custom-box/CustomBox";
-import _ from "lodash";
+import _ from "underscore";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import LoadingComponent from "../../../utils/component/Loading";
 import TransactionFilterComponent from "./TransactionFilterComponent";
@@ -56,10 +56,10 @@ const TransactionComponent = () => {
   const [loadingConfirm, setLoadingConfirm] = useState([]);
   const [loadingConfirmTeacher, setLoadingConfirmTeacher] = useState([]);
   const [filter, setFilter] = useState(
-    _.cloneDeep(initTransactionStudentFilter)
+    _.clone(initTransactionStudentFilter)
   );
   const [filterTeacher, setFilterTeacher] = useState(
-    _.cloneDeep(initTransactionTeacherFilter)
+    _.clone(initTransactionTeacherFilter)
   );
   const [transactions, setTranactions] = useState([]);
   const [transactionsTeacher, setTransactionsTeacher] = useState([]);
@@ -121,7 +121,7 @@ const TransactionComponent = () => {
   };
 
   const handleConfirmTransactionStudent = (itemTransaction) => {
-    setLoadingConfirm([...loadingConfirm, _.cloneDeep(itemTransaction)]);
+    setLoadingConfirm([...loadingConfirm, _.clone(itemTransaction)]);
     dispatch(
       confirmStudentTransactionAction(
         itemTransaction.student_Id,
@@ -130,7 +130,7 @@ const TransactionComponent = () => {
         (res, err) => {
           setLoadingConfirm(
             [...loadingConfirm].filter((i) =>
-              _.isEqual(i, _.cloneDeep(itemTransaction))
+              _.isEqual(i, _.clone(itemTransaction))
             )
           );
           if (err) {
@@ -170,7 +170,7 @@ const TransactionComponent = () => {
   const handleConfirmTransactionTeacher = (itemTransaction) => {
     setLoadingConfirmTeacher([
       ...loadingConfirmTeacher,
-      _.cloneDeep(itemTransaction),
+      _.clone(itemTransaction),
     ]);
     dispatch(
       confirmTeacherTransactionAction(
@@ -179,7 +179,7 @@ const TransactionComponent = () => {
         (res, err) => {
           setLoadingConfirmTeacher(
             [...loadingConfirmTeacher].filter((i) =>
-              _.isEqual(i, _.cloneDeep(itemTransaction))
+              _.isEqual(i, _.clone(itemTransaction))
             )
           );
           if (err) {
@@ -332,7 +332,7 @@ const TransactionComponent = () => {
 
   const transactionData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
-    const cloneTransactionList = _.cloneDeep(transactions)
+    const cloneTransactionList = _.clone(transactions)
       .filter((item) =>
         filterConfirmed
           ? item?.status === 2
@@ -428,7 +428,7 @@ const TransactionComponent = () => {
     //   "transaction_Month": "12",
     //   "transaction_Year": "2022"
     // }
-    const cloneTransactionList = _.cloneDeep(transactionsTeacher)
+    const cloneTransactionList = _.clone(transactionsTeacher)
       .filter((item) =>
         userDetail?.user_Type === 1
           ? true

@@ -1,29 +1,29 @@
 import { Autocomplete, Button, Grid, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import _ from "lodash";
+import _ from "underscore";
 import { initStageFilter } from "./Stage";
 import { NAME_TRANS_VN } from "../../../config/constant";
 const StageFilterComponent = ({ filter, setFilter, stages }) => {
-  const [filterInput, setFilterInput] = useState(_.cloneDeep(initStageFilter));
+  const [filterInput, setFilterInput] = useState(_.clone(initStageFilter));
 
   const handleApply = () => {
-    setFilter(_.cloneDeep(filterInput));
+    setFilter(_.clone(filterInput));
   };
 
   const handleClear = () => {
-    setFilter(_.cloneDeep(initStageFilter));
+    setFilter(_.clone(initStageFilter));
   };
 
   const optionsStageId = [
-    ...new Set(_.cloneDeep(stages).map((option) => option.stage_Id)),
+    ...new Set(_.clone(stages).map((option) => option.stage_Id)),
   ];
 
   const optionsStageName = [
-    ...new Set(_.cloneDeep(stages).map((option) => option.stage_Name)),
+    ...new Set(_.clone(stages).map((option) => option.stage_Name)),
   ];
 
   useEffect(() => {
-    setFilterInput(_.cloneDeep(filter));
+    setFilterInput(_.clone(filter));
   }, [filter]);
 
   return (

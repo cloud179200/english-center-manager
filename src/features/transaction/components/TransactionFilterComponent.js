@@ -1,35 +1,35 @@
 import { Autocomplete, Button, Grid, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import _ from "lodash";
+import _ from "underscore";
 import { initTransactionStudentFilter } from "./Transaction";
 import { NAME_TRANS_VN } from "../../../config/constant";
 const TransactionFilterComponent = ({ filter, setFilter, transactionList }) => {
   const [filterInput, setFilterInput] = useState(
-    _.cloneDeep(initTransactionStudentFilter)
+    _.clone(initTransactionStudentFilter)
   );
 
   const handleApply = () => {
-    setFilter(_.cloneDeep(filterInput));
+    setFilter(_.clone(filterInput));
   };
 
   const handleClear = () => {
-    setFilter(_.cloneDeep(initTransactionStudentFilter));
+    setFilter(_.clone(initTransactionStudentFilter));
   };
 
   const optionsTeacherName = [
     ...new Set(
-      _.cloneDeep(transactionList).map((option) => `${option.class_Name}`)
+      _.clone(transactionList).map((option) => `${option.class_Name}`)
     ),
   ];
 
   const optionsStudentName = [
     ...new Set(
-      _.cloneDeep(transactionList).map((option) => `${option.student_Name}`)
+      _.clone(transactionList).map((option) => `${option.student_Name}`)
     ),
   ];
 
   useEffect(() => {
-    setFilterInput(_.cloneDeep(filter));
+    setFilterInput(_.clone(filter));
   }, [filter]);
   return (
     <Grid

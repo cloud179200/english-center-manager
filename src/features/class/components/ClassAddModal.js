@@ -18,7 +18,7 @@ import { addClassSchema } from "../schema";
 import { useDispatch } from "react-redux";
 import { addClassAction } from "../../../redux/class/operators";
 import AnimateButton from "../../../components/extended/Animate";
-import _ from "lodash";
+import _ from "underscore";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import CustomChipsInput from "../../../components/custom-input-chips/CustomInputChips";
 import { IconCircleCheck } from "@tabler/icons";
@@ -35,11 +35,11 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
   const [studentChipValues, setStudentChipValues] = useState([]);
 
   const teacherOptions = useMemo(
-    () => _.cloneDeep(teachers).sort(sortTeacherFunc),
+    () => _.clone(teachers).sort(sortTeacherFunc),
     [teachers]
   );
   const studentOptions = useMemo(
-    () => _.cloneDeep(students).sort(sortStudentFunc),
+    () => _.clone(students).sort(sortStudentFunc),
     [students]
   );
 
@@ -94,7 +94,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
         setLoading(false);
         if (err) return;
         setStudents(
-          _.cloneDeep(
+          _.clone(
             res.map((item) => ({
               student_Id: item.student_Id,
               student_Name: item.first_Name + " " + item.last_Name,
@@ -109,7 +109,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
         setLoading(false);
         if (err) return;
         setTeachers(
-          _.cloneDeep(
+          _.clone(
             res.map((item) => ({
               teacher_Id: item.teacher_Id,
               teacher_Name: item.first_Name + " " + item.last_Name,
@@ -123,7 +123,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
   useEffect(() => {
     setFieldValue(
       "list_Student",
-      _.cloneDeep(studentChipValues).map((item) => ({
+      _.clone(studentChipValues).map((item) => ({
         student_Id: item.student_Id,
       }))
     );
@@ -249,7 +249,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
               renderOption={(props, option) => (
                 <div {...props}>
                   {`${option.student_Name} - ${option.student_Id}`}&nbsp;
-                  {_.cloneDeep(values?.list_Student || [])
+                  {_.clone(values?.list_Student || [])
                     .map((item) => item.student_Id)
                     .includes(option.student_Id) && (
                     <IconCircleCheck
@@ -267,7 +267,7 @@ const ClassAddModal = ({ open, handleClose, reloadClassData }) => {
               onChange={(event, newValue) => {
                 if (
                   !newValue?.student_Id ||
-                  _.cloneDeep(studentChipValues).some(
+                  _.clone(studentChipValues).some(
                     (item) => item?.student_Id === newValue?.student_Id
                   )
                 ) {

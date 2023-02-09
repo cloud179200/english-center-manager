@@ -22,7 +22,7 @@ import { NAME_TRANS_VN } from "../../../config/constant";
 import { landingManageSchema } from "../schema";
 import AnimateButton from "../../../components/extended/Animate";
 import { uniqueKey, fileToBase64 } from "./../../../utils/index";
-import _ from "lodash";
+import _ from "underscore";
 import { IconEdit, IconFileExport, IconTrash } from "@tabler/icons";
 import {
   getClientDataAction,
@@ -94,7 +94,7 @@ const LandingManageComponent = () => {
     setLoadingLandingData(true);
     dispatch(
       setLandingPageDataAction(
-        _.cloneDeep(landingData).map((item) => ({
+        _.clone(landingData).map((item) => ({
           class_Name: item.class_Name,
           class_Fee: item.class_Fee,
           description: item.description,
@@ -112,7 +112,7 @@ const LandingManageComponent = () => {
   };
 
   const handleRemoveLandingData = (item) => {
-    setLandingData(_.cloneDeep(landingData).filter((i) => !_.isEqual(i, item)));
+    setLandingData(_.clone(landingData).filter((i) => !_.isEqual(i, item)));
   };
 
   const handleSetImageSourceBase64 = async (e) => {
@@ -138,8 +138,8 @@ const LandingManageComponent = () => {
           return;
         }
         const formattedRes = res.map((item) => ({ Id: uniqueKey(), ...item }));
-        setLandingData(_.cloneDeep(formattedRes));
-        setDefaultLandingData(_.cloneDeep(formattedRes));
+        setLandingData(_.clone(formattedRes));
+        setDefaultLandingData(_.clone(formattedRes));
       })
     );
   };
@@ -290,7 +290,7 @@ const LandingManageComponent = () => {
                             <IconButton
                               onClick={() =>
                                 setValues({
-                                  ..._.cloneDeep(item),
+                                  ..._.clone(item),
                                   image_Name: "",
                                 })
                               }
@@ -318,7 +318,7 @@ const LandingManageComponent = () => {
                             {" "}
                             <IconButton
                               onClick={() =>
-                                handleRemoveLandingData(_.cloneDeep(item))
+                                handleRemoveLandingData(_.clone(item))
                               }
                               color="error"
                               sx={{

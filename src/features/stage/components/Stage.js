@@ -5,7 +5,7 @@ import "../../../assets/scss/_custom-calendar.scss";
 import CustomBox from "./../../../components/custom-box/CustomBox";
 import { IconEdit, IconTrash, IconCirclePlus } from "@tabler/icons";
 import { useDispatch } from "react-redux";
-import _ from "lodash";
+import _ from "underscore";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import { getStageByClassIdAction } from "../../../redux/class/operators";
 import StageDeleteModal from "./StageDeleteModal";
@@ -24,7 +24,7 @@ const StageComponent = ({
 }) => {
   // const theme = useTheme();
   const dispatch = useDispatch();
-  const [filter, setFilter] = useState(_.cloneDeep(initStageFilter));
+  const [filter, setFilter] = useState(_.clone(initStageFilter));
   const [loading, setLoading] = useState(false);
   const [stages, setStages] = useState([]);
   const [deleteStageObject, setDeleteStageObject] = useState(null);
@@ -56,7 +56,7 @@ const StageComponent = ({
           <Grid item>
             <IconButton
               disabled={loading}
-              onClick={() => setEditStageObject(_.cloneDeep(item))}
+              onClick={() => setEditStageObject(_.clone(item))}
             >
               <IconEdit
                 strokeWidth={2}
@@ -69,7 +69,7 @@ const StageComponent = ({
             <IconButton
               disabled={loading}
               color="error"
-              onClick={() => setDeleteStageObject(_.cloneDeep(item))}
+              onClick={() => setDeleteStageObject(_.clone(item))}
             >
               <IconTrash
                 strokeWidth={2}
@@ -86,7 +86,7 @@ const StageComponent = ({
 
   const stageData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
-    const cloneStageList = _.cloneDeep(stages).map((item) => ({
+    const cloneStageList = _.clone(stages).map((item) => ({
       stage_Id: item.stage_Id,
       stage_Name: item.stage_Name,
       utility: <Utility item={item} />,

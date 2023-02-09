@@ -11,9 +11,9 @@ import CustomModal from "../../../components/custom-modal/CustomModal";
 import StudentMale from "../../../assets/images/users/student_male.png";
 import StudentFemale from "../../../assets/images/users/student_female.png";
 import { NAME_TRANS_VN } from "../../../config/constant";
-import _ from "lodash";
+import _ from "underscore";
 const StudentInfoModal = ({ open, handleClose, studentObject }) => {
-  const cloneStudentObject = _.cloneDeep(studentObject);
+  const cloneStudentObject = _.clone(studentObject);
 
   const imageSrc = useMemo(
     () => (studentObject?.gender ? StudentFemale : StudentMale),

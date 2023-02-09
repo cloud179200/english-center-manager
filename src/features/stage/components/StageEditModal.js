@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux";
 import { setStageAction } from "../../../redux/class/operators";
 import { useFormik } from "formik";
 import { editStageSchema } from "../schema";
-import _ from "lodash";
+import _ from "underscore";
  
 const StageEditModal = ({
   open,
@@ -67,7 +67,7 @@ const StageEditModal = ({
     if (!open) {
       return;
     }
-    setValues(_.cloneDeep(stageObject));
+    setValues(_.clone(stageObject));
   }, [open]);
 
   return (

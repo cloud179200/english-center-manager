@@ -78,7 +78,7 @@ const Settings = () => {
   } = formik;
 
   useEffect(() => {
-    if (!userInfo?.token || !userInfo?.email) {
+    if (!userInfo?.accessToken || !userInfo?.uid) {
       return;
     }
     dispatch(getUserDetailAction(userInfo.email));

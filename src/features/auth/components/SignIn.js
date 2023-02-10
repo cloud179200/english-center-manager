@@ -49,10 +49,11 @@ const SignInComponent = ({ ...others }) => {
   });
 
   const signInCallback = (res, err) => {
+    debugger
     if (err) {
       return;
     }
-    dispatch(setUserAction({ email: values.email, token: res.token }));
+    dispatch(setUserAction(res));
     dispatch(addNotificationAction(res.message, false));
   };
   const {

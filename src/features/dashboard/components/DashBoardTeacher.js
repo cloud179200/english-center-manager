@@ -8,7 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import CountUp from "react-countup";
-// import _ from "lodash";
+// import _ from "underscore";
 import CustomBox from "../../../components/custom-box/CustomBox.js";
 import { useDispatch, useSelector } from "react-redux";
 import { DEFAULT_BACKGROUND_IMAGE } from "../../../redux/customization/constant.js";

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import CustomBox from "../../../components/custom-box/CustomBox";
 import { Grid, useTheme } from "@mui/material";
-import _ from "lodash";
+import _ from "underscore";
 // eslint-disable-next-line import/named
 import { Line } from "@ant-design/plots";
 import { getAdminDashboardDataAction } from "../../../redux/dashboard/operators";
@@ -33,7 +33,7 @@ const DashboardAdmin = () => {
       let result = []
       const yearData = [...new Set([...data.map(item => item.transaction_Year.toString()), "2023"])].sort((a, b) => parseInt(a) - parseInt(b))
       const mappingLabelFunc = (item) => {
-        _.cloneDeep(defaultLabel).forEach(i => {
+        _.clone(defaultLabel).forEach(i => {
           result.push({
             label: "Tháng " + i + " - " + item,
             transaction_Month: i,

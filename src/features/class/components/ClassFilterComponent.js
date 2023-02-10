@@ -1,42 +1,42 @@
 import { Autocomplete, Button, Grid, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import _ from "lodash";
+import _ from "underscore";
 import { initClassFilter } from "./Class";
 import { NAME_TRANS_VN } from "../../../config/constant";
 const ClassFilterComponent = ({ filter, setFilter, classes }) => {
-  const [filterInput, setFilterInput] = useState(_.cloneDeep(initClassFilter));
+  const [filterInput, setFilterInput] = useState(_.clone(initClassFilter));
 
   const handleApply = () => {
-    setFilter(_.cloneDeep(filterInput));
+    setFilter(_.clone(filterInput));
   };
 
   const handleClear = () => {
-    setFilter(_.cloneDeep(initClassFilter));
+    setFilter(_.clone(initClassFilter));
   };
 
   const optionsClassId = [
     ...new Set(
-      _.cloneDeep(classes)
+      _.clone(classes)
         .map((option) => option.class_Id)
     ),
   ];
 
   const optionsClassName = [
     ...new Set(
-      _.cloneDeep(classes)
+      _.clone(classes)
         .map((option) => option.class_Name)
     ),
   ];
 
   const optionsTeacher = [
     ...new Set(
-      _.cloneDeep(classes)
+      _.clone(classes)
         .map((option) => option.teacher_Name)
     ),
   ];
 
   useEffect(() => {
-    setFilterInput(_.cloneDeep(filter));
+    setFilterInput(_.clone(filter));
   }, [filter]);
 
   return (

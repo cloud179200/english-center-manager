@@ -12,7 +12,7 @@ import {
 import CustomModal from "../../../components/custom-modal/CustomModal";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import "../../../assets/scss/_custom-calendar.scss";
-import _ from "lodash";
+import _ from "underscore";
 import CustomBox from "./../../../components/custom-box/CustomBox";
 import {
   IconClockHour3,
@@ -115,7 +115,7 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
 
   const PreviewStage = useCallback(
     ({ date }) => {
-      const momentDate = moment(_.cloneDeep(date)).format("MM/DD/YYYY");
+      const momentDate = moment(_.clone(date)).format("MM/DD/YYYY");
       const dateScheduleObject = scheduleDates.find(
         (item) => item.schedule_Date === momentDate
       );
@@ -157,8 +157,8 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
         if (err) {
           return
         }
-        const newAttendanceTableData = _.cloneDeep(attendanceTableData);
-        newAttendanceTableData[stage_Id] = _.cloneDeep(res).filter(item => (item.stage_Id === stage_Id && item.class_Id === classObject?.class_Id)).map((item) => ({
+        const newAttendanceTableData = _.clone(attendanceTableData);
+        newAttendanceTableData[stage_Id] = _.clone(res).filter(item => (item.stage_Id === stage_Id && item.class_Id === classObject?.class_Id)).map((item) => ({
           student_Id: item.student_Id,
           student_Name: userDetail.first_Name + ' ' + userDetail.last_Name,
           schedule_Date: moment(item.schedule_Date).format("MM/DD/YYYY"),
@@ -184,7 +184,7 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
           stage_Name: item.stage_Name,
           schedule_Date: moment(item.schedule_Date).format("MM/DD/YYYY"),
         }));
-        setScheduleDates(_.cloneDeep(newData));
+        setScheduleDates(_.clone(newData));
       })
     );
   };
@@ -260,7 +260,7 @@ const ClassManageByStudentModal = ({ open, handleClose, classObject }) => {
                           variant="contained"
                           color="secondary"
                           sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
-                          onClick={() => setSelectedStage(_.cloneDeep(item))}
+                          onClick={() => setSelectedStage(_.clone(item))}
                           endIcon={
                             <IconChevronRight strokeWidth={2} size="2rem" />
                           }

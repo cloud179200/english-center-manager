@@ -26,7 +26,7 @@ import {
   IconChecklist,
 } from "@tabler/icons";
 import { useDispatch, useSelector } from "react-redux";
-import _ from "lodash";
+import _ from "underscore";
 import {
   getScheduleByClassIdAction,
   getStageByClassIdAction,
@@ -48,8 +48,8 @@ const ScheduleSetupButton = ({
   const dispatch = useDispatch();
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down("md"));
-  const momentDate = moment(_.cloneDeep(date)).format("MM/DD/YYYY");
-  const dateScheduleObject = _.cloneDeep(scheduleDates).find(
+  const momentDate = moment(_.clone(date)).format("MM/DD/YYYY");
+  const dateScheduleObject = _.clone(scheduleDates).find(
     (item) => item.schedule_Date === momentDate
   );
   const [anchorEl, setAnchorEl] = useState(null);
@@ -111,7 +111,7 @@ const ScheduleSetupButton = ({
         }}
         onClose={() => setOpenMenu(false)}
       >
-        {_.cloneDeep(stages).map((item, index) => (
+        {_.clone(stages).map((item, index) => (
           <MenuItem
             key={momentDate + item.stage_Id + item.stage_Name + index}
             onClick={() => handleSelectSchedule(item.stage_Id, item.stage_Name)}
@@ -174,8 +174,8 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
           stage_Name: item.stage_Name,
           schedule_Date: moment(item.schedule_Date).format("MM/DD/YYYY"),
         }));
-        setScheduleDates(_.cloneDeep(newData));
-        setDefaultScheduleDates(_.cloneDeep(newData));
+        setScheduleDates(_.clone(newData));
+        setDefaultScheduleDates(_.clone(newData));
       })
     );
   };
@@ -197,12 +197,12 @@ const ClassManageScheduleModal = ({ open, handleClose, classObject }) => {
       stage_Id: stageId,
       stage_Name: stageName,
     };
-    const newDateSchedule = [..._.cloneDeep(scheduleDates), scheduleObject];
+    const newDateSchedule = [..._.clone(scheduleDates), scheduleObject];
     setScheduleDates(newDateSchedule);
   };
 
   const handleRemoveSchedule = (date) => {
-    const newDateSchedule = _.cloneDeep(scheduleDates).filter(
+    const newDateSchedule = _.clone(scheduleDates).filter(
       (item) => item.schedule_Date !== date
     );
     setScheduleDates(newDateSchedule);

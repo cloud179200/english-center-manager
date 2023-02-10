@@ -17,7 +17,7 @@ import {
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { Calendar } from "react-calendar";
-import _ from "lodash";
+import _ from "underscore";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAttendanceByClassIdAndAttendanceDateAction,
@@ -44,8 +44,8 @@ const Attendance = (props) => {
   const [defaultAttendanceStudent, setDefaultAttendanceStudent] = useState([]);
 
   const SelectDateButton = ({ date }) => {
-    const momentDate = moment(_.cloneDeep(date)).format("MM/DD/YYYY");
-    const targetDateScheduleObject = _.cloneDeep(scheduleDates).find(
+    const momentDate = moment(_.clone(date)).format("MM/DD/YYYY");
+    const targetDateScheduleObject = _.clone(scheduleDates).find(
       (item) => item.schedule_Date === momentDate
     );
     if (targetDateScheduleObject?.stage_Id) {
@@ -59,7 +59,7 @@ const Attendance = (props) => {
                 userDetail?.user_Type === 3 && momentDate !== momentDateNow
               }
               onClick={() =>
-                setSelectedDate(_.cloneDeep(targetDateScheduleObject))
+                setSelectedDate(_.clone(targetDateScheduleObject))
               }
               color="primary"
               sx={{ padding: matchDownSM ? 0 : theme.spacing(1) }}
@@ -86,7 +86,7 @@ const Attendance = (props) => {
         userDetail?.user_Type === 1 ? 0 : userDetail?.user_Id,
         classObject?.class_Id,
         selectedDate?.stage_Id,
-        _.cloneDeep(students).map((item) => ({
+        _.clone(students).map((item) => ({
           ...item,
           schedule_Date: moment(selectedDate?.schedule_Date)
             .add("days", 1)
@@ -98,8 +98,8 @@ const Attendance = (props) => {
           if (err) {
             return;
           }
-          setAttendanceStudents(_.cloneDeep(students));
-          setDefaultAttendanceStudent(_.cloneDeep(students));
+          setAttendanceStudents(_.clone(students));
+          setDefaultAttendanceStudent(_.clone(students));
         }
       )
     );
@@ -119,14 +119,14 @@ const Attendance = (props) => {
           if (err) {
             return;
           }
-          const newAttendanceList = _.cloneDeep(res.students || []).map(
+          const newAttendanceList = _.clone(res.students || []).map(
             (item) => ({
               student_Id: item.student_Id,
               attendance_Status: item.attendance_Status,
             })
           );
-          setAttendanceStudents(_.cloneDeep(newAttendanceList));
-          setDefaultAttendanceStudent(_.cloneDeep(newAttendanceList));
+          setAttendanceStudents(_.clone(newAttendanceList));
+          setDefaultAttendanceStudent(_.clone(newAttendanceList));
         }
       )
     );
@@ -134,7 +134,7 @@ const Attendance = (props) => {
 
   const handleChangeAttendanceStatus = (student_Id, attendance_Status) => {
     setAttendanceStudents(prevAttendanceStudents => {
-      const newAttendanceList = _.cloneDeep(prevAttendanceStudents).filter(item => item.student_Id !== student_Id)
+      const newAttendanceList = _.clone(prevAttendanceStudents).filter(item => item.student_Id !== student_Id)
       return [...newAttendanceList, {
         student_Id,
         attendance_Status,
@@ -143,7 +143,7 @@ const Attendance = (props) => {
   }
 
   const Utility = ({ item }) => {
-    const attendanceStatus = _.cloneDeep(attendanceStudents).find(
+    const attendanceStatus = _.clone(attendanceStudents).find(
       (attendanceItem) => attendanceItem.student_Id === item.student_Id
     )?.attendance_Status;
     return (
@@ -195,7 +195,7 @@ const Attendance = (props) => {
       return [];
     }
 
-    return _.cloneDeep(classObject.list_Student)
+    return _.clone(classObject.list_Student)
       .sort(sortStudentFunc)
       .map((item) => ({
         student_Id: item.student_Id,

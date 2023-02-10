@@ -1,6 +1,6 @@
 // action - state management
 import * as actionTypes from "./actions";
-import _ from "lodash";
+import _ from "underscore";
 export const initialState = {
   isOpen: [], // for active default menu
   fontFamily: `'Quicksand', sans-serif`,
@@ -11,7 +11,7 @@ export const initialState = {
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
 
-const customizationReducer = (state = _.cloneDeep(initialState), action) => {
+const customizationReducer = (state = _.clone(initialState), action) => {
   let id;
   switch (action.type) {
     case actionTypes.MENU_OPEN:
@@ -36,7 +36,7 @@ const customizationReducer = (state = _.cloneDeep(initialState), action) => {
         borderRadius: action.borderRadius,
       };
     case actionTypes.RESET_CUSTOMIZATION_REDUCER_ACTION:
-      return _.cloneDeep(initialState);
+      return _.clone(initialState);
     default:
       return state;
   }

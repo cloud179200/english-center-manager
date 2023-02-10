@@ -10,7 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getClassAction } from "../../../redux/class/operators";
 import CustomBox from "../../../components/custom-box/CustomBox";
-import _ from "lodash";
+import _ from "underscore";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import LoadingComponent from "../../../utils/component/Loading";
 import ClassAddModal from "./ClassAddModal";
@@ -33,7 +33,7 @@ const ClassComponent = () => {
   const [loading, setLoading] = useState(false);
   const userDetail = useSelector((state) => state.user.userDetail);
 
-  const [filter, setFilter] = useState(_.cloneDeep(initClassFilter));
+  const [filter, setFilter] = useState(_.clone(initClassFilter));
   const [classes, setClasses] = useState([]);
   const [openAddClassModal, setOpenAddClassModal] = useState(false);
   const [editClassObject, setEditClassObject] = useState(null);
@@ -170,7 +170,7 @@ const ClassComponent = () => {
         >
           <Grid item>
             <IconButton
-              onClick={() => setScheduleClassObject(_.cloneDeep(item))}
+              onClick={() => setScheduleClassObject(_.clone(item))}
             >
               <IconCalendar
                 strokeWidth={2}
@@ -181,7 +181,7 @@ const ClassComponent = () => {
           </Grid>
           <Grid item>
             <IconButton
-              onClick={() => setEditClassObject(_.cloneDeep(item))}
+              onClick={() => setEditClassObject(_.clone(item))}
             >
               <IconEdit
                 strokeWidth={2}
@@ -192,7 +192,7 @@ const ClassComponent = () => {
           </Grid>
           <Grid item>
             <IconButton
-              onClick={() => setDeleteClassObject(_.cloneDeep(item))}
+              onClick={() => setDeleteClassObject(_.clone(item))}
               color="error"
             >
               <IconTrash
@@ -210,7 +210,7 @@ const ClassComponent = () => {
 
   const classData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
-    const cloneClassList = _.cloneDeep(classes).map((item) => ({
+    const cloneClassList = _.clone(classes).map((item) => ({
       class_Id: item.class_Id,
       class_Name: item.class_Name,
       total: item.total,

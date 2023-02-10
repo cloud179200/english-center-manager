@@ -14,6 +14,7 @@ import {
   signOutService,
   changePasswordService,
   forgotPasswordService,
+  sendVerifiedEmailService,
 } from "./services";
 
 export const signUpAction = (
@@ -40,8 +41,8 @@ export const signUpAction = (
         user_Type,
         gender,
       });
-      if (res) {
-        callback(res, null);
+      if (res?.user) {
+        callback(res.user, null);
         return;
       }
       callback(null, API_MESSAGE.SERVER_ERROR);
@@ -67,8 +68,14 @@ export const signInAction = (email, password, callback) => {
         email,
         password,
       });
-      if (res) {
-        callback(res, null);
+      if (res?.user) {
+        if (!res.user.emailVerified) {
+          await sendVerifiedEmailService(res.user);
+          dispatch(addNotificationAction("Email not verified", true));
+          callback(null, API_MESSAGE.SERVER_ERROR);
+          return;
+        }
+        callback(res?.user, null);
         return;
       }
       callback(null, API_MESSAGE.SERVER_ERROR);

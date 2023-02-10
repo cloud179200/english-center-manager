@@ -15,7 +15,7 @@ import {
 import CustomTable from "../../../components/custom-table/CustomTable.js";
 import { Pie } from "@ant-design/plots";
 import moment from "moment";
-import _ from "lodash";
+import _ from "underscore";
 import CustomBox from "../../../components/custom-box/CustomBox.js";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingComponent from "../../../utils/component/Loading.js";
@@ -31,15 +31,15 @@ const DashBoardStudent = () => {
   const data = useMemo(() => ([
     {
       type: "Có Mặt",
-      value: _.cloneDeep(attendanceData).filter(item => item.attendance_Status === 1).length,
+      value: _.clone(attendanceData).filter(item => item.attendance_Status === 1).length,
     },
     {
       type: "Muộn",
-      value: _.cloneDeep(attendanceData).filter(item => item.attendance_Status === 2).length,
+      value: _.clone(attendanceData).filter(item => item.attendance_Status === 2).length,
     },
     {
       type: "Vắng",
-      value: _.cloneDeep(attendanceData).filter(item => item.attendance_Status === 3).length,
+      value: _.clone(attendanceData).filter(item => item.attendance_Status === 3).length,
     },
   ]), [attendanceData]) 
   const config = {
@@ -139,7 +139,7 @@ const DashBoardStudent = () => {
   }
 
   const attendanceTableData = useMemo(() => {
-    return _.cloneDeep(attendanceData).sort().map((item) => ({
+    return _.clone(attendanceData).sort().map((item) => ({
       student_Id: item.student_Id,
       student_Name: userDetail?.first_Name + " " + userDetail.last_Name,
       schedule_Date: moment(item.schedule_Date).format("MM/DD/YYYY"),

@@ -1,5 +1,5 @@
 import * as actionTypes from "./actions";
-import _ from "lodash";
+import _ from "underscore";
 export const initialState = {
   notifications: [],
   loading: false,
@@ -8,7 +8,7 @@ export const initialState = {
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
 
-const utilsReducer = (state = _.cloneDeep(initialState), action) => {
+const utilsReducer = (state = _.clone(initialState), action) => {
   switch (action.type) {
     case actionTypes.ADD_NOTIFICATION_ACTION:
       return {
@@ -27,7 +27,7 @@ const utilsReducer = (state = _.cloneDeep(initialState), action) => {
     case actionTypes.SET_LOADING_COMMON_ACTION:
       return { ...state, loadingCommon: action.state };
     case actionTypes.RESET_UTILS_REDUCER_ACTION:
-      return _.cloneDeep(initialState);
+      return _.clone(initialState);
     default:
       return state;
   }

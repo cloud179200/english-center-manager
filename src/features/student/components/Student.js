@@ -3,7 +3,7 @@ import { Grid, IconButton } from "@mui/material";
 import { IconInfoCircle, IconTrash } from "@tabler/icons";
 import { useDispatch } from "react-redux";
 import CustomBox from "../../../components/custom-box/CustomBox";
-import _ from "lodash";
+import _ from "underscore";
 import CustomTable from "../../../components/custom-table/CustomTable";
 import LoadingComponent from "../../../utils/component/Loading";
 import StudentFilterComponent from "./StudentFilterComponent";
@@ -19,7 +19,7 @@ export const initStudentFilter = {
 const StudentComponent = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [filter, setFilter] = useState(_.cloneDeep(initStudentFilter));
+  const [filter, setFilter] = useState(_.clone(initStudentFilter));
   const [students, setStudents] = useState([]);
   const [deleteStudentObject, setDeleteStudentObject] = useState(null);
   const [infoStudentObject, setInfoStudentObject] = useState(null);
@@ -61,7 +61,7 @@ const StudentComponent = () => {
         <Grid item>
           <IconButton
             color="primary"
-            onClick={() => setInfoStudentObject(_.cloneDeep(item))}
+            onClick={() => setInfoStudentObject(_.clone(item))}
           >
             <IconInfoCircle
               strokeWidth={2}
@@ -74,7 +74,7 @@ const StudentComponent = () => {
         <Grid item>
           <IconButton
             color="error"
-            onClick={() => setDeleteStudentObject(_.cloneDeep(item))}
+            onClick={() => setDeleteStudentObject(_.clone(item))}
           >
             <IconTrash
               strokeWidth={2}
@@ -89,7 +89,7 @@ const StudentComponent = () => {
 
   const studentData = useMemo(() => {
     const isFilter = Object.values(filter).some((item) => Boolean(item));
-    const cloneStudentList = _.cloneDeep(students).map((item) => ({
+    const cloneStudentList = _.clone(students).map((item) => ({
       student_Id: item.student_Id,
       student_Name: item.student_Name,
       created_Date: item.created_Date,

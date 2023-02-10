@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "sourceMap": true,
     "noImplicitAny": false,
     "noUnusedLocals": true,
@@ -12,7 +13,10 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "moduleResolution": "Node",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*":["src/*"]
+    }
   },
   "include": ["./src/**/*"],
   "exclude": ["./node_modules"]

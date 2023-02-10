@@ -14,7 +14,7 @@ const DashBoard = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!userInfo?.token || !userInfo?.email) {
+    if (!userInfo?.uid) {
       return;
     }
     setLoading(true);

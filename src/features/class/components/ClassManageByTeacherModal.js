@@ -14,7 +14,7 @@ import {
   IconChecklist,
 } from "@tabler/icons";
 import { useDispatch } from "react-redux";
-import _ from "lodash";
+import _ from "underscore";
 import {
   getScheduleByClassIdAction,
 } from "../../../redux/class/operators";
@@ -40,7 +40,7 @@ const ClassManageByTeacherModal = ({ open, handleClose, classObject }) => {
           stage_Name: item.stage_Name,
           schedule_Date: moment(item.schedule_Date).format("MM/DD/YYYY"),
         }));
-        setScheduleDates(_.cloneDeep(newData));
+        setScheduleDates(_.clone(newData));
       })
     );
   };

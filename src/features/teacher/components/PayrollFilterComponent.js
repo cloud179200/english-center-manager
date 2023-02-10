@@ -1,31 +1,31 @@
 import { Autocomplete, Button, Grid, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import _ from "lodash";
+import _ from "underscore";
 import { initPayrollFilter } from "./Teacher";
 import { NAME_TRANS_VN } from "../../../config/constant";
 const PayrollFilterComponent = ({ filter, setFilter, payrollList }) => {
   const [filterInput, setFilterInput] = useState(
-    _.cloneDeep(initPayrollFilter)
+    _.clone(initPayrollFilter)
   );
 
   const handleApply = () => {
-    setFilter(_.cloneDeep(filterInput));
+    setFilter(_.clone(filterInput));
   };
 
   const handleClear = () => {
-    setFilter(_.cloneDeep(initPayrollFilter));
+    setFilter(_.clone(initPayrollFilter));
   };
 
   const optionsPayrollId = [
-    ...new Set(_.cloneDeep(payrollList).map((option) => option.payroll_Id)),
+    ...new Set(_.clone(payrollList).map((option) => option.payroll_Id)),
   ];
 
   const optionsPayroll = [
-    ...new Set(_.cloneDeep(payrollList).map((option) => option.payroll_Name)),
+    ...new Set(_.clone(payrollList).map((option) => option.payroll_Name)),
   ];
 
   useEffect(() => {
-    setFilterInput(_.cloneDeep(filter));
+    setFilterInput(_.clone(filter));
   }, [filter]);
 
   return (

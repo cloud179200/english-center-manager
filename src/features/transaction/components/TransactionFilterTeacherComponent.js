@@ -1,6 +1,6 @@
 import { Autocomplete, Button, Grid, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import _ from "lodash";
+import _ from "underscore";
 import { initTransactionTeacherFilter } from "./Transaction";
 import { NAME_TRANS_VN } from "../../../config/constant";
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
@@ -13,20 +13,20 @@ const TransactionFilterTeacherComponent = ({
   transactionList,
 }) => {
   const [filterInput, setFilterInput] = useState(
-    _.cloneDeep(initTransactionTeacherFilter)
+    _.clone(initTransactionTeacherFilter)
   );
 
   const handleApply = () => {
-    setFilter(_.cloneDeep(filterInput));
+    setFilter(_.clone(filterInput));
   };
 
   const handleClear = () => {
-    setFilter(_.cloneDeep(initTransactionTeacherFilter));
+    setFilter(_.clone(initTransactionTeacherFilter));
   };
 
   const optionsTeacherName = [
     ...new Set(
-      _.cloneDeep(transactionList).map((option) => `${option.class_Name}`)
+      _.clone(transactionList).map((option) => `${option.class_Name}`)
     ),
   ];
 
@@ -38,7 +38,7 @@ const TransactionFilterTeacherComponent = ({
   };
 
   useEffect(() => {
-    setFilterInput(_.cloneDeep(filter));
+    setFilterInput(_.clone(filter));
   }, [filter]);
   return (
     <Grid

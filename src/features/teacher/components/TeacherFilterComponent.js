@@ -1,31 +1,31 @@
 import { Autocomplete, Button, Grid, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import _ from "lodash";
+import _ from "underscore";
 import { initTeacherFilter } from "./Teacher";
 import { NAME_TRANS_VN } from "../../../config/constant";
 const TeacherFilterComponent = ({ filter, setFilter, teacherList }) => {
   const [filterInput, setFilterInput] = useState(
-    _.cloneDeep(initTeacherFilter)
+    _.clone(initTeacherFilter)
   );
 
   const handleApply = () => {
-    setFilter(_.cloneDeep(filterInput));
+    setFilter(_.clone(filterInput));
   };
 
   const handleClear = () => {
-    setFilter(_.cloneDeep(initTeacherFilter));
+    setFilter(_.clone(initTeacherFilter));
   };
 
   const optionsTeacherId = [
-    ...new Set(_.cloneDeep(teacherList).map((option) => option.teacher_Id)),
+    ...new Set(_.clone(teacherList).map((option) => option.teacher_Id)),
   ];
 
   const optionsTeacher = [
-    ...new Set(_.cloneDeep(teacherList).map((option) => option.teacher_Name)),
+    ...new Set(_.clone(teacherList).map((option) => option.teacher_Name)),
   ];
 
   useEffect(() => {
-    setFilterInput(_.cloneDeep(filter));
+    setFilterInput(_.clone(filter));
   }, [filter]);
 
   return (

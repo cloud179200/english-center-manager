@@ -1,6 +1,6 @@
 import { Menu, MenuItem } from "@mui/material";
 import React from "react";
-import _ from "lodash";
+import _ from "underscore";
 const TeacherSelectPayrollMenu = (props) => {
   const {
     anchorEl,
@@ -28,12 +28,12 @@ const TeacherSelectPayrollMenu = (props) => {
       }}
       onClose={handleClose}
     >
-      {_.cloneDeep(payrolls).map((item) => (
+      {_.clone(payrolls).map((item) => (
         <MenuItem
           key={
             item.payroll_Id + "-" + item.payroll_Name + "-" + item.payroll_Value
           }
-          onClick={() => handleSelectPayroll(_.cloneDeep(item))}
+          onClick={() => handleSelectPayroll(_.clone(item))}
         >
           {`${item.payroll_Id} - ${item.payroll_Name} - ${item.payroll_Value}`}
         </MenuItem>

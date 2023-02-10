@@ -11,10 +11,10 @@ import CustomModal from "../../../components/custom-modal/CustomModal";
 import Professor from "../../../assets/images/users/professor.png";
 import Teacher from "../../../assets/images/users/teacher.png";
 import { NAME_TRANS_VN } from "../../../config/constant";
-import _ from "lodash";
+import _ from "underscore";
 
 const TeacherInfoModal = ({ open, handleClose, teacherObject }) => {
-  const cloneTeacherObject = _.cloneDeep(teacherObject);
+  const cloneTeacherObject = _.clone(teacherObject);
 
   const imageSrc = useMemo(
     () =>  (teacherObject?.gender ? Teacher : Professor),

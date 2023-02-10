@@ -19,8 +19,9 @@ export const getUserDetailAction = (email, callback = null) => {
     dispatch(setLoadingAction(true));
     try {
       const res = await getUserService(email);
-      if (res?.data) {
-        dispatch(setUserDetailAction({ ...res.data }));
+      debugger
+      if (res) {
+        dispatch(setUserDetailAction({ ...res }));
         return;
       }
     } catch (error) {

@@ -1,3 +1,4 @@
+import { takeEvery, put, call } from "redux-saga/effects";
 import { API_MESSAGE } from "../../config/constant";
 import { resetUserReducerAction } from "../user/operators";
 import {
@@ -7,7 +8,7 @@ import {
   setLoadingAction,
   setLoadingCommonAction,
 } from "../utils/operators";
-import { SIGN_IN_ACTION, SIGN_OUT_ACTION } from "./action";
+import { SIGN_IN_ACTION, SIGN_OUT_ACTION, SIGN_UP_ACTION } from "./action";
 import {
   signUpService,
   signInService,
@@ -17,6 +18,55 @@ import {
   sendVerifiedEmailService,
 } from "./services";
 
+export function* authSaga() {
+  yield takeEvery(
+    SIGN_UP_ACTION,
+    function* signUpAction(
+      first_Name,
+      last_Name,
+      email,
+      password,
+      address,
+      phone_Number,
+      user_Type,
+      gender,
+      callback
+    ) {
+      yield put(setLoadingAction(true));
+      try {
+        const res = yield call(signUpService, {
+          first_Name,
+          last_Name,
+          email,
+          password,
+          address,
+          phone_Number,
+          user_Type,
+          gender,
+        });
+        if (res?.user) {
+          yield call(callback, res.user, null);
+          return;
+        }
+        yield call(callback, null, API_MESSAGE.SERVER_ERROR);
+      } catch (error) {
+        yield put(
+          addNotificationAction(
+            error?.data?.message || API_MESSAGE.SERVER_ERROR,
+            true
+          )
+        );
+        yield call(
+          callback,
+          null,
+          error?.data?.message || API_MESSAGE.SERVER_ERROR
+        );
+      } finally {
+        yield put(setLoadingAction(false));
+      }
+    }
+  );
+}
 export const signUpAction = (
   first_Name,
   last_Name,

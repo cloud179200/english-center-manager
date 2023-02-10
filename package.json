@@ -1,5 +1,5 @@
 {
-  "name": "english-center-manager",
+  "name": "datn-by-va",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
@@ -60,6 +60,7 @@
     "react-use": "^17.4.0",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
+    "redux-saga": "^1.2.2",
     "svg-url-loader": "^8.0.0",
     "typescript": "^4.8.4",
     "underscore": "^1.13.6",
